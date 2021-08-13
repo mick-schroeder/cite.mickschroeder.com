@@ -75,7 +75,7 @@ class ZBib extends React.PureComponent {
 									client='ca-pub-6344797609391119'
 									slot='3922555336'
 									style={{ display: 'block' }}
-									format=''
+									format='auto'
 									responsive='true'
 									className='advertisement'
 									/>
@@ -100,7 +100,7 @@ class ZBib extends React.PureComponent {
 									client='ca-pub-6344797609391119'
 									slot='3922555336'
 									style={{ display: 'block' }}
-									format=''
+									format='auto'
 									responsive='true'
 									className='advertisement'
 									/>
@@ -151,7 +151,7 @@ class ZBib extends React.PureComponent {
 									client='ca-pub-6344797609391119'
 									slot='3922555336'
 									style={{ display: 'block' }}
-									format=''
+									format='auto'
 									responsive='true'
 									className='advertisement'
 									/>
