@@ -113,7 +113,7 @@
     "json": "^10.0.0",
     "mapstraction": "^1.0.1",
     "marked": "^2.0.0",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "mocha": "^8.2.0",
     "node-sass": "^4.14.1",
     "nodemon": "^2.0.4",
