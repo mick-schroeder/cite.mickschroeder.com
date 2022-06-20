@@ -5,11 +5,11 @@
 $staticPath: '/static';
 
 @function asset-url($type, $path) {
-	@return url($staticPath + unquote("/#{$type}/#{$path}"));
+  @return url($staticPath + unquote("/#{$type}/#{$path}"));
 }
 
 @function image-url($path) {
-	@return asset-url("images", $path);
+  @return asset-url("images", $path);
 }
 
 // @function font-url($path) {

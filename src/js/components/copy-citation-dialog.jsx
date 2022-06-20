@@ -1,152 +1,158 @@
-import cx from 'classnames';
-import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useRef, useState, memo } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+/* eslint-disable react/no-deprecated */
+// @TODO: migrate to getDerivedStateFromProps()
+'use strict';
 
-import Button from './ui/button';
-import Input from './form/input';
-import Modal from './modal';
-import Select from './form/select';
-import Spinner from './ui/spinner';
+const React = require('react');
+const PropTypes = require('prop-types');
+const Button = require('zotero-web-library/src/js/component/ui/button');
+const cx = require('classnames');
+const Input = require('zotero-web-library/src/js/component/form/input');
+const KeyHandler = require('react-key-handler').default;
+const Modal = require('./modal');
+const Select = require('zotero-web-library/src/js/component/form/select');
+const Spinner = require('zotero-web-library/src/js/component/ui/spinner');
+const { KEYDOWN } = require('react-key-handler');
 
 const locators = [
-	'page', 'book', 'chapter', 'column', 'figure', 'folio', 'issue', 'line', 'note', 'opus',
-	'paragraph', 'part', 'section', 'sub verbo', 'verse', 'volume'
+	'page',
+	'book',
+	'chapter',
+	'column',
+	'figure',
+	'folio',
+	'issue',
+	'line',
+	'note',
+	'opus',
+	'paragraph',
+	'part',
+	'section',
+	'sub verbo',
+	'verse',
+	'volume'
 ].map(locator => ({
 	value: locator,
 	label: locator[0].toUpperCase() + locator.slice(1)
 }));
 
-const CopyCitationDialog = props => {
-	const { activeDialog, citationHtml, citationCopyModifiers, isNoteStyle, onCitationCopy,
-	onCitationCopyDialogClose, onCitationModifierChange } = props;
-	const [isCopied, setIsCopied] = useState(false);
-	const timeout = useRef(null);
-	const intl = useIntl();
-	const title = isNoteStyle ?
-		intl.formatMessage({ id: 'zbib.citation.copyNote' , defaultMessage: 'Copy Note' }) :
-		intl.formatMessage({ id: 'zbib.citation.copyCitation', defaultMessage: 'Copy Citation' });
-
-	let isCitationEmpty = false;
-
-	if(typeof citationHtml === 'string') {
-		isCitationEmpty = citationHtml
-			.replace(/<[^>]*>/g, '')
-			.trim()
-			.length === 0;
+class CopyCitationDialog extends React.PureComponent {
+	state = {
+		isCopied: false
 	}
 
-	const handleLabelChange = useCallback(
-		newValue => onCitationModifierChange({ ...citationCopyModifiers, label: newValue }),
-	[citationCopyModifiers, onCitationModifierChange]);
-
-	const handleLocatorChange = useCallback(
-		newValue => onCitationModifierChange({ ...citationCopyModifiers, locator: newValue }),
-	[citationCopyModifiers, onCitationModifierChange]);
-
-	const handleSuppressAuthorChange = useCallback(
-		ev => onCitationModifierChange({ ...citationCopyModifiers, mode: ev.currentTarget.checked ? 'SuppressAuthor' : undefined }),
-	[citationCopyModifiers, onCitationModifierChange]);
-
-	const handleCancel = useCallback(() => {
-		if(timeout.current) {
-			clearTimeout(timeout.current);
-			timeout.current = null;
+	componentWillUnmount() {
+		if(this.timeout) {
+			this.cleanUp();
+			delete this.timeout;
 		}
-		onCitationCopyDialogClose();
-	}, [onCitationCopyDialogClose]);
+	}
 
-	const handleConfirm = useCallback(() => {
-		if(onCitationCopy()) {
-			setIsCopied(true);
-			timeout.current = setTimeout(() => {
-				onCitationCopyDialogClose();
-				setIsCopied(false);
+	componentWillReceiveProps({ isCitationCopyDialogOpen }) {
+		if(this.props.isCitationCopyDialogOpen != isCitationCopyDialogOpen) {
+			this.cleanUp();
+			this.setState({ isCopied: false });
+		}
+	}
+
+	cleanUp() {
+		if(this.timeout) {
+			clearTimeout(this.timeout);
+			delete this.timeout;
+		}
+	}
+
+	handleChange(name, value) {
+		this.props.onCitationModifierChange({
+			...this.props.citationCopyModifiers,
+			[name]: value
+		});
+	}
+
+	handleCancel() {
+		this.cleanUp();
+		this.props.onCitationCopyCancel();
+	}
+
+	handleConfirm() {
+		if(this.props.onCitationCopy()) {
+			this.setState({ isCopied: true });
+			this.timeout = setTimeout(() => {
+				this.props.onCitationCopyCancel();
+				this.setState({ isCopied: false });
 			}, 1000);
 		}
-	}, [onCitationCopy, onCitationCopyDialogClose]);
+	}
 
-	const handleInputCommit = useCallback((_val, _hasChanged, ev) => {
+	handleInputCommit(_val, _hasChanged, ev) {
 		if(ev.type === 'keydown') {
-			handleConfirm();
+			this.handleConfirm();
 			ev.preventDefault();
 		}
-	}, [handleConfirm]);
+	}
 
-	useEffect(() => {
-		setIsCopied(false);
-	}, [activeDialog]);
+	get title() {
+		return this.props.isNoteStyle ? 'Copy Note' : 'Copy Citation';
+	}
 
-	useEffect(() => {
-		return () => {
-			if(timeout.current) {
-				clearTimeout(timeout.current);
-				timeout.current = null;
-			}
+	renderModalContent() {
+		const { isCopied } = this.state;
+		let isCitationEmpty = false;
+		if(typeof this.props.citationHtml === 'string') {
+			isCitationEmpty = this.props.citationHtml
+				.replace(/<[^>]*>/g, '')
+				.trim()
+				.length === 0;
 		}
-	}, []);
-
-	return (
-		<Modal
-			className={ cx('modal modal-centered copy-citation-dialog', { loading: !citationHtml }) }
-			isOpen={ activeDialog === 'COPY_CITATION' }
-			contentLabel={ title }
-			onRequestClose={ onCitationCopyDialogClose }
-		>
-			{ citationHtml ? (
-				<div className="modal-content" tabIndex={ -1 }>
+		return (
+			<div className="modal-content" tabIndex={ -1 }>
 				<div className="modal-body">
 					<div className="form-row form-group">
 						<div className="col-xs-6">
 							<Select
-								name="label"
 								clearable={ false }
 								isDisabled={ isCopied }
 								onChange={ () => true }
-								onCommit={ handleLabelChange }
+								onCommit={ this.handleChange.bind(this, 'label') }
 								options={ locators }
 								searchable={ false}
 								tabIndex={ 0 }
-								value={ citationCopyModifiers.label || 'page' }
-								className="form-control form-control-sm"
+								value={ this.props.citationCopyModifiers.citationLabel || 'page' }
+								className="form-control-sm"
 							/>
 							</div>
 						<div className="col-xs-6">
 							<Input
-								name="locator"
 								autoFocus
 								isDisabled={ isCopied }
-								onChange={ handleLocatorChange }
-								onCommit={ handleInputCommit }
+								onChange={ this.handleChange.bind(this, 'locator') }
+								onCommit={ this.handleInputCommit.bind(this) }
 								tabIndex={ 0 }
-								value={ citationCopyModifiers.locator }
-								className="form-control form-control-sm"
+								value={ this.props.citationCopyModifiers.citationLocator }
+								className="form-control-sm"
 								placeholder="Number"
 							/>
 						</div>
 					</div>
-					{ !isNoteStyle && (
+					{ !this.props.isNoteStyle && (
 						<div className="form-group">
 							<div className="checkbox">
 								<label>
 									<input
 										disabled={ isCopied }
 										type="checkbox"
-										checked={ citationCopyModifiers.mode === 'SuppressAuthor' }
-										onChange={ handleSuppressAuthorChange }
+										checked={ 'suppressAuthor' in this.props.citationCopyModifiers ? this.props.citationCopyModifiers.suppressAuthor : false }
+										onChange={ ev => this.handleChange('suppressAuthor', ev.target.checked) }
 									/>
-									<FormattedMessage id="zbib.citation.omitAuthor" defaultMessage="Omit Author" />
+									Omit Author
 								</label>
 							</div>
 						</div>
 					) }
 					<div>
-						<h5>
-							<FormattedMessage id="zbib.citation.preview" defaultMessage="Preview:" />
-						</h5>
+						<h5>Preview:</h5>
 						<p
 							className="preview"
-							dangerouslySetInnerHTML={ { __html: citationHtml } }
+							dangerouslySetInnerHTML={ { __html: this.props.citationHtml } }
 						/>
 					</div>
 				</div>
@@ -154,40 +160,54 @@ const CopyCitationDialog = props => {
 					<div className="buttons">
 						<Button
 							className="btn-outline-secondary"
-							onClick={ handleCancel }
+							onClick={ this.handleCancel.bind(this) }
 						>
-							<FormattedMessage id="zbib.general.cancel" defaultMessage="Cancel" />
+							Cancel
 						</Button>
 						<Button
 							disabled={ isCitationEmpty }
 							className={ cx('btn-secondary', { 'success': isCopied}) }
-							onClick={ handleConfirm }
+							onClick={ this.handleConfirm.bind(this) }
 						>
 							<span className={ cx('inline-feedback', { 'active': isCopied }) }>
-								<span className="default-text" aria-hidden={ !isCopied }>
-								{ title }
-								</span>
-								<span className="shorter feedback" aria-hidden={ isCopied }>
-									<FormattedMessage id="zbib.citation.copiedFeedback" defaultMessage="Copied!" />
-								</span>
+								<span className="default-text" aria-hidden={ !isCopied }>{ this.title }</span>
+								<span className="shorter feedback" aria-hidden={ isCopied }>Copied!</span>
 							</span>
 						</Button>
 					</div>
 				</div>
-				</div>
-			) : <Spinner /> }
-		</Modal>
-	);
+			</div>
+		);
+	}
+
+	render() {
+		return (
+			<Modal
+				className={ cx('modal modal-centered copy-citation-dialog', { loading: !this.props.citationHtml }) }
+				isOpen={ this.props.isCitationCopyDialogOpen }
+				contentLabel={ this.title }
+				onRequestClose={ () => { this.props.onCitationCopyCancel(); } }
+			>
+				{ this.props.citationHtml ? this.renderModalContent() : <Spinner /> }
+				<KeyHandler
+					keyEventName={ KEYDOWN }
+					keyValue="Escape"
+					onKeyHandle={ this.handleCancel.bind(this) }
+				/>
+			</Modal>
+		);
+	}
+
+	static propTypes = {
+		citationCopyModifiers: PropTypes.object,
+		citationHtml: PropTypes.string,
+		isCitationCopyDialogOpen: PropTypes.bool,
+		isNoteStyle: PropTypes.bool,
+		onCitationCopy: PropTypes.func.isRequired,
+		onCitationCopyCancel: PropTypes.func.isRequired,
+		onCitationModifierChange: PropTypes.func.isRequired,
+	}
 }
 
-CopyCitationDialog.propTypes = {
-	citationCopyModifiers: PropTypes.object,
-	citationHtml: PropTypes.string,
-	activeDialog: PropTypes.string,
-	isNoteStyle: PropTypes.bool,
-	onCitationCopy: PropTypes.func.isRequired,
-	onCitationCopyDialogClose: PropTypes.func.isRequired,
-	onCitationModifierChange: PropTypes.func.isRequired,
-}
 
-export default memo(CopyCitationDialog);
+module.exports = CopyCitationDialog;

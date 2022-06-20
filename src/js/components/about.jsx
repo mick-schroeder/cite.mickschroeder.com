@@ -1,35 +1,13 @@
-import React, { memo } from 'react';
-import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+'use strict';
 
-import Button from './ui/button';
-import { citationStylesCount } from '../../../data/citation-styles-data.json';
+const React = require('react');
+const PropTypes = require('prop-types');
+const Button = require('zotero-web-library/src/js/component/ui/button');
 
-const About = ({ onGetStartedClick }) => (
-	<section className="section section-about about">
-		<div className="container">
-			<img
-				src="/static/images/about/citeproc.svg"
-				className="zbib-illustration"
-				width="312"
-				height="400"
-				alt="ZoteroBib"
-			/>
-			<h1>
-				<FormattedMessage id="zbib.about.title" defaultMessage="Cite anything" />
-			</h1>
-			<p className="lead">
-				<FormattedMessage
-					id="zbib.about.summary"
-					defaultMessage="ZoteroBib helps you build a bibliography instantly from any
-					computer or device, without creating an account or installing any software. It’s
-					brought to you by the team behind <link>Zotero</link>, the powerful open-source
-					research tool recommended by thousands of universities worldwide, so you can
-					trust it to help you seamlessly add sources and produce perfect bibliographies.
-					If you need to reuse sources across multiple projects or build a shared research
-					library, we recommend using Zotero instead."
-					values={ { link: chunk => <a href="https://www.zotero.org/">{ chunk }</a> }} //eslint-disable-line react/display-name
-				/>
+class About extends React.PureComponent {
+	handleClick(event) {
+		this.props.onGetStartedClick(event);
+	}
 
 	render() {
 		return (
@@ -315,28 +293,12 @@ const About = ({ onGetStartedClick }) => (
 					</Button>
 					<p className="support"></p>
 			</section>
-			<Button
-				onClick={ onGetStartedClick }
-				className="btn-lg btn-outline-inverse-blue-dark"
-			>
-				<FormattedMessage id="zbib.about.CTA" defaultMessage="Awesome! Let’s start!" />
-			</Button>
-			<p className="support">
-				<FormattedMessage
-					id="zbib.about.questionsFaq"
-					defaultMessage="<block>Still have questions?</block> Check the <link>FAQ</link>."
-					values={ {
-						block: chunk => <span className="d-xs-block d-sm-inline">{ chunk }</span>, //eslint-disable-line react/display-name
-						link: chunk => <a href="/faq">{ chunk }</a> //eslint-disable-line react/display-name
-					} }
-				/>
-			</p>
-		</div>
-	</section>
-);
+		);
+	}
 
-About.propTypes = {
-	onGetStartedClick: PropTypes.func.isRequired,
+	static propTypes = {
+		onGetStartedClick: PropTypes.func.isRequired,
+	}
 }
 
-export default memo(About);
+module.exports = About;

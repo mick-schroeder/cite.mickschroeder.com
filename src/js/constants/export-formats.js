@@ -1,4 +1,4 @@
-export default {
+module.exports = {
 	'html': {
 		extension: 'html',
 		mime: 'text/html',
@@ -6,7 +6,7 @@ export default {
 		isDownloadable: false,
 		isCopyable: true
 	},
-	'plain': {
+	'text': {
 		extension: 'txt',
 		mime: 'text/plain',
 		label: 'Copy to Clipboard',

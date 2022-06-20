@@ -1,13 +1,11 @@
-import React, { memo } from 'react';
-import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+'use strict';
 
-const Footer = props => {
-	const { isReadOnly } = props;
-	
-	return (
-		<footer>
-			{ !isReadOnly &&
+const React = require('react');
+
+class Footer extends React.PureComponent {
+	render() {
+		return (
+			<footer>
 				<nav className="social-nav">
 					
 				</nav>
@@ -40,8 +38,4 @@ const Footer = props => {
 	}
 }
 
-Footer.propTypes = {
-	isReadOnly: PropTypes.bool,
-};
-
-export default memo(Footer);
+module.exports = Footer;

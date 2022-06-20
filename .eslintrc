@@ -1,6 +1,6 @@
 {
   "globals": {},
-  "parser": "@babel/eslint-parser",
+  "parser": "babel-eslint",
   "env": {
     "browser": true,
     "node": true,
@@ -15,15 +15,6 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended"
-  ],
-  "rules": {
-    "react/prop-types": "warn"
-  },
-   "settings": {
-    "react": {
-      "version": "detect"
-    }
-  }
+    "plugin:react/recommended"
+  ]
 }

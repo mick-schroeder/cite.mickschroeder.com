@@ -1,21 +1,11 @@
 const presets = [
-	["@babel/preset-env", {
-		"debug": !!process.env.DEBUG || false,
-		"useBuiltIns": false,
-	}],
+	["@babel/preset-env", { "debug": !!process.env.DEBUG || false, "corejs": 3, "useBuiltIns": "usage" }],
 	"@babel/preset-react"
 ];
 
 const plugins = [
-	["@babel/plugin-transform-runtime", {
-		"absoluteRuntime": false,
-		"corejs": 3,
-		"helpers": true,
-		"regenerator": false,
-	}],
-	["formatjs", { removeDefaultMessage: !!process.env.NODE_ENV?.startsWith('prod') }]
+	["@babel/plugin-proposal-decorators", { "legacy": true }],
+	["@babel/plugin-proposal-class-properties", { "loose" : true }]
 ];
-
-
 
 module.exports = { presets, plugins };

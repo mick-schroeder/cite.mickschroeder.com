@@ -1,60 +1,66 @@
 //
-// Select component
-// --------------------------------------------------
+// Select
+//
 
-.select-component {
+.Select {
 	position: relative;
 	flex: 1 1 0;
 	min-width: 0; // Prevent overflow
 
-	.select-control {
+	.Select-control {
 		display: flex;
 		align-items: center;
 		border-radius: $input-border-radius;
 		transition: border $input-transition, box-shadow $input-transition;
 		cursor: default;
 		border: $input-border-width solid $input-border-color;
-		background-color: $input-bg;
-		padding: $input-btn-padding-y ($input-btn-padding-x - 4px) $input-btn-padding-y $input-btn-padding-x; // Todo: just default, handle padding with .form-control and modifier classes on .select.
-		position: relative;
+	}
 
-		@include state(".select-component.is-focused") {
+	&.is-focused {
+		.Select-control {
 			border: $input-border-width solid $input-focus-color;
-			box-shadow: 0 0 0 2px $input-focus-color;
+			box-shadow: 0 0 0 2px $secondary;
 			outline: none;
 		}
 	}
 
 	&.is-searchable.is-open {
-		.select-control {
+		.Select-control {
 			cursor: text;
 		}
 	}
 
-	.select-multi-value-wrapper {
+	&.Select--single {
+		.Select-value-label {
+			@include text-truncate;
+		}
+
+		&.has-value {
+			.Select-value {
+				padding-right:
+					$input-btn-padding-x
+					+ $space-md;
+
+				.busy & {
+					padding-right:
+						$input-btn-padding-x
+						+ $space-md
+						+ $space-md
+						+ $space-min
+						+ 1px;
+				}
+			}
+		}
+	}
+
+	.Select-multi-value-wrapper {
 		flex: 1 1 0;
 		display: flex;
 		align-items: center;
 		min-width: 0; // Prevent overflow
 	}
 
-	&.single {
-		.select-value-label {
-			@include text-truncate;
-		}
-
-		&.has-value {
-			.select-value {
-				// @include mouse-and-bp-up(md) {
-				// 	padding-right:
-				// 		($input-btn-padding-x - 4px)
-				// 		+ $space-md;
-				// }
-			}
-		}
-	}
-
-	.select-value {
+	.Select-value {
 		display: flex;
 		align-items: center;
 		position: absolute;
@@ -63,9 +69,13 @@
 		bottom: 0;
 		left: 0;
 		padding: 0 $input-btn-padding-x;
+
+		.input-group.busy & {
+			padding-right: $input-btn-padding-x + $space-md + $input-border-width + 1px;
+		}
 	}
 
-	.select-input {
+	.Select-input {
 		outline: none;
 		max-width: 100%;
 		overflow: hidden;
@@ -84,75 +94,50 @@
 			font-size: inherit;
 			font-weight: inherit;
 			outline: none;
-
-			@include state(".select-component:not(.is-searchable)") {
-				pointer-events: none;
-			}
 		}
 	}
 
-	.select-arrow-container {
+	.Select-arrow-zone {
 		flex: 0 0 auto;
 	}
 
-	.select-arrow {
+	.Select-arrow {
 		display: block;
 		width: $space-md;
 		height: $space-md;
-		background: image-url("bg-icons/16/chevron-11-down-777.svg") no-repeat 0 0;
+		background: image-url("bg-icons/16/chevron-11-down-dark.svg");
 	}
 
-	.select-menu-outer {
+	.Select-menu-outer {
 		position: absolute;
-		left: $input-border-width;
-		top: calc(100% + #{$space-min + $input-border-width});
-		right: $input-border-width;
+		left: -$input-border-width;
+		top: calc(100% + #{$space-min});
+		right: -$input-border-width;
 		background-color: $menu-bg;
 		border-radius: $menu-border-radius;
 		z-index: $zindex-menu;
-		padding: $space-min 0;
+		padding: $space-xs 0;
 		box-shadow: $menu-box-shadow;
 		background-clip: padding-box;
 	}
 
-	.select-menu {
-		max-height: 10 * $line-height-large;
+	.Select-menu {
+		max-height:
+			10 * (
+				$font-size-base
+				* $line-height-base
+				+ 2 * $input-btn-padding-y-sm
+				+ 2 * $input-border-width
+			);
 		overflow-y: auto;
 	}
 
-	.select-option,
-	.select-noresults {
-		padding: 0 $input-btn-padding-x;
-		line-height: $line-height-large;
-	}
-
-	.select-option {
+	.Select-option {
+		padding: $space-min $input-btn-padding-x;
 		cursor: pointer;
-		color: $text-color;
 
-		// is-mouse and is-keyboard are mutex in .select-component
-		&:hover {
-			@include state(".select-component.is-mouse") {
-				background-color: $menu-item-hover-bg;
-			}
+		&.is-focused {
+			background: $menu-item-hover-bg;
 		}
-
-		&.is-focused:not(.is-selected) {
-			@include state(".select-component.is-keyboard") {
-				background-color: $menu-item-hover-bg;
-			}
-		}
-
-		&.is-selected {
-			background-color: $menu-item-selected-bg;
-		}
-	}
-
-	.select-divider {
-		border-top: $input-border-width solid $menu-devider;
-	}
-
-	.select-noresults {
-		color: $menu-no-results-color;
 	}
 }

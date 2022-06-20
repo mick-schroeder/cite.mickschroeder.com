@@ -1,6 +1,9 @@
-import './wdyr';
-import SmoothScroll from 'smooth-scroll';
-import ZoteroBibComponent from './bib-component';
+'use strict';
+
+require('babel-regenerator-runtime');
+
+const SmoothScroll = require('smooth-scroll');
+const ZoteroBibComponent = require('./bib-component');
 
 const targetDom = document.getElementById('schroeder-cite');
 

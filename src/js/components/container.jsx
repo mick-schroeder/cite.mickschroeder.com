@@ -1,654 +1,531 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState, useReducer } from 'react';
-import ZoteroBib from 'zotero-translation-client';
-import copy from 'copy-to-clipboard';
-import SmoothScroll from 'smooth-scroll';
-import PropTypes from 'prop-types';
-import { saveAs } from 'file-saver';
+/* eslint-disable react/no-deprecated */
+// @TODO: migrate to getDerivedStateFromProps()
+'use strict';
 
-import { calcOffset, dedupMultipleChoiceItems, ensureNoBlankItems, fetchFromPermalink,
-getOneTimeBibliographyOrFallback, getExpandedCitationStyles, getItemsCSL, isDuplicate, isLikeUrl,
-parseIdentifier, processMultipleChoiceItems, processSentenceCaseAPAItems, retrieveStylesData,
-saveToPermalink, validateItem, validateUrl } from '../utils';
-import { coreCitationStyles } from '../../../data/citation-styles-data.json';
-import defaults from '../constants/defaults';
-import exportFormats from '../constants/export-formats';
-import ZBib from './zbib';
-import { usePrevious } from '../hooks';
-import { formatBib, formatFallback, getBibliographyFormatParameters } from '../cite';
-import CiteprocWrapper from '../citeproc-wrapper';
-import { pick } from '../immutable';
-import { fetchAndParseIndependentStyle } from '../common/citation-style';
+const React = require('react');
+const PropTypes = require('prop-types');
+const copy = require('copy-to-clipboard');
+const deepEqual = require('deep-equal');
+const SmoothScroll = require('smooth-scroll');
+const ZoteroBib = require('zotero-translation-client');
+const exportFormats = require('../constants/export-formats');
+const { withRouter } = require('react-router-dom');
+const arrayEquals = require('array-equal');
+const {  dedupMultipleChoiceItems,
+	fetchFromPermalink,
+	getBibliographyFormatParameters,
+	getBibliographyOrFallback,
+	getCitation,
+	getCiteproc,
+	isLikeUrl,
+	isNoteStyle,
+	isNumericStyle,
+	isSentenceCaseStyle,
+	isUppercaseSubtitlesStyle,
+	parseIdentifier,
+	processMultipleChoiceItems,
+	processSentenceCaseAPAItems,
+	retrieveStyle,
+	retrieveStylesData,
+	saveToPermalink,
+	validateItem,
+	validateUrl, } = require('../utils');
+const { coreCitationStyles } = require('../../../data/citation-styles-data.json');
+const defaults = require('../constants/defaults');
+const ZBib = require('./zbib');
+const formatBib = require('../cite');
+const ReactGA = require('react-ga');
+const filenamify = require("sanitize-filename");
 
-const defaultItem = {
-	version: 0,
-	itemType: 'book',
-	tags: [],
-	creators: []
-};
+const { text } = require('../constants/export-formats');
+ 
 // Google Analytics
 ReactGA.initialize("UA-3312121-8");
 
+const scroll = new SmoothScroll();
 var msgId = 0;
+
 const getNextMessageId = () => ++msgId < Number.MAX_SAFE_INTEGER ? msgId : (msgId = 0);
 
-
-const CONFIRM_CURRENT_STYLE = 'CONFIRM_CURRENT_STYLE';
-const ERROR_FETCH_STYLE = 'ERROR_FETCH_STYLE';
-const RECEIVE_FETCH_STYLE = 'RECEIVE_FETCH_STYLE';
-const REQUEST_FETCH_STYLE = 'REQUEST_FETCH_STYLE';
-const BEGIN_BUILD_BIBLIOGRAPHY = 'BEGIN_BUILD_BIBLIOGRAPHY';
-const COMPLETE_BUILD_BIBLIOGRAPHY = 'COMPLETE_BUILD_BIBLIOGRAPHY';
-const COMPLETE_REFRESH_BIBLIOGRAPHY = 'COMPLETE_REFRESH_BIBLIOGRAPHY';
-const BIBLIOGRAPHY_SOURCE_REPLACED = 'BIBLIOGRAPHY_SOURCE_REPLACED';
-const BIBLIOGRAPHY_SOURCE_CHANGED = 'BIBLIOGRAPHY_SOURCE_CHANGED';
-const CLEAR_MESSAGE = 'CLEAR_MESSAGE';
-const REPLACE_MESSAGE = 'REPLACE_MESSAGE';
-const POST_MESSAGE = 'POST_MESSAGE';
-const CLEAR_ALL_MESSAGES = 'CLEAR_ALL_MESSAGES';
-
-const fetchAndSelectStyle = async (dispatch, styleName, opts = {}) => {
-	dispatch({ type: REQUEST_FETCH_STYLE, styleName });
-	try {
-		const styleData = await fetchAndParseIndependentStyle(styleName);
-		dispatch({
-			type: RECEIVE_FETCH_STYLE, ...styleData, ...opts
-		});
-	} catch (error) {
-		dispatch({ type: ERROR_FETCH_STYLE, styleName, error });
-	}
-}
-
-const confirmStyle = dispatch => dispatch({ type: CONFIRM_CURRENT_STYLE });
-
-const reducer = (state, action) => {
-	switch(action.type) {
-		case REQUEST_FETCH_STYLE:
-			return { ...state, isFetching: true };
-		case ERROR_FETCH_STYLE:
-			return { ...state, isFetching: false };
-		case RECEIVE_FETCH_STYLE:
-			return {
-				...state,
-				isFetching: false,
-				bibliographyNeedsRebuild: true,
-				selected: action.styleName, // in case of dependant style, this is the name of the parent style
-				xml: action.parentStyleXml ?? action.styleXml,
-				isDependent: !!action.styleProps.parentStyleName,
-				isConfirmed: typeof(action.isConfirmed) === 'boolean' ? action.isConfirmed : !action.styleProps.isSentenceCaseStyle,
-				localeOverride: action.styleProps.parentStyleName ? action.styleProps.defaultLocale : null,
-				...pick(
-					action.styleProps,
-					['styleHasBibliography', 'isNumericStyle', 'isNoteStyle', 'isUppercaseSubtitlesStyle', 'isSentenceCaseStyle']
-				)
-			}
-		case CONFIRM_CURRENT_STYLE:
-			return {
-				...state,
-				isConfirmed: true
-			}
-		case BEGIN_BUILD_BIBLIOGRAPHY:
-			return {
-				...state,
-				isCiteprocReady: false,
-			}
-		case COMPLETE_BUILD_BIBLIOGRAPHY:
-			return {
-				...state,
-				bibliography: pick(action, ['items', 'meta', 'lookup']),
-				isCiteprocReady: true,
-				bibliographyNeedsRebuild: false,
-				bibliographyNeedsRefresh: false,
-			}
-		case COMPLETE_REFRESH_BIBLIOGRAPHY:
-			return {
-				...state,
-				bibliography: { ...state.bibliography, ...pick(action, ['items', 'lookup']) },
-				bibliographyNeedsRefresh: false,
-			}
-		case BIBLIOGRAPHY_SOURCE_REPLACED:
-			return {
-				...state, isCiteprocReady: false, bibliographyNeedsRebuild: true,
-			}
-		case BIBLIOGRAPHY_SOURCE_CHANGED:
-			return {
-				...state, bibliographyNeedsRefresh: true,
-			}
-		case CLEAR_MESSAGE:
-			return {
-				...state,
-				messages: state.messages.filter(m => 'id' in action ? m.id !== action.id : m.kind !== action.kind)
-			}
-		case REPLACE_MESSAGE:
-			return {
-				...state,
-				messages: [...state.messages.filter(m => m.kind !== action.kind), action.message]
-			}
-		case POST_MESSAGE:
-			return {
-				...state,
-				messages: [...state.messages, action.message]
-			}
-		case CLEAR_ALL_MESSAGES:
-			return { ...state, messages: [] }
-	}
-	return state;
-}
-
-const BibWebContainer = props => {
-	const remoteId = window.location.pathname.match(/\/([0-9a-fA-f]{32})/)?.[1];
-	const citeproc = useRef(null);
-	const bib = useRef(null);
-	const abortController = useRef(null);
-	const copyData = useRef(null);
-	const copyDataInclude = useRef(null);
-	const revertCitationStyle = useRef(null);
-	const lastDeletedItem = useRef(null);
-	const duplicate = useRef(null);
-	const initialCitationsCount = useRef(null);
-	const [isDataReady, setIsDataReady] = useState(false);
-	const [activeDialog, setActiveDialog] = useState(null);
-	const [isPrintMode, setIsPrintMode] = useState(false);
-	const wasDataReady = usePrevious(isDataReady);
-	const isReadOnly = isPrintMode || !!remoteId;
-	const hydrateItemsCount = props.hydrateItemsCount;
-	const config = useMemo(() => ({ ...defaults, ...props.config }), [props.config]);
-
-	if(bib.current === null) {
-		bib.current = new ZoteroBib(config);
-		bib.current.reloadItems();
-		initialCitationsCount.current = bib.current.items.length;
-	}
-
-	// isHydrated is true during hydration render. It is used throughout app to pretend we're ready
-	// (without any data) so that rendered components (almost) match static markup (otherwise we
-	// would be showing spinners etc.). Once app is hydrated, we operate normally.
-	const isHydrated = useRef(typeof props.hydrateItemsCount !== 'undefined');
-
-	if(isHydrated.current && !isReadOnly) {
-		throw new Error(`BibWebContainer bootstrapped incorrectly. RemoteID must be present to hydrate. Path: ${window.location.pathname}`);
-	}
-
-	const [state, dispatch] = useReducer(reducer, {
-		selected: undefined,
-		xml: undefined,
-		isFetching: false,
-		isDependent: false,
-		localeOverride: null,
-		styleHasBibliography: undefined,
-		isNumericStyle: undefined,
-		isNoteStyle: undefined,
-		isUppercaseSubtitlesStyle: undefined,
-		isSentenceCaseStyle: undefined,
-		isConfirmed: undefined,
-		bibliography: { items: [], meta: null, lookup: {} },
-		bibliographyNeedsRefresh: false,
-		bibliographyNeedsRebuild: false,
-		isCiteprocReady: false,
+class Container extends React.Component {
+	state = {
+		//@TODO: bibliography, citations & items should probably be a single variable
+		bibliography: [],
+		citationCopyModifiers: {},
+		citationStyle: localStorage.getItem('schroeder-cite-citation-style') || coreCitationStyles.find(cs => cs.isDefault).name,
+		citationStyles: [],
+		config: {
+			...defaults,
+			...this.props.config
+		},
+		editorItem: null,
+		isConfirmingStyleSwitch: false,
+		isEditorOpen: false,
+		isInstallingStyle: false,
+		isLoadingCitations: true,
+		isPickingItem: false,
+		isReadOnly: undefined,
+		isSaveToZoteroVisible: false,
+		isSaving: false,
+		isStylesDataLoading: false,
+		isTranslating: false,
+		isTranslatingMore: false,
+		itemUnderReview: null,
+		itemUnderReviewBibliography: null,
+		lastDeletedItem: null,
 		messages: [],
-	});
+		moreItemsLink: null,
+		multipleChoiceItems: [],
+		permalink: null,
+		stylesData: null,
+		title: localStorage.getItem('schroeder-cite-title') || null,
+		unconfirmedCitationStyle: null,
+		url: '',
+	}
 
-	const prevCitationStyle = usePrevious(state.selected);
-	const [isStylesDataLoading, setIsStylesDataLoading] = useState(false);
-	const [stylesData, setStylesData] = useState(null);
+	constructor(props) {
+		super(props);
+		this.handleCopy = this.handleCopy.bind(this);
+		this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
+		this.handleScroll = this.handleScroll.bind(this);
+	}
 
-	const [citationToCopy, setCitationToCopy] = useState(null);
-	const [citationCopyModifiers, setCitationCopyModifiers] = useState({});
-	const [citationHtml, setCitationHtml] = useState(null);
+	clearMessages() {
+		this.setState({
+			messages: []
+		});
+	}
 
-	const [title, setTitle] = useState(props.title || (remoteId ? '' : localStorage.getItem('schroeder-cite-title') || ''));
-	const prevTitle = usePrevious(title);
-	const [identifier, setIdentifier] = useState('');
-	const [isTranslating, setIsTranslating] = useState(false);
-	const [isTranslatingMore, setIsTranslatingMore] = useState(false);
-	const [itemUnderReview, setItemUnderReview] = useState(null);
-	const [multipleItems, setMultipleItems] = useState(null);
-	const [itemToConfirm, setItemToConfirm] = useState(null);
-	const [moreItemsLink, setMoreItemsLink] = useState(null);
-	const [multipleChoiceItems, setMultipleChoiceItems] = useState(null);
-	const [editorItem, setEditorItem] = useState(null);
-	const [permalink, setPermalink] = useState(null);
-	const [isQueryHandled, setIsQueryHandled] = useState(window.location.pathname !== '/import');
+	displayWelcomeMessage() {
+		const id = getNextMessageId();
+		const message = {
+			action: 'Read More',
+			id,
+			isWelcomeMessage: true,
+			kind: 'info',
+			message: 'Welcome to my new citation generator.',
+			onAction: this.handleReadMoreClick.bind(this, id),
+		};
+		this.setState({
+			messages: [...this.state.messages, message]
+		});
+	}
 
-	const wasSentenceCaseStyle = usePrevious(state.isSentenceCaseStyle);
-	const useLegacy = useRef(true);
-	const isStyleReady = state.selected && state.isConfirmed && !state.isFetching;
-
-	const isReady = isStyleReady && state.isCiteprocReady && isDataReady && isQueryHandled && !state.bibliographyNeedsRebuild;
-
-	const [citationStyles, setCitationStyles] = useState([
-		...coreCitationStyles.map(cs => ({
-			...cs, isDependent: 0, parent: null, isCore: true })
-		),
-		...(JSON.parse(localStorage.getItem('schroeder-cite-extra-citation-styles')) || [])
-	]);
-	citationStyles.sort((a, b) => a.title.toUpperCase().localeCompare(b.title.toUpperCase()));
-
-	const localCitationsCount = remoteId ? initialCitationsCount.current : bib.current.items.length;
-
-	const buildBibliography = useCallback(async () => {
-		dispatch({ type: BEGIN_BUILD_BIBLIOGRAPHY });
-
-		//TODO: if citeproc.current use setStyle on CiteprocWrapper, once it supports localeOverride
-		citeproc.current = await CiteprocWrapper.new({
-			style: state.xml,
-			format: 'html',
-			localeOverride: state.localeOverride,
-			formatOptions: {
-				linkAnchors: isReadOnly,
-			}
-		}, useLegacy.current);
-
-		const t0 = performance.now();
-		citeproc.current.includeUncited("All");
-		citeproc.current.insertReferences(ensureNoBlankItems(bib.current.itemsCSL));
-
-		let items, meta;
-		const lookup = bib.current.itemsRaw.reduce((acc, item) => { acc[item.key] = item; return acc }, {});
-
-
-		if(state.styleHasBibliography) {
-			citeproc.current.initClusters([]);
-			items = citeproc.current.makeBibliography();
-			meta = citeproc.current.bibliographyMeta();
-			const t1 = performance.now();
-			console.log(`Engine: ${useLegacy.current ? 'JS' : 'RS'}; ${bib.current.itemsRaw.length} items; Bibliography generation took ${(t1 - t0).toFixed(2)} milliseconds.`);
-		} else {
-			// init every single item as a separate cluster for fallback rendering
-			citeproc.current.initClusters(
-				bib.current.itemsRaw.map(item => ({ id: item.key, cites: [ { id: item.key } ] }))
-			);
-			citeproc.current.setClusterOrder(bib.current.itemsRaw.map(item => ({ id: item.key })));
-			const render = citeproc.current.fullRender();
-			const t1 = performance.now();
-			console.log(`Engine: ${useLegacy.current ? 'JS' : 'RS'}; ${bib.current.itemsRaw.length} items; Bibliography generation took ${(t1 - t0).toFixed(2)} milliseconds.`);
-			items = bib.current.itemsRaw.map(item => ({ id: item.key, value: render.allClusters[item.key] }));
-			meta = null;
-		}
-
-		dispatch({ type: COMPLETE_BUILD_BIBLIOGRAPHY, items, meta, lookup });
-	}, [isReadOnly, state.xml, state.localeOverride, state.styleHasBibliography]);
-
-	const updateBibliography = useCallback(() => {
-		const t0 = performance.now();
-		const diff = citeproc.current.batchedUpdates();
-		const t1 = performance.now();
-		console.log(`Engine: ${useLegacy.current ? 'JS' : 'RS'}; Bibliography update took ${(t1 - t0).toFixed(2)} milliseconds.`);
-
-		if(bib.current.itemsRaw.length === 0) {
-			dispatch({ type: COMPLETE_REFRESH_BIBLIOGRAPHY, items: [], lookup: {} });
-			return;
-		}
-
-		const lookup = bib.current.itemsRaw.reduce((acc, item) => { acc[item.key] = item; return acc }, {});
-		let items;
-
-		if(diff.bibliography && state.styleHasBibliography) {
-			if(diff.bibliography.entryIds) {
-				items = diff.bibliography.entryIds.map(entryId => ({
-					id: entryId,
-					value: entryId in diff.bibliography.updatedEntries ?
-						diff.bibliography.updatedEntries[entryId] :
-						state.bibliography.items.find(bibItem => bibItem.id === entryId).value
-				}));
-			} else {
-				items = state.bibliography.items.map(bibItem => {
-					return bibItem.id in diff.bibliography.updatedEntries ?
-						{ id: bibItem.id, value: diff.bibliography.updatedEntries[bibItem.id] } :
-						bibItem;
-				});
-			}
-
-		} else if(!state.styleHasBibliography) {
-			const newBibliographyItems = [];
-			diff.clusters.forEach(([id, value]) => {
-				const existingEntry = state.bibliography.items.find(bibItem => bibItem.id === id);
-				if(existingEntry) {
-					existingEntry.value = value;
-				} else {
-					newBibliographyItems.push({ id, value });
-				}
-			});
-
-			items = [...state.bibliography.items.filter(i => i.id in lookup), ...newBibliographyItems];
-		} else {
-			// updateBibliography called but diff is empty so no action required
-			return;
-		}
-
-		dispatch({ type: COMPLETE_REFRESH_BIBLIOGRAPHY, lookup, items });
-	}, [state.styleHasBibliography, state.bibliography]);
-
-	const addItem = useCallback((item, showFirstCitationMessage = true)  => {
-		duplicate.current = isDuplicate(item, bib.current.itemsRaw);
-		if(duplicate.current) {
-			const message = {
-				action: 'Show Duplicate',
-				id: getNextMessageId(),
-				kind: 'DUPLICATE',
-				message: 'Possible duplicate already exists in the bibliography',
-			};
-			dispatch({ type: REPLACE_MESSAGE, kind: 'DUPLICATE', message });
-		}
-
-		if(state.isSentenceCaseStyle) {
-			bib.current.addItem(processSentenceCaseAPAItems([item])[0]);
-		} else {
-			bib.current.addItem(item);
-		}
-
-		if(showFirstCitationMessage && !localStorage.getItem('schroeder-cite-translated')) {
-			localStorage.setItem('schroeder-cite-translated', 'true');
-			displayFirstCitationMessage();
-		}
-
-		//TODO: optimise in bib
-		const itemCSL = bib.current.itemsCSL.find(icsl => icsl.id === item.key)
-
-		citeproc.current.insertReference(ensureNoBlankItems([itemCSL])[0]);
-		if(!state.styleHasBibliography) {
-			citeproc.current.insertCluster(({ id: itemCSL.id, cites: [ { id: itemCSL.id } ] }));
-			citeproc.current.setClusterOrder(bib.current.itemsRaw.map(item => ({ id: item.key })));
-		}
-	}, [displayFirstCitationMessage, state.isSentenceCaseStyle, state.styleHasBibliography]);
-
-	const deleteItem = useCallback(itemId => {
-		const item = bib.current.itemsRaw.find(item => item.key == itemId);
-		if(bib.current.removeItem(item)) {
-			citeproc.current.removeReference(itemId);
-
-			if(!state.styleHasBibliography) {
-				citeproc.current.removeCluster(itemId);
-				citeproc.current.setClusterOrder(bib.current.itemsRaw.map(item => ({ id: item.key })));
-			}
-		}
-	}, [state.styleHasBibliography]);
-
-	const displayFirstCitationMessage = useCallback(() => {
+	displayFirstCitationMessage() {
 		const message = {
 			action: 'Read More',
 			id: getNextMessageId(),
-			kind: 'FIRST_CITATION',
+			kind: 'success',
 			message: 'Your first citation has been added. Citations are stored locally in your browser.',
 			href: '/faq.html#where-is-my-bibliography-stored'
 		};
-		dispatch({ type: REPLACE_MESSAGE, kind: 'WELCOME_MESSAGE', message });
-	}, []);
+		this.setState({
+			messages: [...this.state.messages, message]
+		});
+	}
 
-	const displayWelcomeMessage = useCallback(() => {
+	displayNoResultsMessage() {
 		const message = {
-			action: 'Read More',
 			id: getNextMessageId(),
-			kind: 'WELCOME_MESSAGE',
-			message: 'ZoteroBib is a free service that helps you quickly create a bibliography in any citation style.',
+			kind: 'info',
+			message: 'No results found',
 		};
-		dispatch({ type: POST_MESSAGE, message });
-	}, []);
+		this.setState({
+			messages: [...this.state.messages, message]
+		});
+	}
 
-	const fetchRemoteBibliography = useCallback(async () => {
-		try {
-			const remoteData = await fetchFromPermalink(`${config.storeURL}/${remoteId}`);
-			if(remoteData && 'items' in remoteData) {
-				if(remoteData.citationStyle) {
-					await fetchAndSelectStyle(dispatch, remoteData.citationStyle, { isConfirmed: true });
+	async componentDidMount() {
+		const params = new URLSearchParams(location.search);
+		const citationStyles = [
+			...coreCitationStyles.map(cs => ({
+				...cs,
+				isDependent: 0,
+				parent: null,
+				isCore: true
+			})),
+			...(JSON.parse(localStorage.getItem('schroeder-cite-extra-citation-styles')) || [])
+		];
+		citationStyles.sort((a, b) => a.title.toUpperCase().localeCompare(b.title.toUpperCase()));
+		this.setState({ citationStyles, identifier: params.get('q') || '' });
+		document.addEventListener('copy', this.handleCopy, true);
+		document.addEventListener('visibilitychange', this.handleVisibilityChange);
+		document.addEventListener('scroll', this.handleScroll);
+		await this.handleIdChanged(this.props);
+		
+		// Google Analytics - register page view
+		ReactGA.pageview(window.location.pathname + window.location.search);
 
-					var citationStyleMeta = citationStyles.find(cs => cs.name === remoteData.citationStyle);
-					if(!citationStyleMeta) {
-						const stylesData = await retrieveStylesData(config.stylesURL);
-						const newStyleMeta = stylesData.find(sd => sd.name === remoteData.citationStyle);
-						setCitationStyles(getExpandedCitationStyles(citationStyles, newStyleMeta));
+		if(this.props.match.path === '/import') {
+			if(params.has('q')) {
+				this.handleTranslateIdentifier(params.get('q'), null, true);
+			}
+			this.props.history.replace('/');
+		}
+	}
+
+	async componentWillReceiveProps(props) {
+		if(this.props.match.params.id !== props.match.params.id) {
+			await this.handleIdChanged(props);
+		}
+	}
+
+	async componentDidUpdate(props, state) {
+		if((this.state.isReadOnly !== state.isReadOnly)
+			|| (this.state.citationStyle !== state.citationStyle)
+		) {
+			try {
+				const cslDataXmls = await retrieveStyle(this.state.citationStyle);
+				if(isSentenceCaseStyle(this.state.citationStyle, cslDataXmls) &&
+					this.state.isConfirmingStyleSwitch != state.isConfirmingStyleSwitch
+				) {
+					let processedItems = processSentenceCaseAPAItems(this.bib.itemsRaw);
+					for (let [index, item] of processedItems.entries()) {
+						this.bib.updateItem(index, item);
 					}
 				}
 
-				bib.current = new ZoteroBib({
-					...config,
-					initialItems: remoteData.items,
-					persist: false
+				await this.prepareCiteproc(
+					this.state.citationStyle,
+					this.state.isReadOnly ? this.bibRemote : this.bib,
+					this.state.isReadOnly
+				);
+				localStorage.setItem('schroeder-cite-citation-style', this.state.citationStyle);
+				this.setState({
+					isNoteStyle: isNoteStyle(cslDataXmls),
+					isNumericStyle: isNumericStyle(cslDataXmls),
+					isSentenceCaseStyle: isSentenceCaseStyle(this.state.citationStyle, cslDataXmls),
+					isUppercaseSubtitlesStyle: isUppercaseSubtitlesStyle(this.state.citationStyle, cslDataXmls),
+					bibliography: this.bibliography
 				});
-
-				setTitle(remoteData?.title ?? '');
-				setIsDataReady(true);
+			} catch(e) {
+				this.handleError('Failed to obtain selected citation style', e);
+				this.setState({
+					citationStyle: state.citationStyle
+				});
+			} finally {
+				this.setState({
+					isLoading: false,
+					isLoadingCitations: false
+				});
 			}
-		} catch(e) {
-			window.history.pushState(null, null, '/');
-			handleError('Failed to load citations by id', e);
-		}
-	}, [citationStyles, config, handleError, remoteId]);
-
-	const getCopyData = useCallback(async format => {
-		const { bibliographyItems, bibliographyMeta } = await getOneTimeBibliographyOrFallback(
-			bib.current.itemsCSL, state.xml, state.styleHasBibliography, useLegacy.current, { format }
-		);
-
-		if(bibliographyItems) {
-			const copyData = format === 'html' ?
-				state.styleHasBibliography ?
-					formatBib(bibliographyItems, bibliographyMeta) :
-					formatFallback(bibliographyItems) :
-				bibliographyItems.map(i => i.value).join('\n');
-
-
-			if(exportFormats[format].include) {
-				copyDataInclude.current = [
-				{
-					mime: exportFormats[format].mime,
-					data: copyData
-				},
-				{
-					mime: exportFormats[exportFormats[format].include].mime,
-					data: await getCopyData(exportFormats[format].include)
-				}];
-			}
-			return copyData;
 		}
 
-		return '';
-	}, [state.xml, state.styleHasBibliography]);
-
-	const handleDownloadFile = useCallback(async format => {
-		var fileContents, separator, bibStyle, preamble = '';
-
-		if(format === 'ris') {
-			try {
-				fileContents = await bib.current.exportItems('ris');
-			} catch(e) {
-				handleError(e.message);
-				return;
+		if(!this.state.isReadOnly && this.state.title !== state.title) {
+			if(this.state.title) {
+				localStorage.setItem('schroeder-cite-title', this.state.title);
+			} else {
+				localStorage.removeItem('schroeder-cite-title');
 			}
-		} else if(format === 'bibtex') {
-			try {
-				fileContents = await bib.current.exportItems('bibtex');
-			} catch(e) {
-				handleError(e.message);
-				return;
+		}
+
+		if(!this.state.isReadOnly &&
+			this.state.citationStyle !== state.citationStyle &&
+			this.state.isConfirmingStyleSwitch === state.isConfirmingStyleSwitch
+		) {
+			if(this.state.isSentenceCaseStyle) {
+				this.setState({
+					citationStyle: state.citationStyle,
+					unconfirmedCitationStyle: this.state.citationStyle,
+					isConfirmingStyleSwitch: true
+				});
 			}
-		} else {
-			const { bibliographyItems, bibliographyMeta } = await getOneTimeBibliographyOrFallback(
-				bib.current.itemsCSL, state.xml, state.styleHasBibliography, useLegacy.current, { format }
+		}
+
+		if(!arrayEquals(this.state.citationStyles, state.citationStyles)) {
+			//@TODO: store extra citation styles in local storage
+			localStorage.setItem(
+				'schroeder-cite-extra-citation-styles',
+				JSON.stringify(this.state.citationStyles.filter(cs => !cs.isCore))
 			);
-
-			if(format === 'rtf') {
-				bibStyle = getBibliographyFormatParameters(bibliographyMeta);
-				separator = '\\\r\n';
-				preamble = `${bibStyle.tabStops.length ? '\\tx' + bibStyle.tabStops.join(' \\tx') + ' ' : ''}\\li${bibStyle.indent} \\fi${bibStyle.firstLineIndent} \\sl${bibStyle.lineSpacing} \\slmult1 \\sa${bibStyle.entrySpacing} `;
-			}
-			fileContents = `{\\rtf ${bibliographyMeta?.formatMeta?.markupPre || ''}${preamble}${bibliographyItems.map(i => i.value).join(separator)}${bibliographyMeta?.formatMeta?.markupPost || ''}}`;
 		}
 
-		const fileName = `citations.${exportFormats[format].extension}`;
-		try {
-			const file = new File(
-				[fileContents],
-				fileName,
-				{ type: exportFormats[format].mime }
-			);
-			saveAs(file);
-		} catch(_) {
-			// Old Edge & Safari, see #237
-			const blob = new Blob([fileContents], { type: exportFormats[format].mime });
-			saveAs(blob, fileName);
+		if(this.state.itemUnderReview &&
+			!deepEqual(this.state.itemUnderReview, state.itemUnderReview)) {
+				const reviewBib = new ZoteroBib({
+					...this.state.config,
+					persist: false,
+					initialItems: [this.state.itemUnderReview]
+				});
+				const reviewCiteproc = await getCiteproc(this.state.citationStyle, reviewBib);
+				reviewCiteproc.opt.development_extensions.wrap_url_and_doi = false;
+				reviewCiteproc.updateItems([this.state.itemUnderReview.key]);
+				const itemUnderReviewBibliography = getBibliographyOrFallback(reviewBib, reviewCiteproc);
+				this.setState({ itemUnderReviewBibliography });
+		} else if(this.state.itemUnderReviewBibliography && !this.state.itemUnderReview) {
+			this.setState({ itemUnderReviewBibliography: null });
 		}
-	}, [handleError, state.xml, state.styleHasBibliography]);
 
-	const handleError = useCallback((errorMessage, errorData) => {
-		const message = {
-			id: getNextMessageId(),
-			kind: 'ERROR',
-			message: errorMessage,
-		};
-		dispatch({ type: POST_MESSAGE, message });
-		if(errorData) {
-			console.error(errorData); //eslint-disable-line no-console
+		if(this.state.citationToCopy && this.state.isCitationCopyDialogOpen && !state.isCitationCopyDialogOpen) {
+			// @TODO: ideally getCitation this would be handled by a Worker however
+			// 		  it's impossible to make a structured clone of citeproc
+
+			// for large libraries (above 50 items) add 50ms timeout in order to ensure that
+			// browser will render spinner first, before blocking main thread with getCitation()
+			const timeout = this.bib.itemsRaw.length > 50 ? 50 : 0;
+			setTimeout(() => {
+				this.setState({
+					citationHtml: getCitation(
+						this.bib,
+						this.state.citationToCopy,
+						null,
+						['html'],
+						this.citeproc
+					).html,
+				});
+			}, timeout);
 		}
-	}, []);
+	}
 
-	const handleCitationStyleChanged = useCallback(async newCitationStyle => {
-		dispatch({ type: CLEAR_ALL_MESSAGES });
-		setItemUnderReview(null);
-		if(newCitationStyle === 'install') {
-			setActiveDialog('STYLE_INSTALLER');
-			setIsStylesDataLoading(true);
-			try {
-				setStylesData(await retrieveStylesData(config.stylesURL));
-				setIsStylesDataLoading(false);
-			} catch(e) {
-				handleError(e.message, e);
-				setActiveDialog(null);
-				setIsStylesDataLoading(false);
-			}
-		} else {
-			fetchAndSelectStyle(dispatch, newCitationStyle);
-			localStorage.setItem('schroeder-cite-citation-style', newCitationStyle);
-		}
-	}, [config.stylesURL, handleError]);
+	componentWillUnmount() {
+		document.removeEventListener('copy', this.handleCopy, true);
+		document.removeEventListener('visibilityChange', this.handleVisibilityChange);
+		document.removeEventListener('scroll', this.handleScroll);
+	}
 
-	const handleCitationCopyDialogOpen = useCallback(itemId => {
-		dispatch({ type: CLEAR_ALL_MESSAGES });
-		setItemUnderReview(null);
-		setActiveDialog('COPY_CITATION');
-		setCitationToCopy(itemId);
-	}, []);
-
-	const handleCitationCopyDialogClose = useCallback(() => {
-		setActiveDialog(null);
-		setCitationToCopy(null);
-		setCitationHtml(null);
-		setCitationCopyModifiers({});
-	}, []);
-
-	const handleCitationCopy = useCallback(() => {
-		const cites = [ {id: citationToCopy, ...citationCopyModifiers }];
-		const positions = [{ }];
-		const text = citeproc.current.previewCitationCluster(cites, positions, 'plain');
-		const html = citationHtml;
-		copyData.current = [
-			{ mime: 'text/plain', data: text },
-			{ mime: 'text/html', data: html },
-		];
-		return copy(text);
-	}, [citationCopyModifiers, citationHtml, citationToCopy]);
-
-	const handleCopyToClipboard = useCallback(ev => {
-		if(copyDataInclude.current) {
-			copyDataInclude.current.forEach(copyDataFormat => {
+	handleCopy(ev) {
+		if(this.copyDataInclude) {
+			this.copyDataInclude.forEach(copyDataFormat => {
 				ev.clipboardData.setData(copyDataFormat.mime, copyDataFormat.data);
 			});
 			ev.preventDefault();
-			copyDataInclude.current = null;
+			delete this.copyDataInclude;
 		}
-	}, []);
+	}
 
-	const handleCitationModifierChange = useCallback(citationCopyModifiers => {
-		setCitationCopyModifiers(citationCopyModifiers);
-	}, []);
+	async handleVisibilityChange() {
+		if(!this.state.isReadOnly && document.visibilityState === 'visible') {
+			this.bib.reloadItems();
+			this.setState({
+				bibliography: this.bibliography,
+				items: this.bib.items,
+			});
+		}
+	}
 
-	const handleConfirmAddCancel = useCallback(() => {
-		setActiveDialog(null);
-		setItemToConfirm(null);
-	}, []);
+	async handleIdChanged(props) {
+		let isReadOnly = !!props.match.params.id;
+		let citationStyle = this.state.citationStyle;
+		let title = this.state.title;
 
-	const handleConfirmAddConfirm = useCallback(async () => {
-		addItem(itemToConfirm.item);
-		setItemUnderReview({
-			item: itemToConfirm.item,
-			...(await getOneTimeBibliographyOrFallback(
-				getItemsCSL([itemToConfirm.item]), state.xml, state.styleHasBibliography, useLegacy.current
-			))
+		this.setState({
+			isReadOnly: undefined,
+			isLoading: true
 		});
-		setActiveDialog(null);
-		setItemToConfirm(null);
-		dispatch({ type: BIBLIOGRAPHY_SOURCE_CHANGED });
-	}, [addItem, state.xml, itemToConfirm, state.styleHasBibliography]);
 
-	const handleDeleteEntry = useCallback((itemId) => {
-		const item = bib.current.itemsRaw.find(item => item.key == itemId);
-		lastDeletedItem.current = item;
-		setItemUnderReview(null);
-		deleteItem(itemId);
-		dispatch({ type: BIBLIOGRAPHY_SOURCE_CHANGED });
-		const message = {
-			id: getNextMessageId(),
-			action: 'Undo',
-			kind: 'UNDO_DELETE',
-			message: 'Item Deleted',
-		};
-		dispatch({ type: REPLACE_MESSAGE, kind: 'UNDO_DELETE', message });
-	}, [deleteItem]);
+		if(props.match.params.id) {
+			try {
+				const id = props.match.params.id;
+				const remoteData = await fetchFromPermalink(`${props.config.storeURL}/${id}`);
+				if(remoteData && 'items' in remoteData) {
+					citationStyle = remoteData.citationStyle || citationStyle;
+					title = 'title' in remoteData && remoteData.title || null;
+					var citationStyleMeta = this.state.citationStyles.find(cs => cs.name === citationStyle);
+					if(!citationStyleMeta) {
+						const stylesData = await retrieveStylesData(this.state.config.stylesURL);
+						citationStyleMeta = stylesData.find(sd => sd.name === citationStyle);
+						this.setState({
+							citationStyles: this.getExpandedCitationStyles(citationStyleMeta)
+						});
+					}
 
-	const handleDeleteCitations = useCallback(() => {
-		bib.current.clearItems();
-		citeproc.current.resetReferences([]);
-		if(!state.styleHasBibliography) {
-			citeproc.current.initClusters([]);
-		}
-		dispatch({ type: CLEAR_ALL_MESSAGES });
-		setItemUnderReview(null);
-		setTitle('');
-		dispatch({ type: BIBLIOGRAPHY_SOURCE_CHANGED });
-	}, [state.styleHasBibliography]);
-
-	const handleDismiss = useCallback(id => {
-		const message = state.messages.find(m => m.id === id);
-		if(message) {
-			if(message.kind === 'UNDO_DELETE') {
-				lastDeletedItem.current = null;
+					this.bibRemote = new ZoteroBib({
+						...this.state.config,
+						initialItems: remoteData.items,
+						persist: false
+					});
+				}
+			} catch(e) {
+				props.history.push('/');
+				this.handleError('Failed to load citations by id', e);
 			}
-			dispatch({ type: CLEAR_MESSAGE, id });
 		}
-	}, [state.messages]);
 
-	const handleGetStartedClick = useCallback(ev => {
-		const target = document.querySelector('.schroeder-cite-container');
-		(new SmoothScroll()).animateScroll(target, ev.currentTarget, { speed: 1000, speedAsDuration: true });
-		document.querySelector('.id-input').focus();
-	}, []);
+		this.bib = new ZoteroBib({ ...this.state.config });
 
-	const handleHelpClick = useCallback(ev => {
-		const target = document.querySelector('.zbib-illustration');
-		(new SmoothScroll()).animateScroll(target, ev.currentTarget, { speed: 1000, speedAsDuration: true, offset: calcOffset() });
-	}, []);
+		await this.prepareCiteproc(
+			citationStyle,
+			isReadOnly ? this.bibRemote : this.bib,
+			isReadOnly
+		);
 
-	const handleItemCreated = useCallback((item) => {
-		addItem(item, false);
-		setEditorItem({ ...item });
-		dispatch({ type: BIBLIOGRAPHY_SOURCE_CHANGED });
-	}, [addItem]);
+		this.setState({
+			isReadOnly,
+			citationStyle,
+			title,
+			localCitationsCount: this.bib.itemsRaw.length,
+			items: isReadOnly ? this.bibRemote.itemsRaw : this.bib.itemsRaw,
+			isLoading: false,
+		});
 
-	const handleItemUpdate = useCallback(async (itemKey, patch) => {
-		const index = bib.current.itemsRaw.findIndex(item => item.key === itemKey);
+		if(!isReadOnly && !localStorage.getItem('schroeder-cite-visited')) {
+			localStorage.setItem('schroeder-cite-visited', 'true');		
+			//Disable Welcome Message
+			//this.displayWelcomeMessage();
+		}
+	}
+
+	async handleSave() {
+		let permalink = null;
+		this.setState({ isSaving: true });
+		try {
+			const key = await saveToPermalink(this.state.config.storeURL, {
+				title: this.state.title,
+				citationStyle: this.state.citationStyle,
+				items: this.bib.itemsRaw
+			});
+			permalink = `${window.location.origin}/${key}`;
+		} catch(e) {
+			this.props.history.push('/');
+			this.handleError('Failed to upload bibliography', e);
+		}
+		this.setState({ permalink });
+	}
+
+	handleDeleteCitations() {
+		this.bib.clearItems();
+		this.clearMessages();
+		this.setState({
+			bibliography: this.bibliography,
+			items: this.bib.itemsRaw,
+			itemUnderReview: null,
+			permalink: null,
+			title: null,
+		});
+	}
+
+	handleItemCreated(item) {
+		this.bib.addItem(item);
+		this.setState({
+			bibliography: this.bibliography,
+			editorItem: this.bib.itemsRaw.find(i => i.key === item.key),
+			items: this.bib.itemsRaw,
+			permalink: null,
+		});
+	}
+
+	handleOpenEditor(itemId = null) {
+		if(this.state.itemUnderReview && itemId && itemId != this.state.itemUnderReview.key) {
+			this.setState({
+				itemUnderReview: null,
+			});
+		}
+
+		this.clearMessages();
+		this.setState({
+			isEditorOpen: true,
+			editorItem: this.bib.itemsRaw.find(i => i.key === itemId)
+		});
+	}
+
+	handleCloseEditor(hasCreatedItem = false) {
+		this.setState({
+			isEditorOpen: false,
+			editorItem: null
+		});
+		if(hasCreatedItem) {
+			if(!localStorage.getItem('schroeder-cite-translated')) {
+				localStorage.setItem('schroeder-cite-translated', 'true');
+				//this.displayFirstCitationMessage();
+			}
+		}
+	}
+
+	handleDeleteEntry(itemId) {
+		this.setState({
+			itemUnderReview: null,
+			permalink: null,
+		});
+		const item = this.bib.itemsRaw.find(item => item.key == itemId);
+		if(this.bib.removeItem(item)) {
+			const message = {
+				id: getNextMessageId(),
+				action: 'Undo',
+				isUndoMessage: true,
+				kind: 'warning',
+				message: 'Item Deleted',
+				onAction: this.handleUndoDelete.bind(this),
+				onDismiss: this.handleDismissUndo.bind(this),
+			};
+			this.setState({
+				bibliography: this.bibliography,
+				items: this.bib.itemsRaw,
+				lastDeletedItem: { ...item },
+				messages: [
+					...this.state.messages.filter(m => !m.isUndoMessage),
+					message
+				]
+			});
+		}
+	}
+
+	handleUndoDelete() {
+		if(this.state.lastDeletedItem) {
+			this.handleItemCreated(this.state.lastDeletedItem);
+			this.handleClearMessage(this.state.messages.find(m => m.isUndoMessage));
+			this.setState({
+				permalink: null,
+				lastDeletedItem: null
+			});
+		}
+	}
+
+	handleDismissUndo() {
+		this.handleClearMessage(this.state.messages.find(m => m.isUndoMessage));
+		this.setState({ lastDeletedItem: null });
+
+	}
+
+	async handleCitationStyleChanged(citationStyle) {
+		if(citationStyle === this.state.citationStyle) {
+			return;
+		}
+		this.clearMessages();
+		this.setState({
+			itemUnderReview: null
+		});
+		if(citationStyle === 'install') {
+			this.setState({
+				isStylesDataLoading: true,
+				isInstallingStyle: true
+			});
+			try {
+				const stylesData = await retrieveStylesData(this.state.config.stylesURL);
+				this.setState({
+					isStylesDataLoading: false,
+					stylesData
+				});
+			} catch(e) {
+				this.handleError(e.message, e);
+				this.setState({
+					isStylesDataLoading: false,
+					isInstallingStyle: false
+				});
+			}
+		} else {
+			this.setState({
+				isLoadingCitations: true,
+				citationStyle
+			});
+		}
+	}
+
+	async handleItemUpdate(itemKey, patch) {
+		const index = this.bib.itemsRaw.findIndex(item => item.key === itemKey);
 
 		let updatedItem = {
-			...bib.current.itemsRaw[index],
+			...this.bib.itemsRaw[index],
 			...patch
 		};
 
 		try {
 			await validateItem(updatedItem);
 		} catch(e) {
-			handleError('Failed to obtain metadata. Please check your connection and try again.', e);
+			this.handleError('Failed to obtain metadata. Please check your connection and try again.', e);
 			return;
 		}
 
-		if(state.isSentenceCaseStyle) {
+		if(isSentenceCaseStyle(this.state.citationStyle)) {
 			const itemsMetaData = JSON.parse(localStorage.getItem('schroeder-cite-items-metadata')) || {};
 
 			if(!(itemKey in itemsMetaData)) {
@@ -663,601 +540,686 @@ const BibWebContainer = props => {
 			];
 			localStorage.setItem('schroeder-cite-items-metadata', JSON.stringify(itemsMetaData));
 		}
-		bib.current.updateItem(index, updatedItem);
-		setEditorItem({ ...updatedItem });
-
-		citeproc.current.resetReferences(ensureNoBlankItems(bib.current.itemsCSL));
-		dispatch({ type: BIBLIOGRAPHY_SOURCE_CHANGED });
-
+		this.bib.updateItem(index, updatedItem);
+		this.setState({
+			bibliography: this.bibliography,
+			items: this.bib.itemsRaw,
+			editorItem: updatedItem
+		});
 		// if edited item is itemUnderReview, update it as well
-		if(itemUnderReview && itemUnderReview.key === itemKey) {
-			setItemUnderReview(updatedItem);
+		if(this.state.itemUnderReview && this.state.itemUnderReview.key === itemKey) {
+			this.setState({ itemUnderReview: updatedItem });
 		}
-	}, [handleError, itemUnderReview, state.isSentenceCaseStyle]);
+	}
 
-	const handleMultipleChoiceCancel = useCallback(() => {
-		setActiveDialog(null);
-		setMultipleChoiceItems(null);
-	}, []);
+	async handleTranslateIdentifier(identifier, multipleSelectedItems = null, shouldConfirm = false) {
+		identifier = parseIdentifier(identifier);
 
-	const handleMultipleChoiceMore = useCallback(async () => {
-		setIsTranslatingMore(true);
-		try {
-			let { result, items, next } = await bib.current.translateIdentifier(identifier, {
-				endpoint: moreItemsLink,
-				add: false
-			});
-
-			switch(result) {
-				case ZoteroBib.COMPLETE:
-				case ZoteroBib.MULTIPLE_CHOICES:
-					setIsTranslatingMore(false);
-					setActiveDialog('MULTIPLE_CHOICE_DIALOG');
-					setMoreItemsLink(next);
-					setMultipleChoiceItems(dedupMultipleChoiceItems([
-						...multipleChoiceItems,
-						...(await processMultipleChoiceItems(items))
-					]));
-				break;
-				case ZoteroBib.FAILED:
-					handleError('An error occurred while fetching more items.');
-					setIsTranslatingMore(false);
-				break;
-			}
-		} catch(e) {
-			handleError('An error occurred while fetching more items.', e);
-			setIsTranslatingMore(false);
-		}
-	}, [handleError, identifier, moreItemsLink, multipleChoiceItems]);
-
-	const handleMultipleItemsCancel = useCallback(() => {
-		setActiveDialog(null);
-		setMultipleItems(null);
-	}, []);
-
-	const handleMultipleItemsSelect = useCallback(async keys => {
-		const items = multipleItems.items.filter(i => keys.includes(i.key));
-		items.forEach(i => addItem(i));
-		setActiveDialog(null);
-		setMultipleItems(null);
-		setItemUnderReview(null);
-		dispatch({ type: BIBLIOGRAPHY_SOURCE_CHANGED });
-	}, [addItem, multipleItems]);
-
-	const handleOpenEditor = useCallback((itemId = null) => {
-		if(itemUnderReview && itemId && itemId != itemUnderReview.key) {
-			setItemUnderReview(null);
-		}
-
-		dispatch({ type: CLEAR_ALL_MESSAGES });
-		setEditorItem({ ...(bib.current.itemsRaw.find(i => i.key === itemId) || defaultItem) });
-		setActiveDialog('EDITOR');
-	}, [itemUnderReview]);
-
-
-	const handleCloseEditor = useCallback((hasCreatedItem = false) => {
-		setEditorItem(null);
-		setActiveDialog(null);
-
-		if(hasCreatedItem) {
-			if(!localStorage.getItem('schroeder-cite-translated')) {
-				localStorage.setItem('schroeder-cite-translated', 'true');
-				displayFirstCitationMessage();
-			}
-		}
-	}, [displayFirstCitationMessage]);
-
-	const handleOverride = useCallback(() => {
-		const localBib = new ZoteroBib(config);
-		localBib.clearItems();
-
-		bib.current = new ZoteroBib({
-			...config,
-			initialItems: bib.current.itemsRaw
+		this.clearMessages();
+		this.setState({
+			identifier,
+			isTranslating: true,
+			itemUnderReview: null,
+			messages: []
 		});
 
-		localStorage.setItem('schroeder-cite-citation-style', state.selected);
-		localStorage.setItem('schroeder-cite-extra-citation-styles', JSON.stringify(citationStyles.filter(cs => !cs.isCore)));
-		localStorage.setItem('schroeder-cite-title', title);
-
-		isHydrated.current = false;
-
-		citeproc.current.recreateEngine({ formatOptions: { linkAnchors: false } });
-		history.replaceState(null, null, '/');
-		dispatch({ type: BIBLIOGRAPHY_SOURCE_REPLACED });
-	}, [state.selected, citationStyles, config, title]);
-
-	const handleCancelPrintMode = useCallback(() => {
-		setIsPrintMode(false);
-	}, []);
-
-	const handleReadMoreClick = useCallback(event => {
-		const target = document.querySelector('.zbib-illustration');
-		(new SmoothScroll()).animateScroll(target, event.currentTarget, {
-			header: '.message',
-			offset: calcOffset(),
-			speed: 1000, speedAsDuration: true,
-		});
-		dispatch({ type: CLEAR_MESSAGE, kind: 'WELCOME_MESSAGE' });
-	}, []);
-
-	const handleShowDuplicate = useCallback(event => {
-		if(duplicate.current) {
-			setActiveDialog(null);
-			const target = document.querySelector(`[data-key="${duplicate.current.key}"]`);
-			(new SmoothScroll()).animateScroll(target, event.currentTarget, {
-				header: '.message',
-				offset: calcOffset(),
-				speed: 1000, speedAsDuration: true,
-			});
-			duplicate.current = null;
-		}
-		dispatch({ type: CLEAR_MESSAGE, kind: 'DUPLICATE' });
-	}, []);
-
-	const handleStyleInstallerCancel = () => {
-		setActiveDialog(null);
-	};
-
-	const handleReviewDelete = useCallback(() => {
-		handleDeleteEntry(itemUnderReview.item.key);
-	}, [handleDeleteEntry, itemUnderReview]);
-
-	const handleReviewDismiss = useCallback(() => {
-		setItemUnderReview(null);
-	}, []);
-
-	const handleReviewEdit = useCallback(() => {
-		handleOpenEditor(itemUnderReview.item.key);
-	}, [handleOpenEditor, itemUnderReview]);
-
-	const handleSave = useCallback(async () => {
-		try {
-			const key = await saveToPermalink(config.storeURL, {
-				title: title,
-				citationStyle: state.selected,
-				items: bib.current.itemsRaw
-			});
-			setPermalink(`${window.location.origin}/${key}`);
-		} catch(e) {
-			setPermalink(null);
-			window.history.pushState(null, null, '/')
-			handleError('Failed to upload bibliography', e);
-		}
-	}, [state.selected, config, handleError, title]);
-
-	const handleScroll = useCallback(() => {
-		if(!state.messages.find(m => m.kind === 'WELCOME_MESSAGE')) {
-			return;
-		}
-		const target = document.querySelector('.zbib-illustration');
-		const isScrolledToIllustration = window.pageYOffset > target.offsetTop;
-		if(isScrolledToIllustration) {
-			dispatch({ type: CLEAR_MESSAGE, kind: 'WELCOME_MESSAGE '});
-		}
-	}, [state.messages]);
-
-	const handleKeyDown = useCallback(ev => {
-		if(ev.key === 'Escape' && ev.target.tagName !== 'INPUT') {
-			dispatch({ type: CLEAR_ALL_MESSAGES });
-		}
-	}, []);
-
-	const handleStyleInstallerDelete = useCallback(deleteStyleName => {
-		const newCitationStyles = citationStyles.filter(cs => cs.name !== deleteStyleName);
-		setCitationStyles(newCitationStyles);
-		localStorage.setItem(
-			'schroeder-cite-extra-citation-styles',
-			JSON.stringify(newCitationStyles.filter(cs => !cs.isCore))
-		);
-	}, [citationStyles]);
-
-	const handleStyleInstallerSelect = useCallback((newStyleMeta) => {
-		const newCitationStyles = getExpandedCitationStyles(citationStyles, newStyleMeta);
-		setCitationStyles(newCitationStyles);
-
-		fetchAndSelectStyle(dispatch, newStyleMeta.name);
-		localStorage.setItem(
-			'schroeder-cite-extra-citation-styles',
-			JSON.stringify(newCitationStyles.filter(cs => !cs.isCore))
-		);
-		localStorage.setItem('schroeder-cite-citation-style', newStyleMeta.name);
-	}, [citationStyles]);
-
-	const handleStyleSwitchConfirm = useCallback(() => {
-		confirmStyle(dispatch);
-		setActiveDialog(null);
-		revertCitationStyle.current = null;
-	}, []);
-
-	const handleStyleSwitchCancel = useCallback(() => {
-		if(revertCitationStyle.current) {
-			fetchAndSelectStyle(dispatch, revertCitationStyle.current, { isConfirmed: true });
-			localStorage.setItem('schroeder-cite-citation-style', revertCitationStyle.current);
-		}
-		setActiveDialog(null);
-		revertCitationStyle.current = null;
-	}, []);
-
-	const handleTitleChange = useCallback(title => {
-		dispatch({ type: CLEAR_ALL_MESSAGES });
-		setItemUnderReview(null);
-		setPermalink(null);
-		setTitle(title);
-	}, []);
-
-	const handleTranslateIdentifier = useCallback(async (identifier, multipleSelectedItems = null, shouldConfirm = false, shouldImport = false) => {
-		if(!shouldImport) {
-			identifier = parseIdentifier(identifier);
-		}
-
-		dispatch({ type: CLEAR_ALL_MESSAGES });
-		setIdentifier(identifier);
-		setIsTranslating(true);
-		setItemUnderReview(null);
-		setPermalink(null);
-
-		const opts = { add: false };
-
-		if(typeof(AbortController) === 'function') {
-			abortController.current = new AbortController();
-			opts.init = { signal: abortController.current.signal };
-		}
-
-		let isUrl = !!multipleSelectedItems || (!shouldImport && isLikeUrl(identifier));
+		let isUrl = !!multipleSelectedItems || isLikeUrl(identifier);
 		if(identifier || isUrl) {
 			try {
 				var translationResponse;
 				if(isUrl) {
 					let url = validateUrl(identifier);
 					if(url) {
-						setIdentifier(url);
+						this.setState({ identifier: url });
 					}
 					if(multipleSelectedItems) {
-						translationResponse = await bib.current.translateUrlItems(url, multipleSelectedItems, opts);
+						translationResponse = await this.bib.translateUrlItems(url, multipleSelectedItems, { add: false });
 					} else {
-						translationResponse = await bib.current.translateUrl(url, opts);
+						translationResponse = await this.bib.translateUrl(url, { add: false });
 					}
-				} else if(shouldImport) {
-					translationResponse = await bib.current.translateImport(identifier, opts);
 				} else {
-					translationResponse = await bib.current.translateIdentifier(identifier, opts);
+					translationResponse = await this.bib.translateIdentifier(identifier, { add: false });
 				}
 
 				switch(translationResponse.result) {
 					case ZoteroBib.COMPLETE:
 						if(translationResponse.items.length === 0) {
-							dispatch({
-								type: POST_MESSAGE,
-								message: { id: getNextMessageId(), kind: 'INFO', message: 'No results found', }
-							});
-							setIsTranslating(false);
+							this.displayNoResultsMessage();
+							this.setState({ isTranslating: false });
 							return;
 						}
 						var rootItems = translationResponse.items.filter(item => !item.parentItem);
 
 						if(rootItems.length > 1) {
-							const multipleItems = {
-								items: rootItems,
-							...(await getOneTimeBibliographyOrFallback(
-									getItemsCSL(rootItems), state.xml, state.styleHasBibliography, useLegacy.current
-								))
-							};
+							const reviewBib = new ZoteroBib({
+								...this.state.config,
+								persist: false,
+								initialItems: rootItems
+							});
 
-							setIdentifier('');
-							setIsTranslating(false);
-							setActiveDialog('MULTIPLE_ITEMS_DIALOG');
-							setMultipleItems(multipleItems);
+							const reviewCiteproc = await getCiteproc(this.state.citationStyle, reviewBib);
+							reviewCiteproc.opt.development_extensions.wrap_url_and_doi = false;
+							reviewCiteproc.updateItems([translationResponse.items[0].key]);
+							const multipleItems = getBibliographyOrFallback(reviewBib, reviewCiteproc);
+
+							this.setState({
+								identifier: '',
+								isTranslating: false,
+								isAddingMultiple: true,
+								permalink: null,
+								multipleItems
+							});
 							return;
 						}
 
 						if(shouldConfirm) {
-							const itemToConfirm = {
-								item: translationResponse.items[0],
-								...(await getOneTimeBibliographyOrFallback(
-								getItemsCSL([translationResponse.items[0]]), state.xml, state.styleHasBibliography, useLegacy.current
-								))
-							};
+							const reviewBib = new ZoteroBib({
+								...this.state.config,
+								persist: false,
+								initialItems: [translationResponse.items[0]]
+							});
 
-							setIdentifier('');
-							setIsTranslating(false);
-							setActiveDialog('CONFIRM_ADD_DIALOG');
-							setItemToConfirm(itemToConfirm);
+							const reviewCiteproc = await getCiteproc(this.state.citationStyle, reviewBib);
+							reviewCiteproc.opt.development_extensions.wrap_url_and_doi = false;
+							reviewCiteproc.updateItems([translationResponse.items[0].key]);
+							const itemToConfirm = getBibliographyOrFallback(reviewBib, reviewCiteproc);
+
+							this.setState({
+								identifier: '',
+								isTranslating: false,
+								isConfirmingAdd: true,
+								permalink: null,
+								itemToConfirm
+							});
 							return;
+						} else {
+							this.addItem(translationResponse.items[0]);
 						}
 
-						addItem(translationResponse.items[0]);
-						setIdentifier('');
-						setIsTranslating(false);
-						dispatch({ type: BIBLIOGRAPHY_SOURCE_CHANGED });
-						setItemUnderReview({
-							item: translationResponse.items[0],
-							...(await getOneTimeBibliographyOrFallback(
-							getItemsCSL([translationResponse.items[0]]), state.xml, state.styleHasBibliography, useLegacy.current
-							))
+						this.setState({
+							identifier: '',
+							isTranslating: false,
+							bibliography: this.bibliography,
+							items: this.bib.itemsRaw,
+							itemUnderReview: translationResponse.items[0],
+							permalink: null,
 						});
-
 					break;
 					case ZoteroBib.MULTIPLE_CHOICES:
-						setIsTranslating(false);
-						setActiveDialog('MULTIPLE_CHOICE_DIALOG');
-						setMoreItemsLink(translationResponse.next);
-						setMultipleChoiceItems(dedupMultipleChoiceItems(
-							await processMultipleChoiceItems(translationResponse.items, isUrl)
-						));
+						this.setState({
+							isTranslating: false,
+							isPickingItem: true,
+							moreItemsLink: 'next' in translationResponse.links ? translationResponse.links.next : null,
+							multipleChoiceItems: dedupMultipleChoiceItems(
+								await processMultipleChoiceItems(translationResponse.items, isUrl)
+							)
+						});
 					break;
 					case ZoteroBib.FAILED:
-						handleError('Not Found. Query returned nothing useful. Maybe try a different identifier.');
-						setIsTranslating(false);
+						this.handleError('Not Found. Query returned nothing useful. Maybe try a different identifier.');
+						this.setState({ isTranslating: false });
 					break;
 				}
 			}
 			catch(e) {
-				if(e instanceof DOMException && e.message === 'The user aborted a request.') {
-					return;
-				}
-				handleError('Not Found. Query returned nothing useful. Maybe try a different identifier.', e);
-				setIsTranslating(false);
+				this.handleError('Not Found. Query returned nothing useful. Maybe try a different identifier.', e);
+				this.setState({ isTranslating: false });
 			}
 		} else {
-			handleError('Query doesn’t appear to be a valid URL or identifier.');
-			setIsTranslating(false);
+			this.handleError('Query doesn’t appear to be a valid URL or identifier');
+			this.setState({ isTranslating: false });
 		}
-	}, [addItem, state.xml, handleError, state.styleHasBibliography]);
+	}
 
-	const handleTranslationCancel = useCallback(() => {
-		if(abortController.current) {
-			abortController.current.abort();
-			setIsTranslating(false);
+	handleOverride() {
+		this.bib.clearItems();
+		this.bib = this.bibRemote;
+		this.bib.setItemsStorage(this.bib.itemsRaw);
+		delete this.bibRemote;
+		this.props.history.replace('/');
+		this.setState({ isReadOnly: false });
+	}
+
+	handleError(errorMessage, errorData = null) {
+		const message = {
+			id: getNextMessageId(),
+			kind: 'error',
+			message: errorMessage,
+		};
+		this.setState({
+			messages: [...this.state.messages, message]
+		});
+		if(errorData) {
+			console.error(errorData); //eslint-disable-line no-console
 		}
-	}, []);
+	}
 
-	const handleMultipleChoiceSelect = useCallback(async selectedItem => {
-		setActiveDialog(null);
-		setMultipleChoiceItems(null);
+	handleClearMessage(message) {
+		message = typeof message === 'number' ?
+			this.state.messages.find(m => m.id === message) :
+			message;
+		this.setState({ messages: this.state.messages.filter(msg => msg != message) });
+	}
 
+	handleMultipleChoiceCancel() {
+		this.setState({
+			isPickingItem: false,
+			multipleChoiceItems: []
+		});
+	}
+
+	async handleMultipleChoiceSelect(selectedItem) {
+		this.setState({
+			isPickingItem: false,
+			multipleChoiceItems: []
+		});
 		if(selectedItem.source === 'url') {
-			return await handleTranslateIdentifier(identifier,
+			return await this.handleTranslateIdentifier(
+				this.state.identifier,
 				{ [selectedItem.key]: selectedItem.value.title }
 			);
 		} else {
-			return await handleTranslateIdentifier(selectedItem.key);
+			return await this.handleTranslateIdentifier(selectedItem.key);
 		}
-	}, [handleTranslateIdentifier, identifier]);
+	}
 
-	const handleUndoDelete = useCallback(() => {
-		if(lastDeletedItem.current) {
-			addItem(lastDeletedItem.current);
-			dispatch({ type: BIBLIOGRAPHY_SOURCE_CHANGED });
-			dispatch({ type: CLEAR_MESSAGE, kind: 'UNDO_DELETE' });
-			lastDeletedItem.current = null;
-		}
-	}, [addItem]);
-
-	const handleVisibilityChange = useCallback(() => {
-		if(!isReadOnly && document.visibilityState === 'visible') {
-			const storageCitationStyle = localStorage.getItem('schroeder-cite-citation-style');
-			bib.current.reloadItems();
-			citeproc.current.resetReferences(ensureNoBlankItems(bib.current.itemsCSL));
-			if(!storageCitationStyle || storageCitationStyle === state.selected) {
-				dispatch({ type: BIBLIOGRAPHY_SOURCE_CHANGED });
-			} else {
-				fetchAndSelectStyle(dispatch, storageCitationStyle);
+	async handleMultipleChoiceMore() {
+		this.setState({
+			isTranslatingMore: true
+		});
+		try {
+			let { result, items, links } = await this.bib.translateIdentifier(
+				this.state.identifier, {
+					endpoint: this.state.moreItemsLink.url,
+					add: false
+			});
+			switch(result) {
+				case ZoteroBib.COMPLETE:
+				case ZoteroBib.MULTIPLE_ITEMS:
+					this.setState({
+						isTranslatingMore: false,
+						isPickingItem: true,
+						moreItemsLink: 'next' in links ? links.next : null,
+						multipleChoiceItems: dedupMultipleChoiceItems([
+							...this.state.multipleChoiceItems,
+							...(await processMultipleChoiceItems(items))
+						])
+					});
+				break;
+				case ZoteroBib.FAILED:
+					this.handleError('An error occurred while fetching more items.');
+					this.setState({ isTranslatingMore: false });
+				break;
 			}
+		} catch(e) {
+			this.handleError('An error occurred while fetching more items.', e);
+			this.setState({ isTranslatingMore: false });
 		}
-	}, [state.selected, isReadOnly]);
+	}
 
-	const handleBeforePrint = useCallback(() => {
-		setIsPrintMode(true);
-	}, []);
+	handleMutipleItemsCancel() {
+		this.setState({
+			isAddingMultiple: false,
+			multipleItems: {}
+		});
+	}
 
-	const handleAfterPrint = useCallback(() => {
-		setIsPrintMode(false);
-	}, []);
+	handleMutipleItemsSelect(key) {
+		const item = this.state.multipleItems.items.find(i => i.key === key);
+		this.addItem(item);
+		this.setState({
+			bibliography: this.bibliography,
+			isAddingMultiple: false,
+			items: this.bib.itemsRaw,
+			multipleItems: null,
+			itemUnderReview: item,
+		});
+	}
 
-	const handleSaveToZoteroShow = useCallback(() => {
-		setActiveDialog('SAVE_TO_ZOTERO');
-	}, []);
+	handleStyleInstallerCancel() {
+		this.setState({
+			isInstallingStyle: false
+		});
+	}
 
-	const handleSaveToZoteroHide = useCallback(() => {
-		setActiveDialog(null);
-	}, []);
+	handleStyleInstallerSelect(styleMeta) {
+		this.handleStyleInstallerInstall(styleMeta);
+		this.handleCitationStyleChanged(styleMeta.name);
+	}
 
-	useEffect(() => {
-		if(!state.isCiteprocReady || !citationToCopy) {
+	handleStyleInstallerInstall(styleMeta) {
+		this.setState({
+			citationStyles: this.getExpandedCitationStyles(styleMeta)
+		});
+	}
+
+	handleStyleInstallerDelete(styleMeta) {
+		this.setState({
+			citationStyles: this.state.citationStyles.filter(cs => cs.name !== styleMeta.name )
+		});
+	}
+
+	handleStyleSwitchConfirm() {
+		this.setState({
+			citationStyle: this.state.unconfirmedCitationStyle,
+			isConfirmingStyleSwitch: false,
+			unconfirmedCitationStyle: null,
+		});
+	}
+
+	handleStyleSwitchCancel() {
+		this.setState({
+			isConfirmingStyleSwitch: false,
+			unconfirmedCitationStyle: null,
+		});
+	}
+
+	handleTitleChange(title) {
+		this.clearMessages();
+		this.setState({
+			itemUnderReview: null,
+			permalink: null,
+			title
+		});
+	}
+
+	handleReadMoreClick(id, event) {
+		const target = document.querySelector('.howto');
+		scroll.animateScroll(target, event.target, {
+			header: '.message',
+			offset: this.calcOffset()
+		});
+		this.handleClearMessage(id);
+	}
+
+	handleHelpClick(event) {
+		const target = document.querySelector('.howto');
+		scroll.animateScroll(target, event.target, {offset: this.calcOffset()});
+	}
+
+	handleGetStartedClick() {
+		const target = document.querySelector('.schroeder-bib-container');
+		scroll.animateScroll(target);
+		document.querySelector('.id-input').focus();
+	}
+
+	handleSaveToZoteroShow() {
+		this.setState({ isSaveToZoteroVisible: true });
+	}
+
+	handleSaveToZoteroHide() {
+		this.setState({ isSaveToZoteroVisible: false });
+	}
+
+	handleCitationCopyDialogOpen(itemId) {
+		this.clearMessages();
+		this.setState({
+			citationToCopy: itemId,
+			isCitationCopyDialogOpen: true,
+			itemUnderReview: null,
+		});
+	}
+
+	handleCitationModifierChange(citationCopyModifiers) {
+		this.setState({
+			citationCopyModifiers,
+			citationHtml: getCitation(
+					this.bib,
+					this.state.citationToCopy,
+					citationCopyModifiers,
+					['html'],
+					this.citeproc,
+					true
+				).html
+		});
+	}
+
+	handleCitationCopy() {
+		// HTML is generated for the dialog, but we need a text version too for the clipboard
+		var text = getCitation(
+			this.bib,
+			this.state.citationToCopy,
+			this.state.citationCopyModifiers,
+			['text'],
+			this.citeproc,
+			true
+		).text;
+		var html = this.state.citationHtml;
+		this.copyDataInclude = [
+			{ mime: 'text/plain', data: text },
+			{ mime: 'text/html', data: html },
+		];
+		return copy(text);
+	}
+
+	handleCitationCopyCancel() {
+		this.setState({
+			isCitationCopyDialogOpen: false,
+			citationToCopy: null,
+			citationCopyModifiers: {},
+			citationHtml: null
+		});
+	}
+
+	handleConfirmAddCancel() {
+		this.setState({
+			isConfirmingAdd: false,
+			itemToConfirm: null
+		});
+	}
+
+	handleConfirmAddConfirm() {
+		this.addItem(this.state.itemToConfirm.items[0]);
+		this.setState({
+			bibliography: this.bibliography,
+			isConfirmingAdd: false,
+			items: this.bib.itemsRaw,
+			itemToConfirm: null,
+			itemUnderReview: this.state.itemToConfirm.items[0],
+		});
+	}
+
+	handleReviewDelete() {
+		this.handleDeleteEntry(this.state.itemUnderReview.key);
+	}
+
+	handleReviewDismiss() {
+		this.setState({ itemUnderReview: null });
+	}
+
+	handleReviewEdit() {
+		this.handleOpenEditor(this.state.itemUnderReview.key);
+	}
+
+	handleScroll() {
+		if(!this.state.messages.find(m => m.isWelcomeMessage)) {
 			return;
 		}
-
-		setTimeout(() => {
-			const cites = [ {id: citationToCopy, ...citationCopyModifiers }];
-			const positions = [{ }];
-			setCitationHtml(
-				citeproc.current.previewCitationCluster(cites, positions, 'html')
-			);
-		}, 0);
-	}, [state.isCiteprocReady, citationCopyModifiers, citationToCopy]);
-
-	useEffect(() => {
-		if(state.bibliographyNeedsRebuild && isStyleReady && state.isConfirmed && isDataReady) {
-			buildBibliography();
-			setPermalink(null);
+		const target = document.querySelector('.howto');
+		const isScrolledToIllustration = window.pageYOffset > target.offsetTop;
+		if(isScrolledToIllustration) {
+			this.setState({
+				messages: this.state.messages.filter(m => !m.isWelcomeMessage)
+			})
 		}
-	}, [buildBibliography, state.bibliographyNeedsRebuild, isStyleReady, state.isConfirmed, isDataReady]);
+	}
 
-	useEffect(() => {
-		if(typeof(wasDataReady) !== 'undefined' && isDataReady !== wasDataReady) {
-			dispatch({ type: BIBLIOGRAPHY_SOURCE_REPLACED });
-		}
-	}, [isDataReady, wasDataReady]);
+	calcOffset() {
+		var md = window.matchMedia('(min-width: 768px)');
+		return md.matches ? 48 : 24;
+	}
 
-	useEffect(() => {
-		if(state.bibliographyNeedsRefresh) {
-			updateBibliography();
-			setPermalink(null);
-		}
-	}, [updateBibliography, state.bibliographyNeedsRefresh])
-
-	useEffect(() => {
-		if(typeof(prevCitationStyle) !== 'undefined' && state.selected !== prevCitationStyle) {
-			revertCitationStyle.current = prevCitationStyle;
-		}
-	}, [state.selected, prevCitationStyle]);
-
-	useEffect(() => {
-		if(state.isConfirmed === false) {
-			setActiveDialog('CONFIRM_SENTENCE_CASE_STYLE');
-		}
-	}, [state.isConfirmed, state.isSentenceCaseStyle, wasSentenceCaseStyle]);
-
-	useEffect(() => {
-		if(!remoteId && !isReadOnly && !localStorage.getItem('schroeder-cite-visited')) {
-			localStorage.setItem('schroeder-cite-visited', 'true');
-			displayWelcomeMessage();
-		}
-	}, [displayWelcomeMessage, isReadOnly, remoteId])
-
-	useEffect(() => {
-		if(title !== prevTitle && typeof(prevTitle) !== 'undefined' && !isReadOnly) {
-			localStorage.setItem('schroeder-cite-title', title);
-		}
-	}, [isReadOnly, title, prevTitle]);
-
-	useEffect(() => {
-		if(isDataReady && isStyleReady && state.isCiteprocReady && !isQueryHandled && window.location.pathname === '/import') {
-			window.history.replaceState(null, null, '/');
-			setIsQueryHandled(true);
-			(async () => {
-				await handleTranslateIdentifier(identifier, null, true);
-			})();
-		}
-	}, [handleTranslateIdentifier, identifier, state.isCiteprocReady, isDataReady, isStyleReady, isQueryHandled]);
-
-	useEffect(() => {
-		document.addEventListener('visibilitychange', handleVisibilityChange);
-		return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-	}, [handleVisibilityChange]);
-
-	useEffect(() => {
-		document.addEventListener('scroll', handleScroll);
-		return () => document.removeEventListener('scroll', handleScroll);
-	}, [handleScroll]);
-
-	useEffect(() => {
-		document.addEventListener('keydown', handleKeyDown);
-		return () => document.removeEventListener('keydown', handleKeyDown);
-	}, [handleKeyDown]);
-
-	useEffect(() => {
-		window.addEventListener('beforeprint', handleBeforePrint);
-		return () => document.removeEventListener('beforeprint', handleBeforePrint);
-	}, [handleBeforePrint]);
-
-	useEffect(() => {
-		window.addEventListener('afterprint', handleAfterPrint);
-		return () => document.removeEventListener('afterprint', handleAfterPrint);
-	}, [handleAfterPrint]);
-
-	useEffect(() => {
-		document.addEventListener('copy', handleCopyToClipboard, true);
-
-		const params = new URLSearchParams(location.search);
-		//citeproc-rs is opt-in, i.e. if truthy then useLegacy = false, defaults to true
-		useLegacy.current = !params.get('use_experimental_citeproc') || (['false', '0']).includes(params.get('use_experimental_citeproc'));
-
-		if(remoteId) {
-			fetchRemoteBibliography();
+	addItem(item) {
+		if(this.state.isSentenceCaseStyle) {
+			this.bib.addItem(processSentenceCaseAPAItems([item])[0]);
 		} else {
-			const prefilledIdentifier = params.get('q') || '';
-			setIdentifier(prefilledIdentifier);
-			setIsDataReady(true);
-			fetchAndSelectStyle(
-				dispatch,
-				localStorage.getItem('schroeder-cite-citation-style') || coreCitationStyles.find(cs => cs.isDefault).name,
-				{ isConfirmed: true }
-			);
+			this.bib.addItem(item);
 		}
-	}, []); //eslint-disable-line react-hooks/exhaustive-deps
+		if(!localStorage.getItem('schroeder-cite-translated')) {
+			localStorage.setItem('schroeder-cite-translated', 'true');
+			//this.displayFirstCitationMessage();
+		}
+	}
 
-	return (<ZBib
-		getCopyData = { getCopyData }
-		bibliography = { state.bibliography }
-		citationCopyModifiers = { citationCopyModifiers }
-		citationHtml = { citationHtml }
-		citationStyle = { state.selected }
-		citationStyles = { citationStyles }
-		editorItem = { editorItem }
-		hydrateItemsCount={ hydrateItemsCount }
-		identifier = { identifier }
-		isNoteStyle = { state.isNoteStyle }
-		isNumericStyle = { state.isNumericStyle }
-		isReadOnly={ isReadOnly }
-		isHydrated={ isHydrated.current }
-		isReady={ isReady }
-		isPrintMode = { isPrintMode }
-		isStylesDataLoading = { isStylesDataLoading }
-		isTranslating={ isTranslating }
-		isTranslatingMore= { isTranslatingMore }
-		itemToConfirm = { itemToConfirm }
-		itemUnderReview = { itemUnderReview }
-		localCitationsCount = { localCitationsCount }
-		messages={ state.messages }
-		moreItemsLink = { moreItemsLink }
-		multipleChoiceItems = { multipleChoiceItems }
-		multipleItems= { multipleItems }
-		activeDialog= { activeDialog }
-		onCitationCopyDialogOpen = { handleCitationCopyDialogOpen }
-		onCitationCopy = { handleCitationCopy }
-		onCitationCopyDialogClose = { handleCitationCopyDialogClose }
-		onCitationModifierChange = { handleCitationModifierChange }
-		onConfirmAddCancel = { handleConfirmAddCancel }
-		onConfirmAddConfirm = { handleConfirmAddConfirm }
-		onDeleteCitations = { handleDeleteCitations }
-		onDeleteEntry = { handleDeleteEntry }
-		onDismiss = { handleDismiss }
-		onDownloadFile = { handleDownloadFile }
-		onEditorClose = { handleCloseEditor }
-		onEditorOpen = { handleOpenEditor }
-		onError = { handleError }
-		onGetStartedClick = { handleGetStartedClick }
-		onItemCreated = { handleItemCreated }
-		onItemUpdate = { handleItemUpdate }
-		onMultipleChoiceCancel = { handleMultipleChoiceCancel }
-		onMultipleChoiceMore = { handleMultipleChoiceMore }
-		onMultipleChoiceSelect = { handleMultipleChoiceSelect }
-		onMultipleItemsCancel = { handleMultipleItemsCancel }
-		onMultipleItemsSelect = { handleMultipleItemsSelect }
-		onReviewDelete = { handleReviewDelete }
-		onReviewDismiss = { handleReviewDismiss }
-		onReviewEdit = { handleReviewEdit }
-		onSave = { handleSave }
-		onShowDuplicate={ handleShowDuplicate }
-		onStyleInstallerCancel = { handleStyleInstallerCancel }
-		onStyleInstallerDelete = { handleStyleInstallerDelete }
-		onStyleInstallerSelect = { handleStyleInstallerSelect }
-		onTitleChanged = { handleTitleChange }
-		onHelpClick = { handleHelpClick }
-		onCancelPrintMode = { handleCancelPrintMode }
-		onReadMore = { handleReadMoreClick }
-		onStyleSwitchCancel = { handleStyleSwitchCancel }
-		onStyleSwitchConfirm = { handleStyleSwitchConfirm }
-		onTranslationCancel = { handleTranslationCancel }
-		onTranslationRequest = { handleTranslateIdentifier }
-		onCitationStyleChanged={ handleCitationStyleChanged }
-		onOverride={ handleOverride }
-		onUndoDelete = { handleUndoDelete }
-		onSaveToZoteroShow = { handleSaveToZoteroShow }
-		onSaveToZoteroHide = { handleSaveToZoteroHide }
-		permalink = { permalink }
-		stylesData={ stylesData }
-		styleHasBibliography={ state.styleHasBibliography }
-		title = { title }
-	/>);
+	async prepareCiteproc(style, bib, isReadOnly) {
+		this.citeproc = await getCiteproc(style, bib);
+		// Make URLs and DOIs clickable on permalink pages
+		this.citeproc.opt.development_extensions.wrap_url_and_doi = isReadOnly;
+	}
+
+	getExpandedCitationStyles(styleMeta) {
+		if(this.state.citationStyles.find(cs => cs.name === styleMeta.name)) {
+			return this.state.citationStyles;
+		}
+
+		const citationStyles = [
+			...this.state.citationStyles,
+			{
+				name: styleMeta.name,
+				title: styleMeta.title,
+				isDependent: styleMeta.dependent,
+				isCore: false
+			}
+		];
+
+		citationStyles.sort((a, b) => a.title.toUpperCase().localeCompare(b.title.toUpperCase()));
+		return citationStyles;
+	}
+
+
+
+	getExportData(format) {
+		var bibliography;
+		if(this.citeproc) {
+			this.citeproc.setOutputFormat(format);
+			bibliography = this.citeproc.makeBibliography();
+			// reset back to default
+			this.citeproc.setOutputFormat('html');
+		}
+		return bibliography;
+	}
+	
+	getCopyData(format) {
+		const bibliography = this.getExportData(format);
+		const copyData = format === 'html' ?
+			formatBib(bibliography) :
+			`${bibliography[0].bibstart}${bibliography[1].join('')}${bibliography[0].bibend}`;
+
+		if(bibliography) {
+			if(exportFormats[format].include) {
+				this.copyDataInclude = [
+				{
+					mime: exportFormats[format].mime,
+					data: copyData
+				},
+				{
+					mime: exportFormats[exportFormats[format].include].mime,
+					data: this.getCopyData(exportFormats[format].include)
+				}];
+			}
+		}
+
+		return copyData;
+	}
+
+	getCitationCopyData(format) {
+		const citationCopyBibliography = this.getExportData('text');
+		var copyData = `${citationCopyBibliography[1][citationCopyBibliography[1].length - 1]}`;
+		const regex = /^(\d+)\.\s/;
+		copyData = copyData.replace(regex, '');
+		return copyData;
+	}
+
+	getCitationDOI() {
+		var DOI;
+		
+		if(this.state.itemUnderReview.DOI) {
+
+		DOI = this.state.itemUnderReview.DOI;
+
+		}
+		
+		return DOI;
+	}
+
+	getFilenameCopyData(format) {
+		var copyData = '';
+
+		// If we have the required fields, create a custom filename.
+		// Otherwise, just "sanitize" the citation and add ".pdf".
+
+		if(this.state.itemUnderReview.creators[0].lastName && 
+				this.state.itemUnderReview.creators[0].firstName &&
+				(this.state.itemUnderReview.journalAbbreviation || this.state.itemUnderReview.publicationTitle) &&
+				this.state.itemUnderReview.date &&
+				this.state.itemUnderReview.title){
+
+			var lastName = filenamify(this.state.itemUnderReview.creators[0].lastName);
+			
+			var nameSpacer = ', ';
+			
+			var firstName = filenamify(this.state.itemUnderReview.creators[0].firstName);
+			
+			var dash = ' - ';
+
+			var journalAbbreviation = '';
+
+			if(this.state.itemUnderReview.journalAbbreviation) {
+			journalAbbreviation = filenamify(this.state.itemUnderReview.journalAbbreviation);
+			}
+			
+			else if(this.state.itemUnderReview.publicationTitle) {
+			journalAbbreviation = filenamify(this.state.itemUnderReview.publicationTitle);
+			}
+			
+			var dateStart = ' (';
+			
+			var date = this.state.itemUnderReview.date;
+			
+			var year = (new Date(date.toString())).getFullYear();
+
+			var yearString = year.toString();
+			
+			// If we can convert the long date to just year, use that otherwise revert to full date
+			if (isNaN(year) === false) {
+				date = filenamify(yearString);
+			}
+			else {
+				
+				date = filenamify(date);
+			}
+			
+			var dateEnd = ') ';
+			
+			var title = filenamify(this.state.itemUnderReview.title);
+			var pdf = '.pdf';
+
+			copyData = copyData.concat(lastName,nameSpacer,firstName,dash,journalAbbreviation,dateStart,date,dateEnd,title);
+
+			copyData = filenamify(copyData);
+
+			copyData = copyData.trim();
+
+			copyData = copyData.concat(pdf);
+
+			}
+
+		else {
+			const citationCopyBibliography = this.getExportData('text');
+
+			copyData = `${citationCopyBibliography[1][citationCopyBibliography[1].length - 1]}`;
+			const regex = /^(\d+)\.\s/;
+			copyData = copyData.replace(regex, '');
+			
+			if(format === 'filename'){
+				copyData = filenamify(copyData);
+				copyData = copyData.concat(".pdf");
+			}
+		}
+		
+
+		return copyData;
+	}
+
+	async getFileData(format) {
+		var fileContents, separator, bibStyle, preamble = '';
+
+		if(format === 'ris') {
+			try {
+				fileContents = await this.bib.exportItems('ris');
+			} catch(e) {
+				this.handleError(e.message);
+				return;
+			}
+		} else if(format === 'bibtex') {
+			try {
+				fileContents = await this.bib.exportItems('bibtex');
+			} catch(e) {
+				this.handleError(e.message);
+				return;
+			}
+		} else {
+			const bibliography = this.getExportData(format);
+			if(format === 'rtf') {
+				bibStyle = getBibliographyFormatParameters(bibliography);
+				separator = '\\\r\n';
+				preamble = `${bibStyle.tabStops.length ? '\\tx' + bibStyle.tabStops.join(' \\tx') + ' ' : ''}\\li${bibStyle.indent} \\fi${bibStyle.firstLineIndent} \\sl${bibStyle.lineSpacing} \\slmult1 \\sa${bibStyle.entrySpacing} `;
+			}
+			fileContents = `${bibliography[0].bibstart}${preamble}${bibliography[1].join(separator)}${bibliography[0].bibend}`;
+		}
+
+		const fileName = `citations.${exportFormats[format].extension}`;
+		const file = new File(
+			[fileContents],
+			fileName,
+			{ type: exportFormats[format].mime }
+		);
+		return file;
+	}
+
+	get bibliography() {
+		const bib = this.state.isReadOnly ? this.bibRemote : this.bib;
+		if(!bib || !this.citeproc) {
+			return {};
+		}
+		return getBibliographyOrFallback(bib, this.citeproc);
+	}
+
+	render() {
+		return <ZBib
+			getCopyData = { this.getCopyData.bind(this) }
+			getCitationCopyData = { this.getCitationCopyData.bind(this) }
+			getFilenameCopyData = { this.getFilenameCopyData.bind(this) }
+			getCitationDOI = { this.getCitationDOI.bind(this) }
+			getFileData = { this.getFileData.bind(this) }
+			onCitationCopy = { this.handleCitationCopy.bind(this) }
+			onCitationCopyCancel = { this.handleCitationCopyCancel.bind(this) }
+			onCitationCopyDialogOpen = { this.handleCitationCopyDialogOpen.bind(this) }
+			onCitationModifierChange = { this.handleCitationModifierChange.bind(this) }
+			onCitationStyleChanged = { this.handleCitationStyleChanged.bind(this) }
+			onClearMessage = { this.handleClearMessage.bind(this) }
+			onConfirmAddCancel = { this.handleConfirmAddCancel.bind(this) }
+			onConfirmAddConfirm = { this.handleConfirmAddConfirm.bind(this) }
+			onDeleteCitations = { this.handleDeleteCitations.bind(this) }
+			onDeleteEntry = { this.handleDeleteEntry.bind(this) }
+			onDismissUndo = { this.handleDismissUndo.bind(this) }
+			onEditorClose = { this.handleCloseEditor.bind(this) }
+			onEditorOpen = { this.handleOpenEditor.bind(this) }
+			onError = { this.handleError.bind(this) }
+			onGetStartedClick = { this.handleGetStartedClick.bind(this) }
+			onHelpClick = { this.handleHelpClick.bind(this) }
+			onItemCreated = { this.handleItemCreated.bind(this) }
+			onItemUpdate = { this.handleItemUpdate.bind(this) }
+			onMultipleChoiceCancel = { this.handleMultipleChoiceCancel.bind(this) }
+			onMultipleChoiceMore = { this.handleMultipleChoiceMore.bind(this) }
+			onMultipleChoiceSelect = { this.handleMultipleChoiceSelect.bind(this) }
+			OnMutipleItemsCancel = { this.handleMutipleItemsCancel.bind(this) }
+			OnMutipleItemsSelect = { this.handleMutipleItemsSelect.bind(this) }
+			onOverride = { this.handleOverride.bind(this) }
+			onReviewDelete = { this.handleReviewDelete.bind(this) }
+			onReviewDismiss = { this.handleReviewDismiss.bind(this) }
+			onReviewEdit = { this.handleReviewEdit.bind(this) }
+			onSave = { this.handleSave.bind(this) }
+			onSaveToZoteroHide = { this.handleSaveToZoteroHide.bind(this) }
+			onSaveToZoteroShow = { this.handleSaveToZoteroShow.bind(this) }
+			onStyleInstallerCancel = { this.handleStyleInstallerCancel.bind(this) }
+			onStyleInstallerDelete = { this.handleStyleInstallerDelete.bind(this) }
+			onStyleInstallerInstall = { this.handleStyleInstallerInstall.bind(this) }
+			onStyleInstallerSelect = { this.handleStyleInstallerSelect.bind(this) }
+			onStyleSwitchCancel = { this.handleStyleSwitchCancel.bind(this) }
+			onStyleSwitchConfirm = { this.handleStyleSwitchConfirm.bind(this) }
+			onTitleChanged = { this.handleTitleChange.bind(this) }
+			onTranslationRequest = { this.handleTranslateIdentifier.bind(this) }
+			onUndoDelete = { this.handleUndoDelete.bind(this) }
+			{ ...this.state }
+		/>;
+	}
+
+	static propTypes = {
+		config: PropTypes.object,
+		match: PropTypes.object,
+		history: PropTypes.object,
+	}
 }
 
-BibWebContainer.propTypes = {
-	config: PropTypes.object,
-	hydrateItemsCount: PropTypes.number,
-	title: PropTypes.string,
-}
-
-export default memo(BibWebContainer);
+module.exports = withRouter(Container);

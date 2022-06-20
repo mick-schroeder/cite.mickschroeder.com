@@ -1,53 +1,42 @@
-import React, { useCallback, memo } from 'react';
-import PropTypes from 'prop-types';
-import cx from 'classnames';
-import { useIntl } from 'react-intl';
+'use strict';
 
-import Select, { SelectDivider, SelectOption } from './ui/select';
-import { citationStylesCount } from '../../../data/citation-styles-data.json';
+const React = require('react');
+const PropTypes = require('prop-types');
+const cx = require('classnames');
+const Select = require('react-select').default;
+const { citationStylesCount } = require('../../../data/citation-styles-data.json');
 
-const StyleSelector = ({ className, citationStyle, citationStyles, onCitationStyleChanged }) => {
-	const handleMoreStylesTrigger = useCallback(
-		() => onCitationStyleChanged('install'), [onCitationStyleChanged]
-	);
-	const intl = useIntl();
-
-	return (
-			<div className={ cx('style-selector', className ) }>
+class StyleSelector extends React.Component {
+	render() {
+		return (
+			<div className={ cx('style-selector', this.props.className ) }>
 				<Select
 					clearable={ false }
 					searchable={ false}
-					value={ citationStyle }
+					value={ this.props.citationStyle }
 					options={ [
-						...citationStyles.map(cs => ({
+						...this.props.citationStyles.map(cs => ({
 							value: cs.name,
 							label: cs.title
 						})),
-					] }
-					onChange={ onCitationStyleChanged }
-				>
-					<SelectDivider />
-					<SelectOption
-						onTrigger={ handleMoreStylesTrigger }
-						option={ {
+						{
 							value: 'install',
-							label: intl.formatMessage({
-								id: 'zbib.styleSelector.otherStyles',
-								defaultMessage: '{citationStylesCount, plural, other {#+ other styles} } available…',
-							}, { citationStylesCount: Math.floor(citationStylesCount / 1000) * 1000 })
-						}}
-						/>
-				</Select>
+							label: `${(Math.floor(citationStylesCount / 100) * 100).toLocaleString()}+ other styles available…`
+						}
+					] }
+					onChange={ ev => this.props.onCitationStyleChanged(ev.value) }
+				/>
 			</div>
 		);
+	}
+
+	static propTypes = {
+		className: PropTypes.string,
+		citationStyle: PropTypes.string,
+		citationStyles: PropTypes.array,
+		onCitationStyleChanged: PropTypes.func
+	}
 }
 
-StyleSelector.propTypes = {
-	className: PropTypes.string,
-	citationStyle: PropTypes.string,
-	citationStyles: PropTypes.array,
-	onCitationStyleChanged: PropTypes.func
-}
 
-
-export default memo(StyleSelector);
+module.exports = StyleSelector;

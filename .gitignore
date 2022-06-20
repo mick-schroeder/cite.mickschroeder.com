@@ -5,7 +5,6 @@ lib
 .DS_Store
 build
 data
-lang
 config/local*.json
 .npmrc
 .nyc_output

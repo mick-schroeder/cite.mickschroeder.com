@@ -1,198 +1,172 @@
-import copy from 'copy-to-clipboard';
-import cx from 'classnames';
-import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useRef, useState, memo } from 'react';
-import Dropdown from 'reactstrap/lib/Dropdown';
-import DropdownToggle from 'reactstrap/lib/DropdownToggle';
-import DropdownMenu from './ui/dropdown-menu';
-import DropdownItem from 'reactstrap/lib/DropdownItem';
-import { FormattedMessage } from 'react-intl';
+/* eslint-disable react/no-deprecated */
+// @TODO: migrate to getDerivedStateFromProps()
+'use strict';
 
-import exportFormats from '../constants/export-formats';
-import Button from './ui/button';
-import { isTriggerEvent } from '../common/event';
-import { usePrevious } from '../hooks';
+const React = require('react');
+const PropTypes = require('prop-types');
+const { saveAs } = require('file-saver');
+const cx = require('classnames');
+const copy = require('copy-to-clipboard');
 
+const exportFormats = require('../constants/export-formats');
+const { withRouter } = require('react-router-dom');
+const Dropdown = require('reactstrap/lib/Dropdown').default;
+const DropdownToggle = require('reactstrap/lib/DropdownToggle').default;
+const DropdownMenu = require('reactstrap/lib/DropdownMenu').default;
+const DropdownItem = require('reactstrap/lib/DropdownItem').default;
 const formatsInDropdown = ['rtf', 'html', 'ris', 'bibtex', 'zotero'];
+const Button = require('zotero-web-library/src/js/component/ui/button');
 
-const ExportOption = memo(({ isCopied, format, handleCopyClick, handleDownloadClick }) => {
-	if(exportFormats[format].isCopyable) {
-		return (
-			<DropdownItem
-				data-format={ format }
-				key={ format }
-				onClick={ handleCopyClick }
-				className="btn clipboard-trigger"
-			>
-				<span className={ cx('inline-feedback', { 'active': isCopied }) }>
-					<span className="default-text" aria-hidden={ !isCopied }>{ exportFormats['html'].label }</span>
-					<span className="shorter feedback" aria-hidden={ isCopied }>
-						<FormattedMessage id="zbib.export.copiedFeedback" defaultMessage="Copied!" />
-					</span>
-				</span>
-			</DropdownItem>
-		);
-	} else {
-		return(
-			<DropdownItem
-				data-format={ format }
-				key={ format }
-				onClick={ handleDownloadClick }
-				className="btn"
-			>
-				<span>{ exportFormats[format].label }</span>
-			</DropdownItem>
-		);
+class ExportDialog extends React.Component {
+	state = {
+		isDropdownOpen: false,
+		clipboardConfirmations: {}
 	}
-});
 
-ExportOption.displayName = 'ExportOption';
-ExportOption.propTypes = {
-	format: PropTypes.string,
-	handleCopyClick: PropTypes.func,
-	handleDownloadClick: PropTypes.func,
-	isCopied: PropTypes.bool,
-};
+	componentWillReceiveProps(props) {
+		// reset status on navigation
+		if(this.props.match.params.active != props.match.params.active) {
+			this.setState({
+				clipboardConfirmations: {}
+			});
+		}
+	}
 
-const ExportTools = props => {
-	const { getCopyData, isHydrated, isReady, itemCount, onDownloadFile, onSaveToZoteroShow } = props;
-	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-	const [clipboardConfirmations, setClipboardConfirmations] = useState({});
-	const dropdownTimer = useRef(null);
-	const whenReadyData = useRef(false);
-	const wasReady = usePrevious(isReady);
-
-	const handleClipoardSuccess = useCallback(format => {
-		if(clipboardConfirmations[format]) {
+	handleClipoardSuccess(format) {
+		if(this.state.clipboardConfirmations[format]) {
 			return;
 		}
 
-		setClipboardConfirmations({ ...clipboardConfirmations, [format]: true });
-		setTimeout(() => {
-			setClipboardConfirmations({ ...clipboardConfirmations, [format]: false });
-		}, 1000);
-	}, [clipboardConfirmations]);
+		this.setState({
+			clipboardConfirmations: {
+				...this.state.clipboardConfirmations,
+				[format]: true
+			}
+		});
 
-	const copyToClipboard = useCallback(async (format, isTopLevelButton) => {
-		if(isTopLevelButton) {
-			setIsDropdownOpen(false);
+		setTimeout(() => {
+			this.setState({
+				clipboardConfirmations: {
+					...this.state.clipboardConfirmations,
+					[format]: false
+				}
+			}, this.props.onExported);
+		}, 1000);
+	}
+
+	async handleDownloadFile(format) {
+		if (format == 'zotero') {
+			this.props.onSaveToZoteroShow();
+			return;
 		}
-		const text = await getCopyData(format);
+		try {
+			const file = await this.props.getFileData(format);
+			saveAs(file);
+		} finally {
+			this.props.onExported();
+		}
+	}
+
+	handleCopy(format) {
+		const text = this.props.getCopyData(format);
 		const result = copy(text);
 		if(result) {
-			handleClipoardSuccess(format);
+			this.handleClipoardSuccess(format);
 		}
-	}, [getCopyData, handleClipoardSuccess])
+	}
 
-	const handleDownloadClick = useCallback(async ev => {
-		const format = ev.currentTarget.dataset.format;
-		if (format == 'zotero') {
-			onSaveToZoteroShow();
-			return;
-		}
-		if(isHydrated && !isReady) {
-			whenReadyData.current = { shouldDownload: true, format }
-			return;
-		}
-
-		onDownloadFile(format);
-	}, [isHydrated, isReady, onDownloadFile, onSaveToZoteroShow]);
-
-	const handleToggleDropdown = useCallback(ev => {
+	handleToggleDropdown(ev) {
 		const isFromCopyTrigger = ev.target && ev.target.closest('.clipboard-trigger');
-		if(isDropdownOpen && isFromCopyTrigger) {
-			dropdownTimer.current = setTimeout(() => {
-				setIsDropdownOpen(false);
+		if(this.state.isDropdownOpen && isFromCopyTrigger) {
+			this.dropdownTimer = setTimeout(() => {
+				this.setState({ 'isDropdownOpen': false });
 			}, 950);
 			return false;
 		}
-		clearTimeout(dropdownTimer.current);
-		setIsDropdownOpen(!isDropdownOpen);
-	}, [isDropdownOpen]);
+		clearTimeout(this.dropdownTimer);
+		this.setState({ isDropdownOpen: !this.state.isDropdownOpen });
+	}
 
-	const handleCopyClick = useCallback(async ev => {
-		if(!isTriggerEvent(ev)) {
-			return;
-		}
+	handleCopyToClipboardClick() {
+		// explicitely hide the dropdown
+		this.setState({ 'isDropdownOpen': false });
+		this.handleCopy('text');
+	}
 
-		const format = ev.currentTarget.dataset.format;
-		const isTopLevelButton = 'main' in ev.currentTarget.dataset;
-
-		if(isHydrated && !isReady) {
-			whenReadyData.current = { shouldCopy: true, format, isTopLevelButton }
-			return;
-		}
-		copyToClipboard(format, isTopLevelButton);
-	}, [copyToClipboard, isHydrated, isReady]);
-
-	const isCopied = clipboardConfirmations['plain'];
-
-	useEffect(() => {
-		if(isReady && !wasReady && whenReadyData.current) {
-			if(whenReadyData.current.shouldCopy) {
-				const { format, isTopLevelButton } = whenReadyData.current;
-				copyToClipboard(format, isTopLevelButton);
-			} else if(whenReadyData.current.shouldDownload) {
-				const { format } = whenReadyData.current;
-				onDownloadFile(format);
-			}
-			whenReadyData.current = false;
-		}
-	}, [copyToClipboard, isReady, onDownloadFile, wasReady]);
-
-	return (
-		<div className="export-tools">
-			<Dropdown
-
-				isOpen={ isDropdownOpen }
-				toggle={ handleToggleDropdown }
-				className={ cx('btn-group', { 'success': isCopied }) }
-			>
-				<Button
-					data-format="plain"
-					data-main
-					disabled={ itemCount === 0 }
-					className='btn btn-secondary btn-xl copy-to-clipboard'
-					onClick={ handleCopyClick }
-					onKeyDown={ handleCopyClick }
+	renderMenuOption(format) {
+		const isCopied = this.state.clipboardConfirmations[format];
+		if(exportFormats[format].isCopyable) {
+			return (
+				<DropdownItem
+					key={ format }
+					onClick={ this.handleCopy.bind(this, format) }
+					className="btn clipboard-trigger"
 				>
 					<span className={ cx('inline-feedback', { 'active': isCopied }) }>
-						<span className="default-text" aria-hidden={ !isCopied }>{ exportFormats['plain'].label }</span>
-						<span className="shorter feedback" aria-hidden={ isCopied }>
-							<FormattedMessage id="zbib.export.copiedFeedback" defaultMessage="Copied!" />
-						</span>
+						<span className="default-text" aria-hidden={ !isCopied }>{ exportFormats['html'].label }</span>
+						<span className="shorter feedback" aria-hidden={ isCopied }>Copied!</span>
 					</span>
-				</Button>
-				<DropdownToggle
-					disabled={ itemCount === 0 }
-					className="btn btn-secondary btn-xl dropdown-toggle"
+				</DropdownItem>
+			);
+		} else {
+			return(
+				<DropdownItem
+					key={ format }
+					onClick={ this.handleDownloadFile.bind(this, format) }
+					className="btn"
+				>
+					<span>{ exportFormats[format].label }</span>
+				</DropdownItem>
+			);
+		}
+	}
+
+	render() {
+		const isCopied = this.state.clipboardConfirmations['text'];
+		return (
+			<div className="export-tools">
+				<Dropdown
+					isOpen={ this.state.isDropdownOpen }
+					toggle={ this.handleToggleDropdown.bind(this) }
+					className={ cx('btn-group', { 'success': isCopied}) }
+				>
+					<Button
+						disabled={ this.props.items.length === 0 }
+						className='btn btn-secondary btn-xl copy-to-clipboard'
+						onClick={ this.handleCopyToClipboardClick.bind(this) }
 					>
-					<span className="dropdown-caret" />
-				</DropdownToggle>
-				<DropdownMenu>
-					{ formatsInDropdown.map(format => (
-						<ExportOption
-							format={ format }
-							handleCopyClick = { handleCopyClick }
-							handleDownloadClick={ handleDownloadClick }
-							isCopied = { !!clipboardConfirmations[format] }
-							key={ format }
-						/>)
-					) }
-				</DropdownMenu>
-			</Dropdown>
-		</div>
-	)
+						<span className={ cx('inline-feedback', { 'active': isCopied }) }>
+							<span className="default-text" aria-hidden={ !isCopied }>{ exportFormats['text'].label }</span>
+							<span className="shorter feedback" aria-hidden={ isCopied }>Copied!</span>
+						</span>
+					</Button>
+					<DropdownToggle
+						disabled={ this.props.items.length === 0 }
+						className="btn btn-secondary btn-xl dropdown-toggle"
+						>
+						<span className="dropdown-caret" />
+					</DropdownToggle>
+					<DropdownMenu className="dropdown-menu">
+						{ formatsInDropdown.map(this.renderMenuOption.bind(this)) }
+					</DropdownMenu>
+				</Dropdown>
+			</div>
+		);
+	}
+
+	static defaultProps = {
+		onExported: () => {}
+	}
+
+	static propTypes = {
+		getCopyData: PropTypes.func.isRequired,
+		getFileData: PropTypes.func.isRequired,
+		isReadOnly: PropTypes.bool,
+		items: PropTypes.array,
+		match: PropTypes.object,
+		onExported: PropTypes.func,
+		onSaveToZoteroShow: PropTypes.func.isRequired,
+	}
 }
 
-ExportTools.propTypes = {
-	getCopyData: PropTypes.func.isRequired,
-	isHydrated: PropTypes.bool,
-	isReadOnly: PropTypes.bool,
-	isReady: PropTypes.bool,
-	itemCount: PropTypes.number,
-	onDownloadFile: PropTypes.func.isRequired,
-	onSaveToZoteroShow: PropTypes.func.isRequired,
-}
-
-export default memo(ExportTools);
+module.exports = withRouter(ExportDialog);

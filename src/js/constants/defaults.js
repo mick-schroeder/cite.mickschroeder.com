@@ -1,5 +1,6 @@
-export default Object.freeze({
+'use strict';
+
+module.exports = Object.freeze({
 	storeURL: '/store',
-	stylesURL: 'https://www.zotero.org/styles-files/styles.json',
-	storage: window.localStorage
+	stylesURL: 'https://www.zotero.org/styles-files/styles.json'
 });

@@ -1,138 +1,116 @@
-import PropTypes from 'prop-types';
-import React, { memo, useEffect, useMemo, useCallback, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+'use strict';
 
-import Button from './ui/button';
-import Icon from './ui/icon';
-import Modal from './modal';
-import { formatBib, formatFallback } from '../cite';
-import { isTriggerEvent } from '../common/event';
-import { usePrevious } from '../hooks';
+const React = require('react');
+const PropTypes = require('prop-types');
+const KeyHandler = require('react-key-handler').default;
+const { KEYDOWN } = require('react-key-handler');
+const Button = require('zotero-web-library/src/js/component/ui/button');
+const Modal = require('./modal');
+const Icon = require('zotero-web-library/src/js/component/ui/icon');
+const { getHtmlNodeFromBibliography, makeBibliographyContentIterator } = require('../utils');
 
-const MultipleItemsDialog = props => {
-	const { activeDialog, multipleItems, onMultipleItemsSelect, onMultipleItemsCancel,  } = props;
-	const [selectedItems, setSelectedItems] = useState([]);
-	const prevActiveDialog = usePrevious(activeDialog);
-	const isOpen = multipleItems && activeDialog === 'MULTIPLE_ITEMS_DIALOG';
+class MultipleItemsDialog extends React.Component {
+	handleFocus = ev => {
+		this.focusedItem = ev.currentTarget.dataset.key;
+	}
 
-	const bibliographyRendered = useMemo(() => {
-		if(!multipleItems) {
-			return null;
+	handleKeyboardConfirm = () => {
+		if(this.focusedItem) {
+			this.props.OnMutipleItemsSelect(this.focusedItem);
 		}
-		const { bibliographyItems, bibliographyMeta, styleHasBibliography } = multipleItems;
-			return (styleHasBibliography && bibliographyMeta) ?
-				formatBib(bibliographyItems, bibliographyMeta) :
-				formatFallback(bibliographyItems)
-		}, [multipleItems]
-	);
+	}
 
-	const bibliographyRenderedNodes = useMemo(() => {
-		if(!bibliographyRendered) {
-			return [];
-		}
-		const div = document.createElement('div');
-		div.innerHTML = bibliographyRendered;
-		div.querySelectorAll('a').forEach(link => {
-			link.setAttribute('rel', 'nofollow');
-		});
-		return div.firstChild.children;
-	}, [bibliographyRendered]);
+	handleAdd = ev => {
+		this.props.OnMutipleItemsSelect(ev.currentTarget.dataset.key);
+	}
 
-	const handleItemSelectionChange = useCallback(ev => {
-		const itemKey = ev.target.closest('[data-key]').dataset.key;
+	handleCancel = () => {
+		this.props.OnMutipleItemsCancel();
+	}
 
-		if(!isTriggerEvent(ev)) {
-			return;
-		}
-
-		setSelectedItems(selectedItems.includes(itemKey) ?
-			selectedItems.filter(i => i != itemKey) :
-			[...selectedItems, itemKey]
-		);
-	}, [selectedItems]);
-
-	const handleAddSelected = useCallback(() => {
-		onMultipleItemsSelect(selectedItems);
-	}, [selectedItems, onMultipleItemsSelect]);
-
-	const handleCancel = useCallback(() => {
-		onMultipleItemsCancel();
-	}, [onMultipleItemsCancel])
-
-	useEffect(() => {
-		if(prevActiveDialog !== activeDialog && activeDialog === 'MULTIPLE_ITEMS_DIALOG') {
-			setSelectedItems([]);
-		}
-	}, [activeDialog, prevActiveDialog]);
-
-	return (
-		<Modal
-			isOpen={ !!isOpen }
-			contentLabel="Select the entry to add:"
-			className="multiple-choice-dialog modal modal-lg"
-			onRequestClose={ handleCancel }
-		>
-			<div className="modal-content" tabIndex={ -1 }>
-				<div className="modal-header">
-					<h4 className="modal-title text-truncate">
-						<FormattedMessage id="zbib.multipleItems.prompt" defaultMessage="Please select a citation from the list" />
-					</h4>
-					<Button
-						icon
-						className="close"
-						onClick={ handleCancel }
-					>
-						<Icon type={ '24/remove' } width="24" height="24" />
-					</Button>
+	renderItem(item, content) {
+		return (
+			<li key={ item.key }
+				data-key={ item.key }
+				className="result"
+				onFocus={ this.handleFocus }
+				onClick={ this.handleAdd }
+				tabIndex={ 0 }
+			>
+				<div className="csl-entry-container">
+					{ content }
 				</div>
-				<div className="modal-body">
-					<ul className="results">
-						{
-							(multipleItems?.bibliographyItems ?? []).map((item, index) => (
-								<li key={ item.id }
-									data-key={ item.id }
-									className="result"
-									onKeyDown={ handleItemSelectionChange }
-									onClick={ handleItemSelectionChange }
-									tabIndex={ 0 }
-								>
-									<div
-										className="csl-entry-container"
-										dangerouslySetInnerHTML={
-											{ __html: bibliographyRenderedNodes[index]?.innerHTML || item.value }
-									} />
-									<input
-										checked={ selectedItems.includes(item.id) }
-										className="checkbox"
-										onChange={ handleItemSelectionChange }
-										tabIndex={ -1 }
-										type="checkbox"
-									/>
-								</li>
-							))
-						}
-					</ul>
-					<div className="more-items-action">
+			</li>
+		);
+	}
+
+	render() {
+		const { isAddingMultiple, multipleItems } = this.props;
+		const bibliographyProcessedContent = [];
+
+		if(isAddingMultiple) {
+			const div = getHtmlNodeFromBibliography(multipleItems);
+			const bibliographyContentIterator = makeBibliographyContentIterator(
+				multipleItems, div
+			);
+
+			for(var [item, content] of bibliographyContentIterator) {
+				bibliographyProcessedContent.push(
+					this.renderItem(item, content)
+				);
+			}
+		}
+
+		return (
+			<Modal
+				isOpen={ isAddingMultiple }
+				contentLabel="Select the entry to add:"
+				className="multiple-choice-dialog modal modal-lg"
+				onRequestClose={ this.handleCancel }
+			>
+				<KeyHandler
+					keyEventName={ KEYDOWN }
+					keyValue="Escape"
+					onKeyHandle={ this.handleCancel }
+				/>
+				<KeyHandler
+					keyEventName={ KEYDOWN }
+					keyValue="Enter"
+					onKeyHandle={ this.handleKeyboardConfirm }
+				/>
+				<div className="modal-content" tabIndex={ -1 }>
+					<div className="modal-header">
+						<h4 className="modal-title text-truncate">
+							Please select a citation from the list
+						</h4>
 						<Button
-							disabled={ selectedItems.length === 0 }
-							className="btn-outline-secondary btn-min-width"
-							onClick={ handleAddSelected }
+							className="close"
+							onClick={ this.handleCancel.bind(this) }
 						>
-							<FormattedMessage id="zbib.multipleItems.confirm" defaultMessage="Add Selected" />
+							<Icon type={ '24/remove' } width="24" height="24" />
 						</Button>
 					</div>
+					<div className="modal-body">
+						<ul className="results">
+							{ bibliographyProcessedContent }
+						</ul>
+					</div>
 				</div>
-			</div>
-		</Modal>
-	)
+			</Modal>
+		);
+	}
+
+	static defaultProps = {
+		multipleChoiceItems: []
+	}
+
+	static propTypes = {
+		isAddingMultiple: PropTypes.bool,
+		multipleItems: PropTypes.object,
+		multipleChoiceItems: PropTypes.array,
+		OnMutipleItemsCancel: PropTypes.func.isRequired,
+		OnMutipleItemsSelect: PropTypes.func.isRequired,
+	}
 }
 
-MultipleItemsDialog. propTypes = {
-	activeDialog: PropTypes.string,
-	multipleChoiceItems: PropTypes.array,
-	multipleItems: PropTypes.object,
-	onMultipleItemsCancel: PropTypes.func.isRequired,
-	onMultipleItemsSelect: PropTypes.func.isRequired,
-}
-
-export default memo(MultipleItemsDialog);
+module.exports = MultipleItemsDialog;

@@ -23,10 +23,10 @@
 		margin-bottom: $space-xl - 12px;
 	}
 	.empty-title {
-		margin-bottom: $lead-font-size-mobile * 0.5;
+		margin-bottom: $lead-font-size-mobile / 2;
 
 		@media (min-width: $bp-md) {
-			margin-bottom: $lead-font-size * 0.5;
+			margin-bottom: $lead-font-size / 2;
 		}
 	}
 
@@ -68,32 +68,29 @@
 				flex: 1 1 auto;
 			}
 
-			.editable {
-				@media (min-width: $bp-md) {
-					justify-content: center;
-				}
-			}
-
-			.editable-content {
+			.editable-value {
 				line-height: $headings-line-height;
-				padding: 8px 0;
+				padding: (($space-xxl - floor($h2-font-size-mobile * $headings-line-height)) / 2) 0;
 				text-align: left;
 				word-wrap: break-word;
+				min-width: 0; // Fix word-wrap
 
 				@media (min-width: $bp-md) {
+					padding: (($space-xxxl - $h2-font-size * $headings-line-height) / 2) 0;
 					text-align: inherit;
 				}
 			}
 
 			.editable-control {
-				border-width: 1px;
+				border: 1px solid $input-focus-color;
 				box-shadow: 0 0 0 2px $secondary;
 				line-height: normal; // Heading line-height would clip decenders
-				padding: 8px 0;
+				margin: 0;
+				padding: 4px $space-md 3px;
 				text-align: left;
-				margin: -5.5px;
 
 				@media (min-width: $bp-md) {
+					padding: 6px $space-lg 7px;
 					text-align: inherit;
 				}
 			}
@@ -113,84 +110,7 @@
 		}
 	}
 
-	.style-selector {
-		text-align: left;
-
-		.select-component {
-			.select-control {
-				border-color: transparent;
-				background: $style-selector-bg;
-				color: $style-selector-color;
-				padding: $input-padding-y-lg $input-padding-x-lg;
-				border-radius: $input-border-radius-lg;
-				cursor: pointer;
-				transition:
-					background-color $input-transition,
-					border $input-transition,
-					box-shadow $input-transition;
-
-				&:hover {
-					background: $style-selector-hover-bg;
-				}
-			}
-
-			&.is-focused {
-				.select-control {
-					box-shadow: 0 0 0 2px $secondary;
-					outline: none;
-
-					&:hover {
-						box-shadow: 0 0 0 2px $style-selector-hover-bg;
-					}
-				}
-			}
-
-			&.single {
-				.select-value-label {
-					overflow: inherit;
-					text-overflow: inherit;
-					white-space: inherit;
-				}
-			}
-
-			.select-value {
-				position: static;
-				padding: 0;
-			}
-
-			.select-input {
-				position: absolute;
-			}
-
-			.select-arrow-container {
-				margin-right: 0;
-			}
-
-			.select-arrow {
-				background: image-url("bg-icons/16/chevron-11-down-light.svg");
-			}
-
-			.select-menu-outer {
-				padding: $space-xs 0;
-				left: 0;
-				right: 0;
-			}
-
-			.select-option:not(.select-divider) {
-				padding: $space-min $input-btn-padding-x-lg;
-
-				&:last-child {
-					color: $link-color;
-				}
-			}
-		}
-	}
-
-	.btn-edit-bibliography {
-		@media print {
-			display: none;
-		}
-	}
+	
 
 	.read-only & {
 		border-top: none;

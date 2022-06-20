@@ -54,11 +54,11 @@
 			padding-left: $space-xs;
 
 			> *:not(:first-child) {
-				margin-left: $space-min * 0.5;
+				margin-left: $space-min / 2;
 			}
 
 			> *:not(:last-child) {
-				margin-right: $space-min * 0.5;
+				margin-right: $space-min / 2;
 			}
 		}
 	}
@@ -74,29 +74,30 @@
 				max-width: 100%; // Fix truncation
 			}
 
-			.select-component {
+			// Select
+			.Select {
 				&:hover {
-					.select-control {
+					.Select-control {
 						color: $link-color;
 					}
 
-					.select-arrow {
+					.Select-arrow {
 						background: url("/static/images/bg-icons/16/chevron-11-down-secondary.svg");
 					}
 				}
 
 				&.is-focused {
-					.select-control {
+					.Select-control {
 						box-shadow: none;
 						color: $secondary;
 					}
 
-					.select-arrow {
+					.Select-arrow {
 						background: url("/static/images/bg-icons/16/chevron-11-down-secondary.svg");
 					}
 				}
 
-				.select-control {
+				.Select-control {
 					cursor: pointer;
 					border-color: transparent;
 					border-width: $input-border-width 0;
@@ -108,30 +109,30 @@
 					}
 				}
 
-				.select-multi-value-wrapper {
+				.Select-multi-value-wrapper {
 					flex: 0 0 auto;
 					max-width: 100%; // Fix truncation
 				}
 
-				.select-value {
+				.Select-value {
 					flex: 0 0 auto;
 					position: static;
 					padding: 0;
 					max-width: 100%; // Fix truncation
 				}
 
-				.select-input {
+				.Select-input {
 					position: absolute;
 				}
 
-				.select-arrow-container {
+				.Select-arrow-zone {
 					@media (min-width: $bp-md) {
 						order: -1;
 						margin: 0;
 					}
 				}
 
-				.select-arrow {
+				.Select-arrow {
 					margin-left: $space-min;
 					background: url("/static/images/bg-icons/16/chevron-11-down-777.svg");
 
@@ -141,14 +142,14 @@
 					}
 				}
 
-				.select-menu-outer {
+				.Select-menu-outer {
 					text-align: left;
 					width: auto;
 					white-space: nowrap;
 					right: auto;
 				}
 
-				.select-option:not(.select-divider) {
+				.Select-option {
 					padding: $input-btn-padding-y-sm $input-btn-padding-x-lg;
 				}
 			}
@@ -159,11 +160,11 @@
 
 			@media (min-width: $bp-md) {
 				> *:not(:first-child) {
-					margin-left: $space-min * 0.5;
+					margin-left: $space-min / 2;
 				}
 
 				> *:not(:last-child) {
-					margin-right: $space-min * 0.5;
+					margin-right: $space-min / 2;
 				}
 			}
 
@@ -194,7 +195,7 @@
 
 				@media (min-width: $bp-md) {
 					flex: 0 0 auto;
-					margin-right: $space-min * 0.5;
+					margin-right: $space-min / 2;
 
 					&:last-child {
 						margin-right: 0;
