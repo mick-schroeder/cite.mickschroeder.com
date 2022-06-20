@@ -4,7 +4,7 @@ const cheerio = require('cheerio');
 const config = require('config');
 const fs = require('fs-extra');
 const Handlebars = require('handlebars');
-const marked = require('marked');
+const { marked } = require('marked');
 const path = require('path');
 
 Handlebars.registerHelper('json', context => JSON.stringify(context));
@@ -36,6 +36,7 @@ const buildFaqPage = async () => {
 	console.log('faq page generated');
 };
 
+
 const buildTermsPage = async () => {
 	const termsMarkdown = await fs.readFile(path.join(__dirname, '..', 'src', 'html', 'terms.md'));
 	const termsTemplate = await fs.readFile(path.join(__dirname, '..', 'src', 'html', 'terms.hbs'));
@@ -48,21 +49,25 @@ const buildTermsPage = async () => {
 	await fs.writeFile(termsdstFile, output);
 	console.log('terms page generated');
 };
-
-const buildIndexPage = async () => {
+const buildPage = async pageName => {
 	const indexConfig = config.get('indexConfig');
-	const srcFile = path.join(__dirname, '..', 'src', 'html', 'index.hbs');
-	const dstFile = path.join(__dirname, '..', 'build', 'index.html');
-	const index = await fs.readFile(srcFile);
-	const template = Handlebars.compile(index.toString());
+	const srcFile = path.join(__dirname, '..', 'src', 'html', `${pageName}.hbs`);
+	const dstFile = path.join(__dirname, '..', 'build', pageName);
+	const page = await fs.readFile(srcFile);
+	const template = Handlebars.compile(page.toString());
 	const output = await template({ indexConfig });
 
 	await fs.writeFile(dstFile, output);
-	console.log(`index page generated based on ${config.util.getConfigSources().length} config sources`);
+	console.log(`${pageName} page generated based on ${config.util.getConfigSources().length} config sources`);
 };
 
 (async () => {
 	const dstDir = path.join(__dirname, '..', 'build');
 	await fs.ensureDir(dstDir);
-	await Promise.all([buildIndexPage(), buildFaqPage(), buildTermsPage()]);
+	if(process.env.NODE_ENV?.startsWith('prod')) {
+		// if doing a production build skip hydrate.hbs 
+		await Promise.all([buildPage('index'), buildFaqPage()]);
+	} else {
+		await Promise.all([buildPage('index'), buildPage('hydrate'), buildFaqPage(), buildTermsPage()]);
+	}
 })();

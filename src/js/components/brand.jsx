@@ -1,20 +1,13 @@
-'use strict';
+import React, { memo } from 'react';
 
-const React = require('react');
-const { Link } = require('react-router-dom');
+const Brand = () => (
+	<React.Fragment>
+		<img className="brand" src="/static/images/icon-cite.png" alt="Logo" />	
+		<h1 className="brand">
+				Mick Schroeder's<br/>
+				Citation Generator		
+		</h1>
+	</React.Fragment>
+);
 
-class Brand extends React.PureComponent {
-	render() {
-		return (
-			<React.Fragment>
-				<img className="brand" src="/static/images/icon-cite.png" alt="Logo" />					
-				<h1 className="brand">
-					Mick Schroeder's<br/>
-					Citation Generator
-				</h1>
-			</React.Fragment>
-		);
-	}
-}
-
-module.exports = Brand;
+export default memo(Brand);

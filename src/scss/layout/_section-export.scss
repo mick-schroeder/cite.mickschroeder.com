@@ -7,6 +7,11 @@
 	h2 {
 		font-weight: 800;
 	}
+
+	@media print {
+		display: none;
+	}
+
 	.write & {
 		padding-top: $section-padding-mobile; // t height
 

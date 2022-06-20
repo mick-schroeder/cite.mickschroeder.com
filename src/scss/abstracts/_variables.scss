@@ -27,6 +27,8 @@ $orange: #e2620c;
 $cornflower: #0e90db;
 $mahogany: #e94b1b;
 $avocado: #5f9800;
+$asphalt:       #7a8799;
+$asphalt-light: #dadee3;
 
 $primary:   $red;
 $secondary: $blue;
@@ -44,7 +46,11 @@ $shade-4: #bbb;
 $shade-5: #999;
 $shade-6: #777;
 $shade-7: #222;
+$shade-8:  #333;
+$shade-9:  #111;
+$shade-10: #000;
 
+$focus-color: $secondary;
 
 //
 // Body
@@ -66,6 +72,9 @@ $font-family-base: $font-family-sans-serif;
 
 $font-size-base: 16px;
 $line-height-base: 1.5;
+
+$line-height-large: 26px;
+$line-height-large-touch: 42px;
 
 $font-size-lg: 24px;
 $font-size-sm: 14px;
@@ -91,6 +100,8 @@ $lead-font-size:        24px;
 $lead-font-size-mobile: 20px;
 $lead-font-weight:      400;
 
+$text-color: $shade-9;
+
 
 //
 // Space
@@ -105,6 +116,8 @@ $space-xl:   32px;
 $space-xxl:  48px;
 $space-xxxl: 64px;
 $space-max:  96px;
+
+
 
 
 //
@@ -140,13 +153,21 @@ $border-radius:    10px;
 $border-radius-sm: 7px;
 $border-radius-lg: 10px;
 
+$padding-x-sm: $space-sm;
+$padding-x-md: $space-md;
+
+$default-padding-x:       $space-sm;
+$default-padding-x-touch: $space-md;
+
 $border-width: 1px;
 
 $menu-bg: $body-bg;
 $menu-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 3px 8px rgba(0, 0, 0, 0.2);
 $menu-border-radius: $border-radius-sm;
 $menu-item-hover-bg: $shade-1;
-
+$menu-item-selected-bg: $shade-2;
+$menu-devider: $shade-2;
+$menu-no-results-color: $shade-5;
 
 //
 // Z-index master list
@@ -237,6 +258,13 @@ $input-border-width: $border-width;
 
 $input-transition: 0.15s ease;
 
+// Forms
+$form-bg-touch:             $shade-1;
+$input-color:               $text-color;
+$input-bg:                  $body-bg;
+$input-border-color-touch:  $shade-5;
+$checkbox-border-touch:     $shade-4;
+$checkbox-checked-bg-touch: $secondary;
 
 //
 // Icon
@@ -244,6 +272,7 @@ $input-transition: 0.15s ease;
 
 $icon-color: $secondary;
 $icon-spin-size: $space-xl;
+$icon-spin-size-sm: $space-md;
 
 
 //
@@ -254,6 +283,20 @@ $outline-color:  $secondary;
 $outline-width:  3px;
 $outline-offset: 2px;
 
+// Editable
+// --------------------------------------------------
+
+$editable-border-width:  $outline-width;
+$editable-padding:       2px;
+$editable-border-radius: 3px;
+
+$editable-color:             $text-color;
+$editable-bg:                $shade-0;
+$editable-border-color:      $secondary;
+$editable-hover-percent:     0.04;
+$editable-hover-bg:          rgba($shade-10, $editable-hover-percent);
+$editable-backdrop-bg:       $shade-1;
+$editable-backdrop-hover-bg: darken($shade-1, ($editable-hover-percent * 100%));
 
 //
 // Icons
@@ -385,3 +428,16 @@ $about-color: $shade-0;
 
 $navbar-padding-y: 0.5em;
 $navbar-padding-x: 0.5em;
+// Metadata list
+$metadata-list-offset:             33%;
+$key-color:                $shade-6;
+$handle-color-touch:       $shade-4;
+$handle-color-mouse:       $shade-6;
+$metadata-heading-color:   $shade-5;
+$metadata-separator-color: $shade-3;
+
+// Creators
+$creators-last-name-max-width:       67%;
+$creators-value-padding-right-touch: 31px;
+$creator-color-transition: .5s cubic-bezier(1,0,.5,.5);
+$creator-color-transition-delay: .1s;

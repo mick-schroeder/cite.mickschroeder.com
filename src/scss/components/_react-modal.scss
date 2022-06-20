@@ -2,6 +2,12 @@
 // React-modal
 //
 
+.ReactModalPortal {
+	@media print {
+		display: none;
+	}
+}
+
 .ReactModal__Body--open {
 	overflow: hidden;
 }
@@ -131,11 +137,11 @@
 
 	.btn {
 		&:not(:first-child) {
-			margin-left: $space-sm / 2;
+			margin-left: $space-sm * 0.5;
 		}
 
 		&:not(:last-child) {
-			margin-right: $space-sm / 2;
+			margin-right: $space-sm * 0.5;
 		}
 	}
 }
