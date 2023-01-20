@@ -289,7 +289,7 @@ class About extends React.PureComponent {
 						onClick={ this.handleClick.bind(this) }
 						className="btn-lg btn-secondary"
 					>
-						Cool. Cool-cool-cool. Let’s start!
+						Sounds Good. Let’s start!
 					</Button>
 					<p className="support"></p>
 			</section>
