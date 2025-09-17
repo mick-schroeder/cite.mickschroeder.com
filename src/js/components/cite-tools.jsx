@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { Button } from './ui/button';
+import { cn } from '../lib/utils';
 import { Loader2 } from 'lucide-react';
 import { usePrevious } from 'web-common/hooks';
 import {
@@ -15,6 +16,7 @@ import {
 } from './ui/card';
 import Brand from './brand';
 import StyleSelector from './style-selector';
+import { Quote,FilePenLine } from 'lucide-react';
 
 const canCancel = typeof(AbortController) === 'function';
 
@@ -92,16 +94,21 @@ const CiteTools = ({ identifier, isTranslating, onEditorOpen, onTranslationCance
 			<Card>
 				<CardHeader className="grid gap-4 md:grid-cols-[1fr_auto] md:items-start">
 					<div className="text-left">
-						<CardTitle>
-							<Brand />
+						<CardTitle className="text-left pb-2 text-2xl font-bold">
+						<FormattedMessage id="zbib.brand.description" defaultMessage="What would you like to cite?" />
 						</CardTitle>
-						<CardDescription>
-							<FormattedMessage id="zbib.brand.description" defaultMessage="Free and open-source software that automatically suggests citations and helps write a bibliography for you." />
+						<CardDescription className="">
+							<FormattedMessage id="zbib.brand.description" defaultMessage="Choose one of 10,000+ citation styles and enter your reference below to start creating your bibliography" />
 						</CardDescription>
 					</div>
-					<CardAction className="mt-auto">
-						<Button variant="outline" size="sm" onClick={ onEditorOpen }>
-							<FormattedMessage id="zbib.manualEntry" defaultMessage="Manual Entry" />
+					<CardAction className="">
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={ onEditorOpen }
+							className="gap-2"
+						>
+							<FilePenLine /><FormattedMessage id="zbib.manualEntry" defaultMessage="Manual Entry" />
 						</Button>
 					</CardAction>
 				</CardHeader>
@@ -128,7 +135,7 @@ const CiteTools = ({ identifier, isTranslating, onEditorOpen, onTranslationCance
 							<input
 								aria-label={ prompt }
 								autoFocus
-								className="h-11 w-full rounded-md border border-input bg-background px-4 pr-12 text-base text-foreground shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-60"
+								className="id-input h-11 w-full rounded-md border border-input bg-background px-4 pr-12 text-base text-foreground shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-60"
 								disabled={ isTranslating && !canCancel }
 								onChange={ handleInputChange }
 								onKeyDown={ handleInputKeyDown }
@@ -141,25 +148,38 @@ const CiteTools = ({ identifier, isTranslating, onEditorOpen, onTranslationCance
 								type="search"
 								value={ entry }
 							/>
-							{ isTranslating ? (
-								<Loader2 className="pointer-events-none absolute right-3 top-1/2 size-5 -translate-y-1/2 animate-spin text-muted-foreground" aria-hidden="true" />
-							) : null }
+								{ isTranslating ? (
+									<div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+										<Loader2 className="size-4 animate-spin text-muted-foreground" aria-hidden="true" />
+									</div>
+								) : null }
 						</div></div>
 					</div>
 				</CardContent>
 				<CardFooter className="flex justify-center">
+					
 					<Button
 						variant={ actionVariant }
 						size="lg"
-						className="w-auto"
+						className={ cn('w-full gap-2 sm:w-auto') }
 						disabled={ isActionDisabled }
 						onClick={ handleCiteOrCancel }
 						aria-busy={ isTranslating && !canCancel }
 					>
-						{ (isTranslating && canCancel) ? (
-							<FormattedMessage id="zbib.general.cancel" defaultMessage="Cancel" />
+						{ isTranslating ? (
+							canCancel ? (
+								<FormattedMessage id="zbib.general.cancel" defaultMessage="Cancel" />
+							) : (
+								<>
+									<Loader2 className="size-4 animate-spin" aria-hidden="true" />
+									<FormattedMessage id="zbib.general.cite" defaultMessage="Suggest Citation" />
+								</>
+							)
 						) : (
-							<FormattedMessage id="zbib.general.cite" defaultMessage="Suggest Citation" />
+							<span className="inline-flex items-center gap-2">
+								<Quote />
+								<FormattedMessage id="zbib.general.cite" defaultMessage="Suggest Citation" />
+							</span>
 						) }
 					</Button>
 				</CardFooter>

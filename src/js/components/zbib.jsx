@@ -12,6 +12,7 @@ import {
 	NavigationMenuLink,
 } from './ui/navigation-menu';
 import { buttonVariants } from './ui/button';
+import { Badge } from './ui/badge';
 
 import About from './about';
 import BibliographySection from './bibliographySection';
@@ -51,7 +52,7 @@ const ZBib = props => {
 	const { focusNext, focusPrev, receiveFocus, receiveBlur } = useFocusManager(navRef);
 	const navLinkClass = cx(
 		buttonVariants({ variant: 'ghost', size: 'sm' }),
-		'px-3 text-muted-foreground'
+		'px-3 text-muted-foreground hover:text-foreground transition-colors rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background'
 	);
 
 	const handleKeyDown = useCallback(ev => {
@@ -71,7 +72,7 @@ const ZBib = props => {
 
 	return (
         <div className={ cx(className) }>
-			<div className="zotero-bib-inner container mx-auto lg:max-w-screen-lg">
+			<div className="zotero-bib-inner container mx-auto max-w-screen-lg px-4 md:px-6">
 				<div className="messages">
 					{ props.messages.map(message => (
 						<Message
@@ -87,7 +88,7 @@ const ZBib = props => {
 				!props.isReadOnly && (
 					<section className="section section-cite">
 						<nav
-							className="meta-nav flex items-center gap-2"
+							className="meta-nav flex items-center gap-2 mb-4 md:mb-6"
 							aria-label={ navLabel }
 							tabIndex={0}
 							ref={ navRef }
@@ -95,8 +96,8 @@ const ZBib = props => {
 							onBlur={ receiveBlur }
 							onKeyDown={ handleKeyDown }
 						>
-								<NavigationMenu className="ml-auto rounded-lg border border-border bg-background/70 px-1 py-1 shadow-sm backdrop-blur-sm" viewport={ false }>
-									<NavigationMenuList className="justify-end gap-2">
+								<NavigationMenu className="ml-auto rounded-lg border border-border bg-background/70 px-2 py-1 shadow-sm backdrop-blur-sm" viewport={ false }>
+									<NavigationMenuList className="justify-end gap-1 md:gap-2">
 										<NavigationMenuItem>
 											<NavigationMenuLink
 												asChild
@@ -109,18 +110,37 @@ const ZBib = props => {
 											</NavigationMenuLink>
 										</NavigationMenuItem>
 										<NavigationMenuItem>
-											<NavigationMenuLink
-												href="https://www.zotero.org"
-												className={ navLinkClass }
-												tabIndex={ -2 }
-											>
-												Zotero
+											<NavigationMenuLink asChild className={ navLinkClass } tabIndex={ -2 }>
+												<a href="https://www.mickschroeder.com" target="_blank" rel="noreferrer noopener">
+													Mick Schroeder
+												</a>
 											</NavigationMenuLink>
 										</NavigationMenuItem>
 									</NavigationMenuList>
 								</NavigationMenu>
 						</nav>
-						<div>
+						<div className="py-6 flex justify-center px-4">
+							<Badge variant="secondary" className="rounded-full border border-border px-6 py-2 transition-colors">
+         					  <span className="inline-flex items-center ">
+								<img src="/static/images/icon-cite.png" className="h-6 w-auto mr-2" alt="" aria-hidden="true" />
+								<a
+								href="https://www.mickschroeder.com"
+								target="_blank"
+								rel="noreferrer"
+								className="text-xl font-black tracking-tighter self-center whitespace-nowrap text-foreground/60 hover:text-foreground hover:underline transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+								>
+								Mick Schroeder's
+								</a>
+								<a href="/" className="inline-flex items-center hover:underline rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background">
+									<span className="ml-2 text-xl font-black tracking-tighter self-center whitespace-nowrap text-foreground">
+									Citation Generator
+									</span>
+								</a>
+							</span>
+        					</Badge>
+						</div>
+						<div className="space-y-6">
+							 
 							<CiteTools { ...pick(props, ['isTranslating', 'onEditorOpen', 'onTranslationCancel', 'onTranslationRequest', 'identifier', 'citationStyle', 'citationStyles', 'onCitationStyleChanged']) } />
 						</div>
 					</section>
@@ -141,10 +161,10 @@ const ZBib = props => {
 					!props.isReadOnly && (
 						<section
 							aria-labelledby="link-to-this-version"
-							className="section section-link">
+							className="section section-link space-y-4">
 							<div className="container">
 								<div className="header-wrapper">
-									<h2 id="link-to-this-version">
+									<h2 id="link-to-this-version" className="scroll-m-20 text-2xl font-semibold tracking-tight">
 										<FormattedMessage id="zbib.linkToThis" defaultMessage="Link to this version" />
 									</h2>
 									<WhatsThis />
@@ -218,7 +238,7 @@ const ZBib = props => {
 					>
 						<div className="modal-content" tabIndex={ -1 }>
 							<div className="modal-header">
-								<h4 className="modal-title text-truncate">
+								<h4 className="modal-title text-truncate text-lg font-semibold">
 									{ saveToZotero }
 								</h4>
 								<LegacyButton

@@ -14,7 +14,7 @@
 .modal-backdrop {
 	position: fixed;
 	inset: 0;
-	background-color: variables.$modal-backdrop-bg;
+	//background-color: variables.$modal-backdrop-bg;
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch; // Momentum scrolling for iOS
 	z-index: variables.$z-index-modal;
@@ -48,14 +48,14 @@
 		.icon-spin {
 			width: variables.$icon-spin-size;
 			height: variables.$icon-spin-size;
-			color: variables.$modal-icon-spin-color;
+			//color: variables.$modal-icon-spin-color;
 		}
 	}
 }
 
 .modal-content {
 	width: 100%;
-	background: variables.$modal-content-bg;
+	//background: variables.$modal-content-bg;
 }
 
 .modal-header {

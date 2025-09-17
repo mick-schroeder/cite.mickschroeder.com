@@ -1,10 +1,11 @@
-import { Fragment, memo, useCallback, useId, useRef } from 'react';
+import { Fragment, memo, useCallback, useEffect, useId, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-//import { Button } from 'web-common/components';
 import { Button } from './ui/button';
 import { formatBib, formatFallback } from 'web-common/cite';
 import { FormattedMessage } from 'react-intl';
 import { useFocusManager } from 'web-common/hooks';
+import copy from 'copy-to-clipboard';
+import { CircleX, Trash, SquarePen, Copy, Check } from 'lucide-react';
 import {
   Card,
   CardAction,
@@ -13,7 +14,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from './ui/card'
+} from './ui/card';
 const Review = ({ isTranslating, itemUnderReview, onReviewEdit, onReviewDelete, onReviewDismiss, styleHasBibliography }) => {
 	const { bibliographyItems, bibliographyMeta } = itemUnderReview || {};
 	const id = useId();
@@ -21,6 +22,8 @@ const Review = ({ isTranslating, itemUnderReview, onReviewEdit, onReviewDelete, 
 		styleHasBibliography ? formatBib(bibliographyItems, bibliographyMeta) : formatFallback(bibliographyItems) :
 		'';
 	const toolbarRef = useRef(null);
+	const copyResetTimeout = useRef(null);
+	const [isCopied, setIsCopied] = useState(false);
 	const { focusNext, focusPrev, receiveFocus, receiveBlur } = useFocusManager(toolbarRef);
 
 	const handleKeyDown = useCallback(ev => {
@@ -50,6 +53,65 @@ const Review = ({ isTranslating, itemUnderReview, onReviewEdit, onReviewDelete, 
 		onReviewEdit(ev);
 	}, [onReviewEdit, resetFocus]);
 
+	const stripHtml = useCallback((markup) => {
+		const container = document.createElement('div');
+		container.innerHTML = markup;
+		return container.textContent || container.innerText || '';
+	}, []);
+
+	const handleReviewCopyCitation = useCallback(async () => {
+		if (!html) {
+			return;
+		}
+
+		const plain = stripHtml(html);
+		let copied = false;
+
+		if (typeof navigator !== 'undefined' && navigator.clipboard?.write && typeof window !== 'undefined' && window.ClipboardItem) {
+			try {
+				await navigator.clipboard.write([
+					new window.ClipboardItem({
+						'text/html': new Blob([html], { type: 'text/html' }),
+						'text/plain': new Blob([plain], { type: 'text/plain' }),
+					}),
+				]);
+				copied = true;
+			} catch (_) {
+				copied = false;
+			}
+		}
+
+		if (!copied) {
+			copied = copy(plain);
+		}
+
+		if (copied) {
+			setIsCopied(true);
+			if (copyResetTimeout.current) {
+				clearTimeout(copyResetTimeout.current);
+			}
+			copyResetTimeout.current = setTimeout(() => {
+				setIsCopied(false);
+				copyResetTimeout.current = null;
+			}, 1500);
+			resetFocus();
+		}
+	}, [html, stripHtml, resetFocus]);
+
+	useEffect(() => {
+		setIsCopied(false);
+		if (copyResetTimeout.current) {
+			clearTimeout(copyResetTimeout.current);
+			copyResetTimeout.current = null;
+		}
+	}, [itemUnderReview]);
+
+	useEffect(() => () => {
+		if (copyResetTimeout.current) {
+			clearTimeout(copyResetTimeout.current);
+		}
+	}, []);
+
 	return (
         <section
 			aria-labelledby={ id }
@@ -73,6 +135,7 @@ const Review = ({ isTranslating, itemUnderReview, onReviewEdit, onReviewDelete, 
 							onClick={handleReviewDismiss }
 							variant="outline"
 						>
+							<CircleX className="size-4" aria-hidden="true" />
 							<FormattedMessage id="zbib.general.close" defaultMessage="Close" />
 						</Button></CardAction>
   </CardHeader>
@@ -97,27 +160,43 @@ const Review = ({ isTranslating, itemUnderReview, onReviewEdit, onReviewDelete, 
 							onClick={ handleReviewDelete }
 							variant="destructive"
 						>
+							<Trash className="size-4" aria-hidden="true" />
 							<FormattedMessage id="zbib.general.delete" defaultMessage="Delete" />
 						</Button>
 						<Button
 							tabIndex={-2}
 							onClick={ handleReviewEdit }
 						>
+							<SquarePen className="size-4" aria-hidden="true" />
 							<FormattedMessage id="zbib.general.edit" defaultMessage="Edit" />
 						</Button>
 						<Button
 							tabIndex={-2}
-							onClick={ handleReviewDelete }
-							variant="secondary"
+							onClick={ handleReviewEdit }
+							variant="outline"
 						>
+							<Copy className="size-4" aria-hidden="true" />
 							<FormattedMessage id="zbib.review.copyFilename" defaultMessage="Copy Filename" />
 						</Button>
 						<Button
 							tabIndex={-2}
-							onClick={ handleReviewDelete }
-							variant="secondary"
+							type="button"
+							variant="outline"
+							onClick={ handleReviewCopyCitation }
+							aria-live="polite"
+							className="flex items-center gap-2"
 						>
-							<FormattedMessage id="zbib.review.copyCitation" defaultMessage="Copy Citation" />
+							{isCopied ? (
+								<>
+									<Check className="size-4" aria-hidden="true" />
+									<FormattedMessage id="zbib.review.copiedCitation" defaultMessage="Citation Copied" />
+								</>
+							) : (
+								<>
+									<Copy className="size-4" aria-hidden="true" />
+									<FormattedMessage id="zbib.review.copyCitation" defaultMessage="Copy Citation" />
+								</>
+							)}
 						</Button>
 					</div>
 				</div>
