@@ -11,7 +11,6 @@ import Confirmation from './confirmation';
 import DeleteAllButton from './delete-all-button';
 import Editable from './ui/editable';
 import PlaceholderBibliography from './placeholder-bibliography';
-import StyleSelector from './style-selector';
 import ExportTools from './export-tools';
 
 const BibliographySection = props => {
@@ -133,9 +132,9 @@ const BibliographySection = props => {
 								</h2>
 							)
 						}
-						{
+						{/* {
 							!isReadOnly && <StyleSelector { ...pick(props, ['citationStyle', 'citationStyles', 'onCitationStyleChanged']) } />
-						}
+						} */}
 						{ (isHydrated && !isReady) ? (
 							<PlaceholderBibliography itemCount={ props.hydrateItemsCount } />
 						) : isReady ? (

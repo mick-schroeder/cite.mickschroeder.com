@@ -1,10 +1,19 @@
 import { Fragment, memo, useCallback, useId, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'web-common/components';
+//import { Button } from 'web-common/components';
+import { Button } from './ui/button';
 import { formatBib, formatFallback } from 'web-common/cite';
 import { FormattedMessage } from 'react-intl';
 import { useFocusManager } from 'web-common/hooks';
-
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from './ui/card'
 const Review = ({ isTranslating, itemUnderReview, onReviewEdit, onReviewDelete, onReviewDismiss, styleHasBibliography }) => {
 	const { bibliographyItems, bibliographyMeta } = itemUnderReview || {};
 	const id = useId();
@@ -44,7 +53,7 @@ const Review = ({ isTranslating, itemUnderReview, onReviewEdit, onReviewDelete, 
 	return (
         <section
 			aria-labelledby={ id }
-			className="section section-review review"
+			className="pt-10"
 		>
 			{ isTranslating ? (
 					<h2 id={ id }>
@@ -52,13 +61,29 @@ const Review = ({ isTranslating, itemUnderReview, onReviewEdit, onReviewDelete, 
 					</h2>
 			) : (
 			<Fragment>
-				<h2 className="sr-only" id={ id }>
+				<Card>
+  <CardHeader>
+    <CardTitle><FormattedMessage id="zbib.review.title" defaultMessage="Review Citation" /></CardTitle>
+    <CardDescription><h2 className="sr-only" id={ id }>
 					<FormattedMessage id="zbib.review.newItem" defaultMessage="New item…" />
-				</h2>
-				<div className="container">
-					<div dangerouslySetInnerHTML={ { __html: html } } />
+				</h2></CardDescription>
+    <CardAction>	<Button
+							tabIndex={-2}
+							className=""
+							onClick={handleReviewDismiss }
+							variant="outline"
+						>
+							<FormattedMessage id="zbib.general.close" defaultMessage="Close" />
+						</Button></CardAction>
+  </CardHeader>
+  <CardContent>
+    <div className="background-background p-6 rounded-lg border shadow-md" dangerouslySetInnerHTML={ { __html: html } } />
+  </CardContent>
+  <CardFooter>
+    <div className="container">
+					
 					<div
-						className="actions"
+						className="flex gap-2 justify-center"
 						role="toolbar"
 						tabIndex={ 0 }
 						ref={ toolbarRef }
@@ -66,29 +91,40 @@ const Review = ({ isTranslating, itemUnderReview, onReviewEdit, onReviewDelete, 
 						onFocus={ receiveFocus }
 						onBlur={ receiveBlur }
 					>
+					
 						<Button
 							tabIndex={-2}
-							className="btn-outline-secondary btn-min-width"
-							onClick={handleReviewDismiss }
-						>
-							<FormattedMessage id="zbib.general.close" defaultMessage="Close" />
-						</Button>
-						<Button
-							tabIndex={-2}
-							className="btn-outline-secondary btn-min-width"
 							onClick={ handleReviewDelete }
+							variant="destructive"
 						>
 							<FormattedMessage id="zbib.general.delete" defaultMessage="Delete" />
 						</Button>
 						<Button
 							tabIndex={-2}
-							className="btn-secondary btn-min-width"
 							onClick={ handleReviewEdit }
 						>
 							<FormattedMessage id="zbib.general.edit" defaultMessage="Edit" />
 						</Button>
+						<Button
+							tabIndex={-2}
+							onClick={ handleReviewDelete }
+							variant="secondary"
+						>
+							<FormattedMessage id="zbib.review.copyFilename" defaultMessage="Copy Filename" />
+						</Button>
+						<Button
+							tabIndex={-2}
+							onClick={ handleReviewDelete }
+							variant="secondary"
+						>
+							<FormattedMessage id="zbib.review.copyCitation" defaultMessage="Copy Citation" />
+						</Button>
 					</div>
 				</div>
+  </CardFooter>
+</Card>
+				
+				
 			</Fragment>
 			)}
 		</section>

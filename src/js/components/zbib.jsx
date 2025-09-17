@@ -2,9 +2,16 @@ import { Fragment, memo, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { Button, Icon } from 'web-common/components';
+import { Button as LegacyButton, Icon } from 'web-common/components';
 import { pick } from 'web-common/utils';
 import { useFocusManager } from 'web-common/hooks';
+import {
+	NavigationMenu,
+	NavigationMenuList,
+	NavigationMenuItem,
+	NavigationMenuLink,
+} from './ui/navigation-menu';
+import { buttonVariants } from './ui/button';
 
 import About from './about';
 import BibliographySection from './bibliographySection';
@@ -42,6 +49,10 @@ const ZBib = props => {
 	const navLabel = intl.formatMessage({ id: 'zbib.navLabel', defaultMessage: 'Site Navigation' });
 	const navRef = useRef(null);
 	const { focusNext, focusPrev, receiveFocus, receiveBlur } = useFocusManager(navRef);
+	const navLinkClass = cx(
+		buttonVariants({ variant: 'ghost', size: 'sm' }),
+		'px-3 text-muted-foreground'
+	);
 
 	const handleKeyDown = useCallback(ev => {
 		if (ev.key === 'ArrowRight') {
@@ -73,28 +84,47 @@ const ZBib = props => {
 				</div>
 
 				{
-					!props.isReadOnly && (
-						<section className="section section-cite">
-							<nav
-								className="meta-nav"
-								aria-label={navLabel}
-								tabIndex={0}
-								ref={navRef}
-								onFocus={receiveFocus}
-								onBlur={receiveBlur}
-								onKeyDown={handleKeyDown}
-							>
-								<a tabIndex={-2} onClick={ props.onHelpClick }>
-									<FormattedMessage id="zbib.help" defaultMessage="Help" />
-								</a>
-								<a tabIndex={-2} href="https://www.zotero.org">Zotero</a>
-							</nav>
-							<div className="">
-								
-								<CiteTools { ...pick(props, ['isTranslating', 'onEditorOpen', 'onTranslationCancel', 'onTranslationRequest', 'identifier']) } />
-							</div>
-						</section>
-					)
+				!props.isReadOnly && (
+					<section className="section section-cite">
+						<nav
+							className="meta-nav flex items-center gap-2"
+							aria-label={ navLabel }
+							tabIndex={0}
+							ref={ navRef }
+							onFocus={ receiveFocus }
+							onBlur={ receiveBlur }
+							onKeyDown={ handleKeyDown }
+						>
+								<NavigationMenu className="ml-auto rounded-lg border border-border bg-background/70 px-1 py-1 shadow-sm backdrop-blur-sm" viewport={ false }>
+									<NavigationMenuList className="justify-end gap-2">
+										<NavigationMenuItem>
+											<NavigationMenuLink
+												asChild
+												className={ navLinkClass }
+												tabIndex={ -2 }
+											>
+												<button type="button" onClick={ props.onHelpClick }>
+													<FormattedMessage id="zbib.help" defaultMessage="Help" />
+												</button>
+											</NavigationMenuLink>
+										</NavigationMenuItem>
+										<NavigationMenuItem>
+											<NavigationMenuLink
+												href="https://www.zotero.org"
+												className={ navLinkClass }
+												tabIndex={ -2 }
+											>
+												Zotero
+											</NavigationMenuLink>
+										</NavigationMenuItem>
+									</NavigationMenuList>
+								</NavigationMenu>
+						</nav>
+						<div>
+							<CiteTools { ...pick(props, ['isTranslating', 'onEditorOpen', 'onTranslationCancel', 'onTranslationRequest', 'identifier', 'citationStyle', 'citationStyles', 'onCitationStyleChanged']) } />
+						</div>
+					</section>
+				)
 				}
 				{(!props.isReadOnly && (props.isTranslating || props.itemUnderReview)) && (
 					<Review { ...pick(props, ['isTranslating', 'itemUnderReview', 'onReviewEdit', 'onReviewDelete', 'onReviewDismiss', 'styleHasBibliography']) } />
@@ -191,13 +221,13 @@ const ZBib = props => {
 								<h4 className="modal-title text-truncate">
 									{ saveToZotero }
 								</h4>
-								<Button
+								<LegacyButton
 									icon
 									className="close"
 									onClick={ props.onSaveToZoteroHide }
 								>
 									<Icon type={ '24/remove' } width="24" height="24" />
-								</Button>
+								</LegacyButton>
 							</div>
 							<div className="modal-body">
 								<p>

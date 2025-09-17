@@ -57,6 +57,7 @@
     "@formatjs/intl-getcanonicallocales": "^2.5.5",
     "@formatjs/intl-locale": "^4.2.11",
     "@formatjs/intl-pluralrules": "^5.4.4",
+    "@radix-ui/react-navigation-menu": "^1.2.14",
     "@radix-ui/react-slot": "^1.1.0",
     "balanced-match": "^3.0.1",
     "class-variance-authority": "^0.7.1",

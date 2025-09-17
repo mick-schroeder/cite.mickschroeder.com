@@ -126,3 +126,47 @@
 
 }
 }
+
+
+@layer components {
+  .select-component {
+    @apply relative w-full min-w-[220px] rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm transition-colors focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background;
+  }
+  .select-component .select-control {
+    @apply flex w-full items-center gap-2;
+  }
+  .select-component .select-placeholder {
+    @apply text-muted-foreground;
+  }
+  .select-component .select-value-label {
+    @apply text-foreground;
+  }
+  .select-component .select-arrow-container {
+    @apply ml-auto text-muted-foreground transition-transform;
+  }
+  .select-component.is-open .select-arrow-container {
+    @apply rotate-180;
+  }
+  .select-menu-outer {
+    @apply absolute left-0 right-0 z-50 mt-2 min-w-[12rem] overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-xl;
+  }
+  .select-menu {
+    @apply max-h-60 overflow-y-auto py-1;
+  }
+  .select-option {
+    @apply flex cursor-pointer select-none items-center rounded-sm px-3 py-2 text-sm transition-colors;
+  }
+  .select-option:hover,
+  .select-option.is-focused {
+    @apply bg-accent text-accent-foreground;
+  }
+  .select-option.is-selected {
+    @apply bg-primary text-primary-foreground;
+  }
+  .select-option.select-divider {
+    @apply mx-1 my-1 h-px bg-border p-0;
+  }
+  .select-noresults {
+    @apply px-3 py-2 text-sm text-muted-foreground;
+  }
+}
