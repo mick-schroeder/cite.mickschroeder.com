@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "preserve",
+    "allowJs": false,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "noEmitOnError": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "types": [
+      "react",
+      "react-dom",
+      "node"
+    ],
+    "paths": {
+      "web-common/*": [
+        "modules/web-common/*"
+      ],
+      "@/*": [
+        "src/js/*"
+      ],
+      "@/lib/*": [
+        "src/js/lib/*"
+      ]
+    },
+    "resolveJsonModule": true,
+    "noEmit": false,
+    "baseUrl": "."
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
+}

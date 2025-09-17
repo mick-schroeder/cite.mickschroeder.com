@@ -11,6 +11,7 @@ import webWorkerLoader from 'rollup-plugin-web-worker-loader';
 import terser from '@rollup/plugin-terser';
 import alias from '@rollup/plugin-alias';
 import virtual from '@rollup/plugin-virtual';
+import typescript from '@rollup/plugin-typescript';
 import { visualizer } from "rollup-plugin-visualizer";
 
 const isProduction = process.env.NODE_ENV?.startsWith('prod');
@@ -54,7 +55,7 @@ const config = {
 			modulePaths: [path.join(process.cwd(), 'modules')],
 			preferBuiltins: false,
 			mainFields: ['browser', 'main'],
-			extensions: ['.js', '.jsx', '.wasm'],
+			extensions: ['.js', '.jsx', '.ts', '.tsx', '.wasm'],
 		}),
 		json(),
 		wasm(),
@@ -64,10 +65,15 @@ const config = {
 			'Zotero.isNode': false,
 			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV ?? 'development'),
 		}),
+		typescript({
+			tsconfig: './tsconfig.json',
+			compilerOptions: { jsx: 'preserve' },
+		}),
 		babel({
 			// @floating-ui targets Safari >= 12, we target Safari >= 10, so we need to
 			// include @floating-ui in babel transpilation
 			babelrc: false,
+			extensions: ['.js', '.jsx', '.ts', '.tsx'],
 			include: ['src/js/**', 'modules/web-common/**', 'node_modules/@floating-ui/**'],
 			babelHelpers: 'bundled'
 		}),

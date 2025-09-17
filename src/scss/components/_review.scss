@@ -16,15 +16,15 @@
 		min-height: 184px; // Dev
 	}
 
-	.container {
-		padding-top: variables.$space-xl - 7px;
-		padding-bottom: variables.$space-xl;
+	// .container {
+	// 	padding-top: variables.$space-xl - 7px;
+	// 	padding-bottom: variables.$space-xl;
 
-		@media (min-width: variables.$bp-md) {
-			padding-top: variables.$space-xxl - 7px; // Caps height
-			padding-bottom: variables.$space-xxl;
-		}
-	}
+	// 	@media (min-width: variables.$bp-md) {
+	// 		padding-top: variables.$space-xxl - 7px; // Caps height
+	// 		padding-bottom: variables.$space-xxl;
+	// 	}
+	// }
 
 	h2 {
 		position: absolute;

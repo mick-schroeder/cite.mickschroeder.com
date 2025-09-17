@@ -1,9 +1,9 @@
 @use "../abstracts/variables";
 
 body {
-	font-family: variables.$font-family-base;
-	font-size: variables.$font-size-base;
-	line-height: variables.$line-height-base;
+	//font-family: variables.$font-family-base;
+	//font-size: variables.$font-size-base;
+	//line-height: variables.$line-height-base;
 }
 
 h1,
@@ -16,8 +16,8 @@ h4,
 .h4,
 h5,
 .h5 {
-	font-weight: variables.$headings-font-weight;
-	line-height: variables.$headings-line-height;
+	//font-weight: variables.$headings-font-weight;
+	//line-height: variables.$headings-line-height;
 }
 
 h1,
@@ -98,12 +98,12 @@ i {
 
 strong,
 b {
-	font-weight: 600;
+	//font-weight: 600;
 }
 
 .lead {
 	font-size: variables.$lead-font-size-mobile;
-	font-weight: variables.$lead-font-weight;
+	//font-weight: variables.$lead-font-weight;
 	margin-top: 0;
 	letter-spacing: -0.01em;
 	// todo: letter-spacing

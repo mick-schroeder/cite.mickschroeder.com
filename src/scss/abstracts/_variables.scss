@@ -2,11 +2,11 @@
 @forward "../../../modules/web-common/scss/abstracts/defaults";
 @use "../../../modules/web-common/scss/abstracts/defaults" as *;
 
-$red: #e42535;
-$blue: #2464e5;
-$blue-dark: #333c66;
-$blue-darkest: #3d4466;
-$violet: #5959ff;
+$red: #dc2626;
+$blue: #1d4ed8;
+$blue-dark: #1e3a8a;
+$blue-darkest: #172554;
+$violet: #6d28d9;
 $asphalt: #7a8799;
 $asphalt-light: #dadee3;
 $warning: #ff794d;
@@ -34,8 +34,8 @@ $selection-color: $shade-0;
 $selection-bg: $secondary;
 
 // Typography
-$font-family-sans-serif: avenirnextltpro, system-ui; // todo
-$font-family-base: $font-family-sans-serif;
+//$font-family-sans-serif: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+//$font-family-base: $font-family-sans-serif;
 
 $font-size-base: 16px;
 $line-height-base: 1.5;

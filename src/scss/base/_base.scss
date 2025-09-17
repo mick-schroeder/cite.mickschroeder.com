@@ -18,21 +18,22 @@ li[tabindex] {
 }
 
 ::selection {
-	color: variables.$shade-0;
-	background-color: variables.$secondary;
+	//color: variables.$shade-0;
+	//background-color: variables.$secondary;
 }
 
 html,
 body,
 main,
 .zotero-bib-container {
+	
 	height: 100%; // Stretch for spinner
 }
 
 body {
 	min-width: variables.$body-min-width;
-	color: variables.$body-color;
-	background-color: variables.$body-bg;
+	//color: variables.$body-color;
+	//background-color: variables.$body-bg;
 }
 
 .zotero-bib-container {

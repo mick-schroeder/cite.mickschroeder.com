@@ -1,6 +1,7 @@
 @use "../abstracts/variables";
 
 .section-cite {
+	
 	border-top: none;
 	padding-top: variables.$section-padding-mobile + 21px; // Distance to baseline meta-nav
 	position: relative;

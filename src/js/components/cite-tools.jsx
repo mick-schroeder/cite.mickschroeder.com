@@ -3,8 +3,17 @@ import PropTypes from 'prop-types';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { Button } from 'web-common/components';
 import { usePrevious } from 'web-common/hooks';
-
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import Input from './form/input';
+import Brand from './brand';
 
 const canCancel = typeof(AbortController) === 'function';
 
@@ -14,7 +23,7 @@ const CiteTools = ({ identifier, isTranslating, onEditorOpen, onTranslationCance
 	const prevIdentifier = usePrevious(identifier);
 	const wasTranslating = usePrevious(isTranslating)
 	const intl = useIntl();
-	const prompt = intl.formatMessage({ id: 'zbib.citePrompt', defaultMessage: 'Enter a URL, ISBN, DOI, PMID, arXiv ID, or title' });
+	const prompt = intl.formatMessage({ id: 'zbib.citePrompt', defaultMessage: 'Enter a URL, PubMed ID (PMID), ISBN, DOI, arXiv ID, or title..."' });
 
 	const handleChange = useCallback(newValue => {
 		setEntry(newValue);
@@ -56,9 +65,20 @@ const CiteTools = ({ identifier, isTranslating, onEditorOpen, onTranslationCance
 	}, [isTranslating, wasTranslating]);
 
 	return (
+		
 		<div className="cite-tools">
-			<div className="id-input-container">
-				<Input
+			<Card>
+  <CardHeader>
+    <CardTitle><Brand/></CardTitle>
+    <CardDescription>Free and open source software that automatically suggests citations and helps write a bibliography for you.</CardDescription>
+    <CardAction><Button onClick={ onEditorOpen }
+				className="btn-sm btn-outline-secondary"
+			>
+				<FormattedMessage id="zbib.manualEntry" defaultMessage="Manual Entry" />
+			</Button></CardAction>
+  </CardHeader>
+  <CardContent>
+    	<Input
 					aria-label={ prompt }
 					autoFocus
 					className="form-control form-control-lg id-input"
@@ -74,21 +94,26 @@ const CiteTools = ({ identifier, isTranslating, onEditorOpen, onTranslationCance
 					type="search"
 					value={ entry }
 				/>
-				<Button
+  </CardContent>
+  <CardFooter>
+    <Button
 					className="btn-lg btn-secondary"
 					onClick={ handleCiteOrCancel }
 				>
 					{ (isTranslating && canCancel) ?
 						<FormattedMessage id="zbib.general.cancel" defaultMessage="Cancel" /> :
-						<FormattedMessage id="zbib.general.cite" defaultMessage="Cite" />
+						<FormattedMessage id="zbib.general.cite" defaultMessage="Suggest Citation" />
 					}
 				</Button>
+  </CardFooter>
+</Card>
+			<div className="id-input-container">
 			</div>
-			<Button onClick={ onEditorOpen }
-				className="btn-sm btn-outline-secondary"
-			>
-				<FormattedMessage id="zbib.manualEntry" defaultMessage="Manual Entry" />
-			</Button>
+							<div className="id-input-container">
+
+				
+			</div>
+			
 		</div>
 	);
 }

@@ -8,7 +8,6 @@ import { useFocusManager } from 'web-common/hooks';
 
 import About from './about';
 import BibliographySection from './bibliographySection';
-import Brand from './brand';
 import CiteTools from './cite-tools';
 import ConfirmAddDialog from './confirm-add-dialog';
 import Confirmation from './confirmation';
@@ -61,7 +60,7 @@ const ZBib = props => {
 
 	return (
         <div className={ cx(className) }>
-			<div className="zotero-bib-inner">
+			<div className="zotero-bib-inner container mx-auto lg:max-w-screen-lg">
 				<div className="messages">
 					{ props.messages.map(message => (
 						<Message
@@ -90,8 +89,8 @@ const ZBib = props => {
 								</a>
 								<a tabIndex={-2} href="https://www.zotero.org">Zotero</a>
 							</nav>
-							<div className="container">
-								<Brand />
+							<div className="">
+								
 								<CiteTools { ...pick(props, ['isTranslating', 'onEditorOpen', 'onTranslationCancel', 'onTranslationRequest', 'identifier']) } />
 							</div>
 						</section>

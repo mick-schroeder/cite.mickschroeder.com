@@ -7,16 +7,16 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
-	.container {
-		@media (min-width: variables.$bp-md) {
-			width: auto; // Reset
-			max-width: 640px;
-		}
+	// .container {
+	// 	@media (min-width: variables.$bp-md) {
+	// 		width: auto; // Reset
+	// 		max-width: 640px;
+	// 	}
 
-		@media (min-width: variables.$bp-lg) {
-			max-width: 972px;
-		}
-	}
+	// 	@media (min-width: variables.$bp-lg) {
+	// 		max-width: 972px;
+	// 	}
+	// }
 
 	.column {
 		@media (min-width: variables.$bp-lg) {
