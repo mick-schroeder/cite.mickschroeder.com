@@ -4,177 +4,183 @@
 .multiple-items-dialog,
 .multiple-choice-dialog,
 .confirm-add-dialog {
-	.modal-body {
-		overflow: auto;
-		max-height: calc(100vh - 96px);
+  .modal-body {
+    overflow: auto;
+    max-height: calc(100vh - 96px);
 
-		@media (min-width: variables.$bp-md) {
-			max-height: calc(90vh - 96px - 32px); // 90% of the screen, accounting for the modal header and modal margin
-		}
-	}
+    @media (min-width: variables.$bp-md) {
+      max-height: calc(
+        90vh - 96px - 32px
+      ); // 90% of the screen, accounting for the modal header and modal margin
+    }
+  }
 
-	&.modal-with-footer .modal-body {
-		max-height: calc(100vh - 96px - 104px);
+  &.modal-with-footer .modal-body {
+    max-height: calc(100vh - 96px - 104px);
 
-		@media (min-width: variables.$bp-md) {
-			max-height: calc(90vh - 96px - 104px - 32px);
-		}
-	}
+    @media (min-width: variables.$bp-md) {
+      max-height: calc(90vh - 96px - 104px - 32px);
+    }
+  }
 
-	.tab {
-		max-width: 50%;
-	}
+  .tab {
+    max-width: 50%;
+  }
 
-	.tab-pane {
-		padding: 1em 0;
-	}
+  .tab-pane {
+    padding: 1em 0;
+  }
 
-	.results {
-		position: relative;
-		margin: 0 - variables.$modal-inner-padding-mobile;
-		padding: 0;
-		list-style: none;
+  .results {
+    position: relative;
+    margin: 0 - variables.$modal-inner-padding-mobile;
+    padding: 0;
+    list-style: none;
 
-		@media (min-width: variables.$bp-md) {
-			margin: 0;
-		}
-	}
+    @media (min-width: variables.$bp-md) {
+      margin: 0;
+    }
+  }
 
-	.result {
-		cursor: pointer;
-		position: relative;
+  .result {
+    cursor: pointer;
+    position: relative;
 
-		> * {
-			border-top: 1px solid variables.$result-border-color;
-			padding: variables.$result-padding;
-		}
+    > * {
+      border-top: 1px solid variables.$result-border-color;
+      padding: variables.$result-padding;
+    }
 
-		> *:first-child {
-			padding-inline: variables.$space-md;
-		}
+    > *:first-child {
+      padding-inline: variables.$space-md;
+    }
 
-		&:hover {
-			> * {
-				background-color: variables.$result-hover-bg;
+    &:hover {
+      > * {
+        background-color: variables.$result-hover-bg;
 
-				.badge {
-					background-color: variables.$result-hover-bg;
-					border-color: color.adjust(variables.$badge-light-border-color, $lightness: -4%);
-				}
-			}
-		}
+        .badge {
+          background-color: variables.$result-hover-bg;
+          border-color: color.adjust(
+            variables.$badge-light-border-color,
+            $lightness: -4%
+          );
+        }
+      }
+    }
 
-		&:focus, &:focus-within {
-			.keyboard & {
-				outline-offset: -3px;
-				outline: 3px solid variables.$blue;
+    &:focus,
+    &:focus-within {
+      .keyboard & {
+        outline-offset: -3px;
+        outline: 3px solid variables.$blue;
 
-				& + .result {
-					border-top-color: transparent;
-				}
-			}
-		}
+        & + .result {
+          border-top-color: transparent;
+        }
+      }
+    }
 
-		.checkbox {
-			align-self: center;
-			outline: none;
-		}
+    .checkbox {
+      align-self: center;
+      outline: none;
+    }
 
-		.badge {
-			margin-bottom: 6px;
+    .badge {
+      margin-bottom: 6px;
 
-			@media (min-width: variables.$bp-sm) {
-				vertical-align: 2px;
-				margin-bottom: 0;
-			}
-		}
+      @media (min-width: variables.$bp-sm) {
+        vertical-align: 2px;
+        margin-bottom: 0;
+      }
+    }
 
-		.title {
-			margin: 0;
-			font-size: 18px;
-			line-height: 1.5rem;
-			font-weight: 600;
-		}
+    .title {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.5rem;
+      font-weight: 600;
+    }
 
-		.title-container {
-			margin-right: variables.$space-min + variables.$space-min * 0.5;
-		}
+    .title-container {
+      margin-right: variables.$space-min + variables.$space-min * 0.5;
+    }
 
-		.description {
-			margin: 0;
-		}
+    .description {
+      margin: 0;
+    }
 
-		.csl-entry {
-			word-break: break-word; // stylelint-disable-line declaration-property-value-keyword-no-deprecated
-		}
-	}
+    .csl-entry {
+      word-break: break-word; // stylelint-disable-line declaration-property-value-keyword-no-deprecated
+    }
+  }
 
-	.more-items-action {
-		$btn-height:
-			2 * (variables.$border-width + variables.$btn-padding-y) + variables.$font-size-base * variables.$line-height-base;
+  .more-items-action {
+    $btn-height: 2 * (variables.$border-width + variables.$btn-padding-y) +
+      variables.$font-size-base * variables.$line-height-base;
 
-		align-items: center;
-		display: flex;
-		justify-content: center;
-		padding-top: variables.$space-md;
-		border-top: variables.$border-width solid variables.$shade-2;
-		min-height: variables.$border-width + variables.$space-md + $btn-height;
-		margin: variables.$space-md (-(variables.$space-md)) 0;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding-top: variables.$space-md;
+    border-top: variables.$border-width solid variables.$shade-2;
+    min-height: variables.$border-width + variables.$space-md + $btn-height;
+    margin: variables.$space-md (-(variables.$space-md)) 0;
 
-		@media (min-width: variables.$bp-md) {
-			margin: 0;
-			padding-top: variables.$space-lg;
-			min-height: variables.$border-width + variables.$space-lg + $btn-height;
-		}
-	}
+    @media (min-width: variables.$bp-md) {
+      margin: 0;
+      padding-top: variables.$space-lg;
+      min-height: variables.$border-width + variables.$space-lg + $btn-height;
+    }
+  }
 
-	.modal-footer {
-		display: flex;
-		justify-content: space-between;
-	}
+  .modal-footer {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .multiple-choice-dialog {
-	.results:not(.single-column) .result {
-		display: flex;
+  .results:not(.single-column) .result {
+    display: flex;
 
-		h5 {
-			flex: 1 1 auto;
-		}
+    h5 {
+      flex: 1 1 auto;
+    }
 
-		.description {
-			flex: 0 0 100px;
-		}
+    .description {
+      flex: 0 0 100px;
+    }
 
-		@media (min-width: variables.$bp-md) {
-			.description {
-				flex: 0 0 200px;
-			}
-		}
-	}
+    @media (min-width: variables.$bp-md) {
+      .description {
+        flex: 0 0 200px;
+      }
+    }
+  }
 
-	.results.single-column {
-		.description {
-			display: none;
-		}
-	}
+  .results.single-column {
+    .description {
+      display: none;
+    }
+  }
 }
 
 .multiple-items-dialog {
-	// second column is just a checkbox so it can be smaller
-	.results .result {
-		display: flex;
+  // second column is just a checkbox so it can be smaller
+  .results .result {
+    display: flex;
 
-		.csl-entry-container {
-			flex: 1 1 auto;
-		}
+    .csl-entry-container {
+      flex: 1 1 auto;
+    }
 
-		.checkbox-container {
-			flex: 0 0 min-content;
-		}
-	}
+    .checkbox-container {
+      flex: 0 0 min-content;
+    }
+  }
 }
 
 .confirm-add-dialog .modal-footer {
-	justify-content: flex-end;
+  justify-content: flex-end;
 }

@@ -1,97 +1,97 @@
 @use "../abstracts/variables";
 
 footer {
-	padding: (43px - 6px) (variables.$grid-gutter-width * 0.5) (43px - 5px);
-	text-align: center;
-	border-top: 1px solid variables.$shade-2;
+  padding: (43px - 6px) (variables.$grid-gutter-width * 0.5) (43px - 5px);
+  text-align: center;
+  border-top: 1px solid variables.$shade-2;
 
-	@media print {
-		display: none;
-	}
+  @media print {
+    display: none;
+  }
 
-	@media (min-width: variables.$bp-md) {
-		padding-top: (variables.$space-xxxl - 6px);
-		padding-bottom: (variables.$space-xxxl - 5px);
-	}
+  @media (min-width: variables.$bp-md) {
+    padding-top: (variables.$space-xxxl - 6px);
+    padding-bottom: (variables.$space-xxxl - 5px);
+  }
 
-	&,
-	a {
-		color: inherit;
-	}
+  &,
+  a {
+    color: inherit;
+  }
 
-	&.faq-footer {
-		border-top-color: transparent;
-		max-width: variables.$container-width;
-		margin: auto;
-		position: relative;
+  &.faq-footer {
+    border-top-color: transparent;
+    max-width: variables.$container-width;
+    margin: auto;
+    position: relative;
 
-		&::before {
-			content: "";
-			position: absolute;
-			left: variables.$grid-gutter-width * 0.5;
-			right: variables.$grid-gutter-width * 0.5;
-			top: -1px;
-			height: 1px;
-			background-color: variables.$shade-2;
-		}
-	}
+    &::before {
+      content: "";
+      position: absolute;
+      left: variables.$grid-gutter-width * 0.5;
+      right: variables.$grid-gutter-width * 0.5;
+      top: -1px;
+      height: 1px;
+      background-color: variables.$shade-2;
+    }
+  }
 
-	.social-nav {
-		margin-bottom: 12px;
-	}
+  .social-nav {
+    margin-bottom: 12px;
+  }
 
-	.copyright {
-		display: block;
-		font-size: 12px;
-		opacity: 0.62; // minimum for black text on white background to meet WCAG 2.0 contrast requirements
+  .copyright {
+    display: block;
+    font-size: 12px;
+    opacity: 0.62; // minimum for black text on white background to meet WCAG 2.0 contrast requirements
 
-		ul {
-			list-style: none;
-			display: flex;
-			flex-direction: row;
-			justify-content: center;
-			padding: 0;
-			margin: 0;
+    ul {
+      list-style: none;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
 
-			li + li {
-				&::before {
-					content: "•";
-					padding: 0 5px;
-				}
-			}
-		}
-	}
+      li + li {
+        &::before {
+          content: "•";
+          padding: 0 5px;
+        }
+      }
+    }
+  }
 }
 
 .zotero-bib-container {
-	&.write {
-		footer {
-			color: variables.$shade-0;
-			border-top-color: rgb(0 0 0 / 20%);
-			background: variables.$about-bg;
-			-webkit-font-smoothing: antialiased;
-			-moz-osx-font-smoothing: grayscale;
+  &.write {
+    footer {
+      color: variables.$shade-0;
+      border-top-color: rgb(0 0 0 / 20%);
+      background: variables.$about-bg;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
 
-			.copyright {
-				opacity: 1;
-				color: #a5a9bb;
+      .copyright {
+        opacity: 1;
+        color: #a5a9bb;
 
-				a {
-					color: #a5a9bb;
-				}
-			}
-		}
-	}
+        a {
+          color: #a5a9bb;
+        }
+      }
+    }
+  }
 
-	&.read-only {
-		footer {
-			border-top: none;
-			padding-top: 0;
-			padding-bottom: variables.$section-padding-mobile - 5px;
+  &.read-only {
+    footer {
+      border-top: none;
+      padding-top: 0;
+      padding-bottom: variables.$section-padding-mobile - 5px;
 
-			@media (min-width: variables.$bp-md) {
-				padding-bottom: variables.$section-padding - 5px;
-			}
-		}
-	}
+      @media (min-width: variables.$bp-md) {
+        padding-bottom: variables.$section-padding - 5px;
+      }
+    }
+  }
 }

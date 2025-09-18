@@ -1,5 +1,12 @@
 .dnd-in-progress {
-	button, input, select, a, .select-control, .citation, .editable, .meta-nav {
-		pointer-events: none;
-	}
+  button,
+  input,
+  select,
+  a,
+  .select-control,
+  .citation,
+  .editable,
+  .meta-nav {
+    pointer-events: none;
+  }
 }

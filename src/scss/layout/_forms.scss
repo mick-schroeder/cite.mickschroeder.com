@@ -1,145 +1,152 @@
 @use "../abstracts/variables";
 
 ::placeholder {
-	color: variables.$placeholder-color;
-	opacity: 1; // Set opacity for Firefox
+  color: variables.$placeholder-color;
+  opacity: 1; // Set opacity for Firefox
 }
 
 ::-ms-clear {
-	display: none; // Hide non-standard clear button in IE and Edge
+  display: none; // Hide non-standard clear button in IE and Edge
 }
 
 .form-row {
-	display: flex;
-	flex-wrap: wrap;
-	margin: 0 (-(variables.$form-gutter-width) * 0.5);
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 (-(variables.$form-gutter-width) * 0.5);
 
-	> [class*="col-"] {
-		padding: 0 (variables.$form-gutter-width * 0.5);
-	}
+  > [class*="col-"] {
+    padding: 0 (variables.$form-gutter-width * 0.5);
+  }
 
-	.col-xs-6 {
-		flex: 0 0 50%;
-		max-width: 50%;
-	}
+  .col-xs-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
 }
 
 .form-group {
-	margin-bottom: variables.$space-sm;
+  margin-bottom: variables.$space-sm;
 
-	&.compact {
-		margin-bottom: variables.$space-min;
-	}
+  &.compact {
+    margin-bottom: variables.$space-min;
+  }
 }
 
 .input-group {
-	position: relative;
-	min-width: 0; // Needed for react-select inside
+  position: relative;
+  min-width: 0; // Needed for react-select inside
 
-	.icon-spin {
-		position: absolute;
-	}
+  .icon-spin {
+    position: absolute;
+  }
 
-	.form-control-lg + .icon-spin {
-		width: variables.$space-lg;
-		height: variables.$space-lg;
-		top: variables.$space-sm;
-		right: variables.$space-md + variables.$input-border-width;
-	}
+  .form-control-lg + .icon-spin {
+    width: variables.$space-lg;
+    height: variables.$space-lg;
+    top: variables.$space-sm;
+    right: variables.$space-md + variables.$input-border-width;
+  }
 
-	.form-control-sm {
-		& + .icon-spin {
-			width: variables.$space-md;
-			height: variables.$space-md;
-			top: variables.$space-xs;
-			right: variables.$input-btn-padding-x-sm + variables.$input-border-width;
-		}
+  .form-control-sm {
+    & + .icon-spin {
+      width: variables.$space-md;
+      height: variables.$space-md;
+      top: variables.$space-xs;
+      right: variables.$input-btn-padding-x-sm + variables.$input-border-width;
+    }
 
-		&.select-component + .icon-spin {
-			right: variables.$input-btn-padding-x-sm + variables.$input-border-width + variables.$space-md + variables.$space-min;
-		}
-	}
+    &.select-component + .icon-spin {
+      right: variables.$input-btn-padding-x-sm + variables.$input-border-width +
+        variables.$space-md + variables.$space-min;
+    }
+  }
 }
 
 .form-control {
-	display: block;
-	width: 100%;
-	border: variables.$input-border-width solid variables.$input-border-color;
-	line-height: variables.$input-line-height;
-	font-size: inherit;
-	font-family: inherit;
-	color: inherit;
-	// todo: padding
-	border-radius: variables.$input-border-radius;
-	transition: border variables.$input-transition, box-shadow variables.$input-transition, padding variables.$input-transition;
-	margin: 0; // Remove margin in Safari
-	background-clip: padding-box; // Remove inner shadow on iOS
+  display: block;
+  width: 100%;
+  border: variables.$input-border-width solid variables.$input-border-color;
+  line-height: variables.$input-line-height;
+  font-size: inherit;
+  font-family: inherit;
+  color: inherit;
+  // todo: padding
+  border-radius: variables.$input-border-radius;
+  transition:
+    border variables.$input-transition,
+    box-shadow variables.$input-transition,
+    padding variables.$input-transition;
+  margin: 0; // Remove margin in Safari
+  background-clip: padding-box; // Remove inner shadow on iOS
 
-	&:focus {
-		border: variables.$input-border-width solid variables.$input-focus-color;
-		box-shadow: 0 0 0 2px variables.$secondary;
-		outline: none;
-	}
+  &:focus {
+    border: variables.$input-border-width solid variables.$input-focus-color;
+    box-shadow: 0 0 0 2px variables.$secondary;
+    outline: none;
+  }
 }
 
 .form-control-lg {
-	padding: variables.$input-padding-y-lg variables.$input-padding-x-lg;
-	border-radius: variables.$input-border-radius-lg;
+  padding: variables.$input-padding-y-lg variables.$input-padding-x-lg;
+  border-radius: variables.$input-border-radius-lg;
 
-	.busy & {
-		&:not(.select-component) {
-			padding-right: variables.$input-padding-x-lg + variables.$space-lg + 1px;
-		}
-	}
+  .busy & {
+    &:not(.select-component) {
+      padding-right: variables.$input-padding-x-lg + variables.$space-lg + 1px;
+    }
+  }
 
-	&.select-component {
-		padding: 0;
-		border: none;
+  &.select-component {
+    padding: 0;
+    border: none;
 
-		.select-control {
-			padding: variables.$input-padding-y-lg variables.$input-padding-x-lg;
-		}
-	}
+    .select-control {
+      padding: variables.$input-padding-y-lg variables.$input-padding-x-lg;
+    }
+  }
 }
 
 .form-control-sm {
-	padding: variables.$input-btn-padding-y-sm variables.$input-btn-padding-x-sm;
+  padding: variables.$input-btn-padding-y-sm variables.$input-btn-padding-x-sm;
 
-	.busy & {
-		&:not(.select-component) {
-			padding-right: variables.$input-btn-padding-x-sm + variables.$space-md + 1px;
-		}
-	}
+  .busy & {
+    &:not(.select-component) {
+      padding-right: variables.$input-btn-padding-x-sm + variables.$space-md +
+        1px;
+    }
+  }
 
-	&.select-component {
-		padding: 0;
-		border: none;
+  &.select-component {
+    padding: 0;
+    border: none;
 
-		.select-control {
-			padding: variables.$input-btn-padding-y-sm + 4px variables.$input-btn-padding-x-sm;
-		}
-	}
+    .select-control {
+      padding: variables.$input-btn-padding-y-sm + 4px
+        variables.$input-btn-padding-x-sm;
+    }
+  }
 }
 
 textarea {
-	overflow: auto;
-	resize: vertical;
+  overflow: auto;
+  resize: vertical;
 }
 
 label {
-	display: inline-block;
+  display: inline-block;
 }
 
 .checkbox,
 .radio {
-	padding: (variables.$input-btn-padding-y-sm + 1px) 0;
+  padding: (variables.$input-btn-padding-y-sm + 1px) 0;
 
-	label {
-		display: flex;
-	}
+  label {
+    display: flex;
+  }
 
-	[type] {
-		font-size: inherit;
-		margin: variables.$space-min (variables.$space-min + variables.$space-min * 0.5) 0 0;
-	}
+  [type] {
+    font-size: inherit;
+    margin: variables.$space-min
+      (variables.$space-min + variables.$space-min * 0.5) 0 0;
+  }
 }

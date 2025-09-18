@@ -1,21 +1,19 @@
 @use "../abstracts/variables";
 
 .cite-tools {
-	
-	.id-input-container {
-		display: flex;
-		margin-bottom: variables.$space-lg;
+  .id-input-container {
+    display: flex;
+    margin-bottom: variables.$space-lg;
 
-		@media (min-width: variables.$bp-md) {
-			margin-bottom: variables.$space-xl;
-		}
-	}
+    @media (min-width: variables.$bp-md) {
+      margin-bottom: variables.$space-xl;
+    }
+  }
 
-	
-
-	.form-control {
-		transition: border variables.$input-transition, box-shadow variables.$input-transition, padding variables.$input-transition;
-
-	
-	}
+  .form-control {
+    transition:
+      border variables.$input-transition,
+      box-shadow variables.$input-transition,
+      padding variables.$input-transition;
+  }
 }

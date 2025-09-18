@@ -1,105 +1,108 @@
 @use "../abstracts/variables";
 
 .message {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-items: center;
-	color: variables.$message-color;
-	padding: variables.$space-xl (variables.$grid-gutter-width * 0.5);
-	text-align: center;
-	font-size: variables.$message-font-size-mobile;
-	font-weight: 300;
-	-moz-osx-font-smoothing: grayscale;
-	-webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  color: variables.$message-color;
+  padding: variables.$space-xl (variables.$grid-gutter-width * 0.5);
+  text-align: center;
+  font-size: variables.$message-font-size-mobile;
+  font-weight: 300;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
 
-	@media (min-width: variables.$bp-md) {
-		flex-direction: row;
-		font-size: variables.$message-font-size;
-		line-height: variables.$line-height-base + 0.1;
-		padding: (variables.$space-xxl - 11px) (variables.$grid-gutter-width * 0.5) (variables.$space-xxl - 11px) 92px;
+  @media (min-width: variables.$bp-md) {
+    flex-direction: row;
+    font-size: variables.$message-font-size;
+    line-height: variables.$line-height-base + 0.1;
+    padding: (variables.$space-xxl - 11px) (variables.$grid-gutter-width * 0.5)
+      (variables.$space-xxl - 11px) 92px;
 
-		&::before {
-			content: ""; // Center/right justification hack
-		}
-	}
+    &::before {
+      content: ""; // Center/right justification hack
+    }
+  }
 
-	@media print {
-		display: none;
-	}
+  @media print {
+    display: none;
+  }
 
-	.text {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		margin: 0;
-		margin-top: 3px;
-		margin-bottom: -8px;
+  .text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    margin-top: 3px;
+    margin-bottom: -8px;
 
-		@media (min-width: variables.$bp-md) {
-			display: block;
-			margin-top: 0;
-			margin-bottom: 0;
-		}
-	}
+    @media (min-width: variables.$bp-md) {
+      display: block;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
 
-	.close {
-		flex: 0 0 auto;
-		order: -1;
-		width: variables.$space-xxl;
-		height: variables.$space-xxl;
-		margin-top: -16px;
+  .close {
+    flex: 0 0 auto;
+    order: -1;
+    width: variables.$space-xxl;
+    height: variables.$space-xxl;
+    margin-top: -16px;
 
-		@media (min-width: variables.$bp-md) {
-			order: 0;
-			width: variables.$space-xxxl;
-			height: variables.$space-xxxl;
-			margin: (-(variables.$space-xl) * 0.5) variables.$space-sm (-(variables.$space-xl) * 0.5) 0;
-		}
+    @media (min-width: variables.$bp-md) {
+      order: 0;
+      width: variables.$space-xxxl;
+      height: variables.$space-xxxl;
+      margin: (-(variables.$space-xl) * 0.5) variables.$space-sm
+        (-(variables.$space-xl) * 0.5) 0;
+    }
 
-		&:focus {
-			.keyboard & {
-				border-color: variables.$message-focus-color;
-				box-shadow: 0 0 0 variables.$input-btn-focus-width variables.$message-focus-color;
-			}
-		}
+    &:focus {
+      .keyboard & {
+        border-color: variables.$message-focus-color;
+        box-shadow: 0 0 0 variables.$input-btn-focus-width
+          variables.$message-focus-color;
+      }
+    }
 
-		.icon {
-			color: variables.$message-color;
-		}
+    .icon {
+      color: variables.$message-color;
+    }
 
-		&:active {
-			.icon {
-				color: variables.$message-color;
-			}
-		}
-	}
+    &:active {
+      .icon {
+        color: variables.$message-color;
+      }
+    }
+  }
 
-	.btn:not(.btn-icon) {
-		font-size: 20px;
-		font-weight: bold;
-		margin-top: variables.$space-xl - 8px;
-		margin-bottom: 8px;
+  .btn:not(.btn-icon) {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: variables.$space-xl - 8px;
+    margin-bottom: 8px;
 
-		@media (min-width: variables.$bp-md) {
-			margin: -1em 0 -1em variables.$space-lg;
-			vertical-align: 2px;
-		}
-	}
+    @media (min-width: variables.$bp-md) {
+      margin: -1em 0 -1em variables.$space-lg;
+      vertical-align: 2px;
+    }
+  }
 
-	&.error {
-		background: variables.$message-error-bg;
-	}
+  &.error {
+    background: variables.$message-error-bg;
+  }
 
-	&.warning {
-		background: variables.$message-warning-bg;
-	}
+  &.warning {
+    background: variables.$message-warning-bg;
+  }
 
-	&.info {
-		background: variables.$message-info-bg;
-	}
+  &.info {
+    background: variables.$message-info-bg;
+  }
 
-	&.success {
-		background: variables.$message-success-bg;
-	}
+  &.success {
+    background: variables.$message-success-bg;
+  }
 }

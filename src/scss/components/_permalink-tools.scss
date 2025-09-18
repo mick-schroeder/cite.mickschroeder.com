@@ -2,60 +2,65 @@
 @use "../abstracts/variables";
 
 .permalink-tools {
-	.btn-wrap {
-		@media (min-width: variables.$bp-md) {
-			display: flex;
-		}
-	}
+  .btn-wrap {
+    @media (min-width: variables.$bp-md) {
+      display: flex;
+    }
+  }
 
-	&.loading {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: variables.$space-xxl;
-	}
+  &.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: variables.$space-xxl;
+  }
 
-	.icon-spin {
-		width: variables.$permalink-spinner-size;
-		height: variables.$permalink-spinner-size;
-	}
+  .icon-spin {
+    width: variables.$permalink-spinner-size;
+    height: variables.$permalink-spinner-size;
+  }
 
-	.safari-warning {
-		margin: 2em 0;
+  .safari-warning {
+    margin: 2em 0;
 
-		p {
-			margin: .25em 0;
-		}
-	}
+    p {
+      margin: 0.25em 0;
+    }
+  }
 
-	.btn {
-		flex: 1 1 0;
+  .btn {
+    flex: 1 1 0;
 
-		&:first-child {
-			margin-bottom: variables.$space-md;
+    &:first-child {
+      margin-bottom: variables.$space-md;
 
-			@media (min-width: variables.$bp-md) {
-				margin-bottom: 0;
-				margin-right: variables.$grid-gutter-width;
-			}
-		}
+      @media (min-width: variables.$bp-md) {
+        margin-bottom: 0;
+        margin-right: variables.$grid-gutter-width;
+      }
+    }
 
-		&.success {
-			background-color: variables.$btn-success-color;
+    &.success {
+      background-color: variables.$btn-success-color;
 
-			&:active {
-				background-color: color.adjust(variables.$btn-success-color, $lightness: -8%);
-			}
+      &:active {
+        background-color: color.adjust(
+          variables.$btn-success-color,
+          $lightness: -8%
+        );
+      }
 
-			&:focus {
-				.keyboard & {
-					box-shadow: 0 0 0 variables.$input-btn-focus-width variables.$btn-success-color;
+      &:focus {
+        .keyboard & {
+          box-shadow: 0 0 0 variables.$input-btn-focus-width
+            variables.$btn-success-color;
 
-					&:active {
-						box-shadow: 0 0 0 variables.$input-btn-focus-width color.adjust(variables.$btn-success-color, $lightness: -8%);
-					}
-				}
-			}
-		}
-	}
+          &:active {
+            box-shadow: 0 0 0 variables.$input-btn-focus-width
+              color.adjust(variables.$btn-success-color, $lightness: -8%);
+          }
+        }
+      }
+    }
+  }
 }

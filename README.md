@@ -1,12 +1,12 @@
 [![CI](https://github.com/zotero/zoterobib/actions/workflows/ci.yml/badge.svg)](https://github.com/zotero/zoterobib/actions/workflows/ci.yml)
+
 # Zotero Bib
 
-Overview
---------
+## Overview
+
 This repo contains code for [Zotero Bib](https://zbib.org/), including React components, translation client, stylesheets and entry-point website.
 
-Prerequisites
-------------
+## Prerequisites
 
 1. Node JS with npm
 1. Basic command-line tools including rsync
@@ -14,8 +14,7 @@ Prerequisites
 1. Existing bib-server
 1. Existing styles-repo
 
-Local Development version
-----------
+## Local Development version
 
 Getting The Library
 
@@ -27,9 +26,9 @@ Getting The Library
 
 1. `npm start`
 
-This will serve demo on http://127.0.0.1:8001. 
+This will serve demo on http://127.0.0.1:8001.
 
-You might need to provide configuration options (see below) in order to get storage and translation to work. 
+You might need to provide configuration options (see below) in order to get storage and translation to work.
 
 By default, the development server **proxies translations server requests to localhost:1969**. If your server is located elsewhere you need to provide the url, e.g. the last step above would look like this:
 
@@ -37,42 +36,38 @@ By default, the development server **proxies translations server requests to loc
 
 This will proxy requests from the browser to the specified translation server.
 
-Using in Production
--------------------
+## Using in Production
 
 To obtain production-ready files use the following npm command:
 
 `npm run build`
 
-Configuration
--------------
+## Configuration
 
-It's possible to provide configuration parameters for the build (both in development and production) using configuration files and/or environment variables. 
+It's possible to provide configuration parameters for the build (both in development and production) using configuration files and/or environment variables.
 
 The easiest way is to copy `config/default.json` to `config/local.json` and place variables there (this file is git ignored and should not be committed). Alternatively environment variables listed in `config/custom-environment-variables.json` can be used. For more details how to provide configurations, see [config npm package](https://github.com/lorenwest/node-config).
 
-Configuration options
---------------
+## Configuration options
 
 The following configuration options are accepted:
 
 **storeURL**
-Specifies url for the *bib-server* api where bibliographies are stored. 
+Specifies url for the _bib-server_ api where bibliographies are stored.
 
 **stylesURL**
-Specifies url for the *styles-repo* website. When left empty, default will be used which is https://www.zotero.org/styles-files/styles.json
+Specifies url for the _styles-repo_ website. When left empty, default will be used which is https://www.zotero.org/styles-files/styles.json
 
 **translatePrefix**
 Specifies an additional prefix for where translation server request should be send. Useful in cases where `translateURL` is left empty so that it's possible to direct requests to a specific endpoint at wherever zotero-bib is being hosted.
 
 **translateURL**
-Specifies URL for the *translation-server*. By default localhost is assumed to proxy request to the translation server.
+Specifies URL for the _translation-server_. By default localhost is assumed to proxy request to the translation server.
 
 **apiAuthorityPart**
 Specifies the authority part of the URL for Zotero API requests. Defaults to `api.zotero.org`.
 
-Development server configuration
---------------
+## Development server configuration
 
 Running `npm start` checks for the following environment variables:
 

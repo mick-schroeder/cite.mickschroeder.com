@@ -2,210 +2,208 @@
 @use "../abstracts/variables";
 
 .section-bibliography {
-	text-align: center;
+  text-align: center;
 
-	&.loading {
-		.spinner-container {
-			display: flex;
-			justify-content: center;
-			margin-top: variables.$space-lg + 13px;
-		}
+  &.loading {
+    .spinner-container {
+      display: flex;
+      justify-content: center;
+      margin-top: variables.$space-lg + 13px;
+    }
 
-		& ~ .section {
-			visibility: hidden;
-		}
-	}
+    & ~ .section {
+      visibility: hidden;
+    }
+  }
 
-	.empty-bibliography {
-		width: 160px;
-		height: auto;
-		margin-bottom: variables.$space-xl - 16px;
+  .empty-bibliography {
+    width: 160px;
+    height: auto;
+    margin-bottom: variables.$space-xl - 16px;
 
-		@media (min-width: variables.$bp-md) {
-			width: auto;
-			margin-bottom: variables.$space-xxl - 18px;
-		}
-	}
+    @media (min-width: variables.$bp-md) {
+      width: auto;
+      margin-bottom: variables.$space-xxl - 18px;
+    }
+  }
 
-	.empty-title {
-		margin-bottom: variables.$lead-font-size-mobile * 0.5;
+  .empty-title {
+    margin-bottom: variables.$lead-font-size-mobile * 0.5;
 
-		@media (min-width: variables.$bp-md) {
-			margin-bottom: variables.$lead-font-size * 0.5;
-		}
-	}
+    @media (min-width: variables.$bp-md) {
+      margin-bottom: variables.$lead-font-size * 0.5;
+    }
+  }
 
-	.empty-lead {
-		margin-bottom: -8px;
+  .empty-lead {
+    margin-bottom: -8px;
 
-		@media (min-width: variables.$bp-md) {
-			margin-bottom: -10px;
-		}
-	}
+    @media (min-width: variables.$bp-md) {
+      margin-bottom: -10px;
+    }
+  }
 
-	.write & {
-	
-		.bibliography-title {
-			display: flex;
-			align-items: center;
-			//transition: background-color variables.$input-transition;
-			border-radius: variables.$border-radius-sm;
-			//margin-bottom: variables.$space-xl - 12px;
+  .write & {
+    .bibliography-title {
+      display: flex;
+      align-items: center;
+      //transition: background-color variables.$input-transition;
+      border-radius: variables.$border-radius-sm;
+      //margin-bottom: variables.$space-xl - 12px;
 
-			@media (min-width: variables.$bp-md) {
-				//margin-bottom: variables.$space-xxl - 18px;
+      @media (min-width: variables.$bp-md) {
+        //margin-bottom: variables.$space-xxl - 18px;
+      }
 
+      .input-group {
+        flex: 1 1 auto;
+      }
 
-			}
+      .editable {
+        @media (min-width: variables.$bp-md) {
+          justify-content: center;
+        }
+      }
 
-			.input-group {
-				flex: 1 1 auto;
-			}
+      .editable-content {
+        line-height: variables.$headings-line-height;
+        padding: 0;
+        text-align: left;
+        overflow-wrap: break-word;
+        font-size: inherit;
+        font-weight: inherit;
+        letter-spacing: inherit;
+        color: inherit;
+        background-color: transparent;
 
-			.editable {
-				@media (min-width: variables.$bp-md) {
-					justify-content: center;
-				}
-			}
+        @media (min-width: variables.$bp-md) {
+          text-align: inherit;
+        }
+      }
 
-			.editable-content {
-				line-height: variables.$headings-line-height;
-				padding: 0;
-				text-align: left;
-				overflow-wrap: break-word;
-				font-size: inherit;
-				font-weight: inherit;
-				letter-spacing: inherit;
-				color: inherit;
-				background-color: transparent;
+      .editable:hover .editable-content {
+        background-color: transparent;
+      }
 
-				@media (min-width: variables.$bp-md) {
-					text-align: inherit;
-				}
-			}
+      .editable-control {
+        border: none;
+        box-shadow: none;
+        line-height: normal; // Heading line-height would clip decenders
+        padding: 0;
+        text-align: left;
+        margin: 0;
+        font-size: inherit;
+        font-weight: inherit;
+        letter-spacing: inherit;
+        background: transparent;
 
-			.editable:hover .editable-content {
-				background-color: transparent;
-			}
+        @media (min-width: variables.$bp-md) {
+          text-align: inherit;
+        }
+      }
 
-			.editable-control {
-				border: none;
-				box-shadow: none;
-				line-height: normal; // Heading line-height would clip decenders
-				padding: 0;
-				text-align: left;
-				margin: 0;
-				font-size: inherit;
-				font-weight: inherit;
-				letter-spacing: inherit;
-				background: transparent;
+      .btn-icon {
+        flex: 0 0 auto;
+        margin-left: variables.$space-sm;
 
-				@media (min-width: variables.$bp-md) {
-					text-align: inherit;
-				}
-			}
+        @media (min-width: variables.$bp-md) {
+          display: none;
+        }
+      }
 
-			.btn-icon {
-				flex: 0 0 auto;
-				margin-left: variables.$space-sm;
+      .editing + .btn-icon {
+        display: none;
+      }
+    }
+  }
 
-				@media (min-width: variables.$bp-md) {
-					display: none;
-				}
-			}
+/*   .style-selector {
+    text-align: left;
 
-			.editing + .btn-icon {
-				display: none;
-			}
-		}
-	}
+    .select-component {
+      .select-control {
+        border-color: transparent;
+        //background: variables.$style-selector-bg;
+        //color: variables.$style-selector-color;
+        padding: variables.$input-padding-y-lg variables.$input-padding-x-lg;
+        border-radius: variables.$input-border-radius-lg;
+        cursor: pointer;
+        transition:
+          background-color variables.$input-transition,
+          border variables.$input-transition,
+          box-shadow variables.$input-transition;
 
-	.style-selector {
-		text-align: left;
+        &:hover {
+          background: variables.$style-selector-hover-bg;
+        }
+      }
 
-		.select-component {
-			.select-control {
-				border-color: transparent;
-				background: variables.$style-selector-bg;
-				color: variables.$style-selector-color;
-				padding: variables.$input-padding-y-lg variables.$input-padding-x-lg;
-				border-radius: variables.$input-border-radius-lg;
-				cursor: pointer;
-				transition:
-					background-color variables.$input-transition,
-					border variables.$input-transition,
-					box-shadow variables.$input-transition;
+      &.is-focused {
+        .select-control {
+          box-shadow: 0 0 0 2px variables.$secondary;
+          outline: none;
 
-				&:hover {
-					background: variables.$style-selector-hover-bg;
-				}
-			}
+          &:hover {
+            box-shadow: 0 0 0 2px variables.$style-selector-hover-bg;
+          }
+        }
+      }
 
-			&.is-focused {
-				.select-control {
-					box-shadow: 0 0 0 2px variables.$secondary;
-					outline: none;
+      &.single {
+        .select-value-label {
+          overflow: inherit;
+          text-overflow: inherit;
+          white-space: inherit;
+        }
+      }
 
-					&:hover {
-						box-shadow: 0 0 0 2px variables.$style-selector-hover-bg;
-					}
-				}
-			}
+      .select-value {
+        position: static;
+        padding: 0;
+      }
 
-			&.single {
-				.select-value-label {
-					overflow: inherit;
-					text-overflow: inherit;
-					white-space: inherit;
-				}
-			}
+      .select-input {
+        position: absolute;
+      }
 
-			.select-value {
-				position: static;
-				padding: 0;
-			}
+      .select-arrow-container {
+        margin-right: 0;
+      }
 
-			.select-input {
-				position: absolute;
-			}
+      .select-arrow {
+        background: asset-url.image-url(
+          "bg-icons/16/chevron-11-down-light.svg"
+        );
+      }
 
-			.select-arrow-container {
-				margin-right: 0;
-			}
+      .select-menu-outer {
+        padding: variables.$space-xs 0;
+        left: 0;
+        right: 0;
+      }
 
-			.select-arrow {
-				background: asset-url.image-url("bg-icons/16/chevron-11-down-light.svg");
-			}
+      .select-option:not(.select-divider) {
+        padding: variables.$space-min variables.$input-btn-padding-x-lg;
 
-			.select-menu-outer {
-				padding: variables.$space-xs 0;
-				left: 0;
-				right: 0;
-			}
+        &:last-child {
+          color: variables.$link-color;
+        }
+      }
+    }
+  }
+ */
+  .btn-edit-bibliography {
+    @media print {
+      display: none;
+    }
+  }
 
-			.select-option:not(.select-divider) {
-				padding: variables.$space-min variables.$input-btn-padding-x-lg;
+  .export-tools {
+    margin-top: 3em;
+  }
 
-				&:last-child {
-					color: variables.$link-color;
-				}
-			}
-		}
-	}
-
-	.btn-edit-bibliography {
-		@media print {
-			display: none;
-		}
-	}
-
-	
-	.export-tools {
-		margin-top: 3em;
-	}
-
-	.delete-all,
-	.btn-edit-bibliography {
-		margin-top: 2em;
-	}
+  .delete-all,
+  .btn-edit-bibliography {
+    margin-top: 2em;
+  }
 }

@@ -11,32 +11,16 @@
     "noEmitOnError": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
-    "types": [
-      "react",
-      "react-dom",
-      "node"
-    ],
+    "types": ["react", "react-dom", "node"],
     "paths": {
-      "web-common/*": [
-        "modules/web-common/*"
-      ],
-      "@/*": [
-        "src/js/*"
-      ],
-      "@/lib/*": [
-        "src/js/lib/*"
-      ]
+      "web-common/*": ["modules/web-common/*"],
+      "@/*": ["src/js/*"],
+      "@/lib/*": ["src/js/lib/*"]
     },
     "resolveJsonModule": true,
     "noEmit": false,
     "baseUrl": "."
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules",
-    "build"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "build"]
 }

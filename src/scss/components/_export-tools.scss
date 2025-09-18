@@ -3,183 +3,202 @@
 @use "../abstracts/variables";
 
 .export-tools {
-	.btn-secondary {
-		background-origin: border-box;
-		outline: 1px solid transparent; // Prevent rendering issue on iOS (thin gap)
+  .btn-secondary {
+    background-origin: border-box;
+    outline: 1px solid transparent; // Prevent rendering issue on iOS (thin gap)
 
-		&:focus {
-			.keyboard & {
-				box-shadow: none; // Use padding as focus state (no gradients in box-shadows possible)
-				padding: (variables.$btn-padding-y-xl + 2px) (variables.$btn-padding-x-xl + 2px);
-				margin: -2px;
+    &:focus {
+      .keyboard & {
+        box-shadow: none; // Use padding as focus state (no gradients in box-shadows possible)
+        padding: (variables.$btn-padding-y-xl + 2px)
+          (variables.$btn-padding-x-xl + 2px);
+        margin: -2px;
 
-				&:hover {
-					box-shadow: 0 4px 4px variables.$btn-box-shadow-color;
-				}
-			}
-		}
-	}
+        &:hover {
+          box-shadow: 0 4px 4px variables.$btn-box-shadow-color;
+        }
+      }
+    }
+  }
 
-	.btn-xl {
-		@media (max-width: (variables.$bp-sm - 1px)) {
-			padding-left: variables.$btn-padding-x-lg;
-			padding-right: variables.$btn-padding-x-lg;
+  .btn-xl {
+    @media (max-width: (variables.$bp-sm - 1px)) {
+      padding-left: variables.$btn-padding-x-lg;
+      padding-right: variables.$btn-padding-x-lg;
 
-			&:focus {
-				.keyboard & {
-					padding: (variables.$btn-padding-y-xl + 2px) (variables.$btn-padding-x-lg + 2px);
-				}
-			}
-		}
-	}
+      &:focus {
+        .keyboard & {
+          padding: (variables.$btn-padding-y-xl + 2px)
+            (variables.$btn-padding-x-lg + 2px);
+        }
+      }
+    }
+  }
 
-	.copy-to-clipboard {
-		background-image:
-			linear-gradient(
-				to right,
-				variables.$btn-secondary-color,
-				color.mix(variables.$violet, variables.$btn-secondary-color, 79%)
-			);
-		background-clip: border-box;
-		position: relative;
+  .copy-to-clipboard {
+    background-image: linear-gradient(
+      to right,
+      variables.$btn-secondary-color,
+      color.mix(variables.$violet, variables.$btn-secondary-color, 79%)
+    );
+    background-clip: border-box;
+    position: relative;
 
-		&:hover:not(:disabled) {
-			background-image:
-				linear-gradient(
-					to right,
-					color.adjust(variables.$btn-secondary-color, $lightness: 4%),
-					color.adjust(color.mix(variables.$violet, variables.$btn-secondary-color, 79%), $lightness: 4%)
-				);
-		}
+    &:hover:not(:disabled) {
+      background-image: linear-gradient(
+        to right,
+        color.adjust(variables.$btn-secondary-color, $lightness: 4%),
+        color.adjust(
+          color.mix(variables.$violet, variables.$btn-secondary-color, 79%),
+          $lightness: 4%
+        )
+      );
+    }
 
-		&:active:not(:disabled) {
-			background-image:
-				linear-gradient(
-					to right,
-					color.adjust(variables.$btn-secondary-color, $lightness: -8%),
-					color.adjust(color.mix(variables.$violet, variables.$btn-secondary-color, 79%), $lightness: -8%)
-				);
-		}
-	}
+    &:active:not(:disabled) {
+      background-image: linear-gradient(
+        to right,
+        color.adjust(variables.$btn-secondary-color, $lightness: -8%),
+        color.adjust(
+          color.mix(variables.$violet, variables.$btn-secondary-color, 79%),
+          $lightness: -8%
+        )
+      );
+    }
+  }
 
-	.dropdown {
-		.dropdown-toggle {
-			background-image:
-				linear-gradient(
-					to right,
-					color.mix(variables.$violet, variables.$btn-secondary-color, 79%),
-					variables.$violet
-				);
-			position: relative;
+  .dropdown {
+    .dropdown-toggle {
+      background-image: linear-gradient(
+        to right,
+        color.mix(variables.$violet, variables.$btn-secondary-color, 79%),
+        variables.$violet
+      );
+      position: relative;
 
-			&:hover:not(:disabled) {
-				background-image:
-					linear-gradient(
-						to right,
-						color.adjust(color.mix(variables.$violet, variables.$btn-secondary-color, 79%), $lightness: 4%),
-						color.adjust(variables.$violet, $lightness: 4%)
-					);
-			}
+      &:hover:not(:disabled) {
+        background-image: linear-gradient(
+          to right,
+          color.adjust(
+            color.mix(variables.$violet, variables.$btn-secondary-color, 79%),
+            $lightness: 4%
+          ),
+          color.adjust(variables.$violet, $lightness: 4%)
+        );
+      }
 
-			&:active:not(:disabled) {
-				background-image:
-					linear-gradient(
-						to right,
-						color.adjust(color.mix(variables.$violet, variables.$btn-secondary-color, 79%), $lightness: -8%),
-						color.adjust(variables.$violet, $lightness: -8%)
-					);
-			}
+      &:active:not(:disabled) {
+        background-image: linear-gradient(
+          to right,
+          color.adjust(
+            color.mix(variables.$violet, variables.$btn-secondary-color, 79%),
+            $lightness: -8%
+          ),
+          color.adjust(variables.$violet, $lightness: -8%)
+        );
+      }
 
-			&::before {
-				content: "";
-				position: absolute;
-				top: 10px;
-				left: -2px;
-				bottom: 10px;
-				width: 1px;
-				background: rgb(255 255 255 / 80%);
-				transition: opacity variables.$btn-transition;
-			}
-		}
+      &::before {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: -2px;
+        bottom: 10px;
+        width: 1px;
+        background: rgb(255 255 255 / 80%);
+        transition: opacity variables.$btn-transition;
+      }
+    }
 
-		&.show {
-			.dropdown-toggle {
-				&,
-				&:hover {
-					background-image:
-						linear-gradient(
-							to right,
-							color.adjust(color.mix(variables.$violet, variables.$btn-secondary-color, 79%), $lightness: -8%),
-							color.adjust(variables.$violet, $lightness: -8%)
-						);
-				}
+    &.show {
+      .dropdown-toggle {
+        &,
+        &:hover {
+          background-image: linear-gradient(
+            to right,
+            color.adjust(
+              color.mix(variables.$violet, variables.$btn-secondary-color, 79%),
+              $lightness: -8%
+            ),
+            color.adjust(variables.$violet, $lightness: -8%)
+          );
+        }
 
-				&::before {
-					opacity: 0;
-				}
-			}
+        &::before {
+          opacity: 0;
+        }
+      }
 
-			&.success {
-				.dropdown-toggle {
-					&,
-					&:hover {
-						background: color.adjust(variables.$btn-success-color, $lightness: -8%);
-					}
-				}
-			}
-		}
+      &.success {
+        .dropdown-toggle {
+          &,
+          &:hover {
+            background: color.adjust(
+              variables.$btn-success-color,
+              $lightness: -8%
+            );
+          }
+        }
+      }
+    }
 
-		.dropdown-menu {
-			text-align: left;
+    .dropdown-menu {
+      text-align: left;
 
-			.feedback {
-				color: variables.$btn-success-color;
-			}
-		}
+      .feedback {
+        color: variables.$btn-success-color;
+      }
+    }
 
-		&:hover {
-			.dropdown-toggle:not(:disabled) {
-				&::before {
-					opacity: 0;
-				}
-			}
-		}
+    &:hover {
+      .dropdown-toggle:not(:disabled) {
+        &::before {
+          opacity: 0;
+        }
+      }
+    }
 
-		.btn:focus,
-		.btn:focus + .btn {
-			.keyboard & {
-				&::before {
-					opacity: 0;
-				}
-			}
-		}
+    .btn:focus,
+    .btn:focus + .btn {
+      .keyboard & {
+        &::before {
+          opacity: 0;
+        }
+      }
+    }
 
-		.btn:active:not(:disabled),
-		.btn:active + .btn:not(:disabled) {
-			&::before {
-				opacity: 0;
-			}
-		}
+    .btn:active:not(:disabled),
+    .btn:active + .btn:not(:disabled) {
+      &::before {
+        opacity: 0;
+      }
+    }
 
-		&.success {
-			> .btn {
-				background: variables.$btn-success-color;
+    &.success {
+      > .btn {
+        background: variables.$btn-success-color;
 
-				&:hover {
-					background: color.adjust(variables.$btn-success-color, $lightness: 4%);
-				}
+        &:hover {
+          background: color.adjust(
+            variables.$btn-success-color,
+            $lightness: 4%
+          );
+        }
 
-				&:active {
-					background: color.adjust(variables.$btn-success-color, $lightness: -8%);
-				}
-			}
-		}
-	}
+        &:active {
+          background: color.adjust(
+            variables.$btn-success-color,
+            $lightness: -8%
+          );
+        }
+      }
+    }
+  }
 
-	.dropdown-caret {
-		width: variables.$space-md;
-		height: variables.$space-md;
-		display: inline-block;
-		background: asset-url.image-url("bg-icons/16/chevron-11-down-light.svg");
-	}
+  .dropdown-caret {
+    width: variables.$space-md;
+    height: variables.$space-md;
+    display: inline-block;
+    background: asset-url.image-url("bg-icons/16/chevron-11-down-light.svg");
+  }
 }

@@ -1,5 +1,5 @@
 @use "../mixins/text-truncate";
 
 .text-truncate {
-	@include text-truncate.text-truncate;
+  @include text-truncate.text-truncate;
 }

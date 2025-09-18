@@ -3,30 +3,31 @@
 @use "../functions/strings";
 
 @mixin state($states...) {
-	@each $state in $states {
-		$string: $state;
+  @each $state in $states {
+    $string: $state;
 
-		@each $token in ">", "+", "~" {
-			$string: strings.str-replace($string, $token, " ");
-		}
+    @each $token in ">", "+", "~" {
+      $string: strings.str-replace($string, $token, " ");
+    }
 
-		$string: strings.str-replace($string, "  ", " ");
+    $string: strings.str-replace($string, "  ", " ");
 
-		$selectors: strings.str-parse($string, " ");
+    $selectors: strings.str-parse($string, " ");
 
-		@each $sel in $selectors {
-			@if string.index(#{&}, $sel) != null { // stylelint-disable-line scss/at-if-no-null
-				@at-root #{selector.replace(&, $sel, $state)} {
-					@content;
-				}
-			}
-		}
-	}
+    @each $sel in $selectors {
+      @if string.index(#{&}, $sel) != null {
+        // stylelint-disable-line scss/at-if-no-null
+        @at-root #{selector.replace(&, $sel, $state)} {
+          @content;
+        }
+      }
+    }
+  }
 }
 
 // variant mixin is an alias of state mixin
 @mixin variant($args...) {
-	@include state($args...) {
-		@content;
-	}
+  @include state($args...) {
+    @content;
+  }
 }

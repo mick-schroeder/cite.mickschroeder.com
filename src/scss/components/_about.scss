@@ -1,122 +1,122 @@
 @use "../abstracts/variables";
 
 .about {
-	background: variables.$about-bg;
-	color: variables.$shade-0;
-	text-align: center;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  background: variables.$about-bg;
+  color: variables.$shade-0;
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
-	// .container {
-	// 	@media (min-width: variables.$bp-md) {
-	// 		width: auto; // Reset
-	// 		max-width: 640px;
-	// 	}
+  // .container {
+  // 	@media (min-width: variables.$bp-md) {
+  // 		width: auto; // Reset
+  // 		max-width: 640px;
+  // 	}
 
-	// 	@media (min-width: variables.$bp-lg) {
-	// 		max-width: 972px;
-	// 	}
-	// }
+  // 	@media (min-width: variables.$bp-lg) {
+  // 		max-width: 972px;
+  // 	}
+  // }
 
-	.column {
-		@media (min-width: variables.$bp-lg) {
-			flex: 0 0 50%;
+  .column {
+    @media (min-width: variables.$bp-lg) {
+      flex: 0 0 50%;
 
-			&:nth-child(1) {
-				padding-right: 40px;
-			}
+      &:nth-child(1) {
+        padding-right: 40px;
+      }
 
-			&:nth-child(2) {
-				padding-left: 40px;
-			}
-		}
-	}
+      &:nth-child(2) {
+        padding-left: 40px;
+      }
+    }
+  }
 
-	.h4 {
-		margin-bottom: variables.$space-xs;
-	}
+  .h4 {
+    margin-bottom: variables.$space-xs;
+  }
 
-	a {
-		color: #a6c3ff;
-		text-decoration: underline;
-	}
+  a {
+    color: #a6c3ff;
+    text-decoration: underline;
+  }
 
-	p {
-		margin-top: 0;
+  p {
+    margin-top: 0;
 
-		&:last-child {
-			margin-bottom: 0;
-		}
-	}
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 
-	.zbib-illustration {
-		position: relative;
-		left: 11px;
-		display: block;
-		margin: 0 auto (96px - 27px);
+  .zbib-illustration {
+    position: relative;
+    left: 11px;
+    display: block;
+    margin: 0 auto (96px - 27px);
 
-		@media (max-width: (variables.$bp-md - 1px)) {
-			left: 6px;
-			width: 156px;
-			height: auto;
-			margin: 0 auto (variables.$space-xxxl - 17px);
-		}
-	}
+    @media (max-width: (variables.$bp-md - 1px)) {
+      left: 6px;
+      width: 156px;
+      height: auto;
+      margin: 0 auto (variables.$space-xxxl - 17px);
+    }
+  }
 
-	.features {
-		text-align: left;
-		margin-top: 80px - 17px;
-		margin-bottom: variables.$space-xxxl - 6px;
+  .features {
+    text-align: left;
+    margin-top: 80px - 17px;
+    margin-bottom: variables.$space-xxxl - 6px;
 
-		@media (min-width: variables.$bp-md) {
-			margin-top: 120px - 20px;
-			margin-bottom: variables.$space-max - 6px;
-		}
+    @media (min-width: variables.$bp-md) {
+      margin-top: 120px - 20px;
+      margin-bottom: variables.$space-max - 6px;
+    }
 
-		@media (min-width: variables.$bp-lg) {
-			display: flex;
-		}
-	}
+    @media (min-width: variables.$bp-lg) {
+      display: flex;
+    }
+  }
 
-	.feature {
-		padding-left: 66px + variables.$space-md;
-		position: relative;
-		margin-bottom: variables.$space-xxxl - 15px;
+  .feature {
+    padding-left: 66px + variables.$space-md;
+    position: relative;
+    margin-bottom: variables.$space-xxxl - 15px;
 
-		@media (min-width: variables.$bp-md) {
-			margin-bottom: variables.$space-max - 16px;
-		}
+    @media (min-width: variables.$bp-md) {
+      margin-bottom: variables.$space-max - 16px;
+    }
 
-		@media (min-width: variables.$bp-lg) {
-			&:last-child {
-				margin-bottom: 0;
-			}
-		}
-	}
+    @media (min-width: variables.$bp-lg) {
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
 
-	.feature-icon {
-		position: absolute;
-		left: 0;
-		top: -23px;
+  .feature-icon {
+    position: absolute;
+    left: 0;
+    top: -23px;
 
-		@media (min-width: variables.$bp-md) {
-			top: -20px;
-		}
-	}
+    @media (min-width: variables.$bp-md) {
+      top: -20px;
+    }
+  }
 
-	.remove-icon {
-		vertical-align: -2px;
-		margin: 0 1px;
-	}
+  .remove-icon {
+    vertical-align: -2px;
+    margin: 0 1px;
+  }
 
-	.support {
-		font-weight: 300;
-		font-size: variables.$lead-font-size-mobile;
-		margin-top: variables.$space-xl - 13px;
+  .support {
+    font-weight: 300;
+    font-size: variables.$lead-font-size-mobile;
+    margin-top: variables.$space-xl - 13px;
 
-		@media (min-width: variables.$bp-md) {
-			font-size: variables.$lead-font-size;
-			margin-top: variables.$space-xxl - 15px;
-		}
-	}
+    @media (min-width: variables.$bp-md) {
+      font-size: variables.$lead-font-size;
+      margin-top: variables.$space-xxl - 15px;
+    }
+  }
 }

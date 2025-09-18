@@ -1,13 +1,13 @@
 @use "../abstracts/variables";
 
 .messages {
-	position: fixed;
-	position: sticky;
-	position: sticky;
-	left: 0;
-	top: 0;
-	right: 0;
-	max-height: 100%;
-	overflow: auto;
-	z-index: variables.$z-index-messages;
+  position: fixed;
+  position: sticky;
+  position: sticky;
+  left: 0;
+  top: 0;
+  right: 0;
+  max-height: 100%;
+  overflow: auto;
+  z-index: variables.$z-index-messages;
 }

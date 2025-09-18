@@ -3,86 +3,96 @@
 // stylelint-disable nesting-selector-no-missing-scoping-root
 
 @mixin button-variant($color, $outline: null, $inverse: null) {
-	$btn-color: if($inverse, variables.$shade-0, $color);
-	$shade-0: if($inverse, $color, variables.$shade-0);
+  $btn-color: if($inverse, variables.$shade-0, $color);
+  $shade-0: if($inverse, $color, variables.$shade-0);
 
-	background-color: if($outline, transparent, $btn-color);
-	border-color: if($outline, $btn-color, transparent);
+  background-color: if($outline, transparent, $btn-color);
+  border-color: if($outline, $btn-color, transparent);
 
-	&,
-	.icon {
-		color: if($outline, $btn-color, $shade-0);
-	}
+  &,
+  .icon {
+    color: if($outline, $btn-color, $shade-0);
+  }
 
-	&:hover {
-		background-color: $btn-color;
-		box-shadow: 0 2px 4px variables.$btn-box-shadow-color;
+  &:hover {
+    background-color: $btn-color;
+    box-shadow: 0 2px 4px variables.$btn-box-shadow-color;
 
-		&,
-		.icon {
-			color: $shade-0;
-		}
-	}
+    &,
+    .icon {
+      color: $shade-0;
+    }
+  }
 
-	&:active {
-		background-color: color.adjust($btn-color, $lightness: -8%);
-		border-color: if($outline, color.adjust($btn-color, $lightness: -8%), transparent);
-		box-shadow: none;
+  &:active {
+    background-color: color.adjust($btn-color, $lightness: -8%);
+    border-color: if(
+      $outline,
+      color.adjust($btn-color, $lightness: -8%),
+      transparent
+    );
+    box-shadow: none;
 
-		&,
-		.icon {
-			color: $shade-0;
-		}
-	}
+    &,
+    .icon {
+      color: $shade-0;
+    }
+  }
 
-	&:disabled {
-		background-color: if($outline, transparent, $btn-color);
-		border-color: if($outline, $btn-color, transparent);
-		box-shadow: none;
+  &:disabled {
+    background-color: if($outline, transparent, $btn-color);
+    border-color: if($outline, $btn-color, transparent);
+    box-shadow: none;
 
-		&,
-		.icon {
-			color: if($outline, $btn-color, $shade-0);
-		}
-	}
+    &,
+    .icon {
+      color: if($outline, $btn-color, $shade-0);
+    }
+  }
 
-	&:focus {
-		.keyboard & {
-			box-shadow: 0 0 0 variables.$input-btn-focus-width $btn-color;
+  &:focus {
+    .keyboard & {
+      box-shadow: 0 0 0 variables.$input-btn-focus-width $btn-color;
 
-			&:hover {
-				box-shadow:
-					0 0 0 variables.$input-btn-focus-width $btn-color,
-					0 4px 4px variables.$btn-box-shadow-color;
-			}
+      &:hover {
+        box-shadow:
+          0 0 0 variables.$input-btn-focus-width $btn-color,
+          0 4px 4px variables.$btn-box-shadow-color;
+      }
 
-			&:active {
-				box-shadow: 0 0 0 variables.$input-btn-focus-width color.adjust($btn-color, $lightness: -8%);
-			}
-		}
-	}
+      &:active {
+        box-shadow: 0 0 0 variables.$input-btn-focus-width
+          color.adjust($btn-color, $lightness: -8%);
+      }
+    }
+  }
 
-	&.success {
-		background-color: variables.$btn-success-color;
+  &.success {
+    background-color: variables.$btn-success-color;
 
-		&:active {
-			background-color: color.adjust(variables.$btn-success-color, $lightness: -8%);
-		}
+    &:active {
+      background-color: color.adjust(
+        variables.$btn-success-color,
+        $lightness: -8%
+      );
+    }
 
-		&:focus {
-			.keyboard & {
-				box-shadow: 0 0 0 variables.$input-btn-focus-width variables.$btn-success-color;
+    &:focus {
+      .keyboard & {
+        box-shadow: 0 0 0 variables.$input-btn-focus-width
+          variables.$btn-success-color;
 
-				&:hover {
-					box-shadow:
-						0 0 0 variables.$input-btn-focus-width variables.$btn-success-color,
-						0 4px 4px variables.$btn-box-shadow-color;
-				}
+        &:hover {
+          box-shadow:
+            0 0 0 variables.$input-btn-focus-width variables.$btn-success-color,
+            0 4px 4px variables.$btn-box-shadow-color;
+        }
 
-				&:active {
-					box-shadow: 0 0 0 variables.$input-btn-focus-width color.adjust(variables.$btn-success-color, $lightness: -8%);
-				}
-			}
-		}
-	}
+        &:active {
+          box-shadow: 0 0 0 variables.$input-btn-focus-width
+            color.adjust(variables.$btn-success-color, $lightness: -8%);
+        }
+      }
+    }
+  }
 }

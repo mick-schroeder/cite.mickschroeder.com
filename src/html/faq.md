@@ -32,16 +32,16 @@ If you just need to create a one-off bibliography for a paper, ZoteroBib is the 
 
 If you're working on a longer-term project, want to build up a research library to use across multiple projects, or need to collaborate with others, [Zotero] offers many more features:
 
-  * Browser extensions for Chrome, Firefox, and Safari to help you save items with one click
-  * Automatic downloading of PDFs and webpage snapshots
-  * Word processor plugins to help you quickly insert citations and automatically generate a bibliography from the citations in your document, with support for subsequent citations, given name disambiguation, ordered numeric styles, and other advanced features
-  * Organization and tagging
-  * Note-taking
-  * Advanced sorting and searching
-  * Group libraries for easy collaboration and sharing
-  * Automatic syncing across your devices
-  * Retracted item notifications
-  * Web access to your data, notes, and files
+- Browser extensions for Chrome, Firefox, and Safari to help you save items with one click
+- Automatic downloading of PDFs and webpage snapshots
+- Word processor plugins to help you quickly insert citations and automatically generate a bibliography from the citations in your document, with support for subsequent citations, given name disambiguation, ordered numeric styles, and other advanced features
+- Organization and tagging
+- Note-taking
+- Advanced sorting and searching
+- Group libraries for easy collaboration and sharing
+- Automatic syncing across your devices
+- Retracted item notifications
+- Web access to your data, notes, and files
 
 ### What citation styles can I use?
 

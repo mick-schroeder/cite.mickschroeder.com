@@ -70,7 +70,6 @@ $lead-font-weight: 300;
 
 $text-color: $shade-9;
 
-
 // Space
 $space-min: 4px;
 $space-xs: 8px;
@@ -94,12 +93,13 @@ $bp-md: 768px;
 $bp-lg: 1004px;
 $bp-xl: 1200px;
 
-$grid-breakpoints: (xs: $bp-xs,
-		sm: $bp-sm,
-		md: $bp-md,
-		lg: $bp-lg,
-		xl: $bp-xl);
-
+$grid-breakpoints: (
+  xs: $bp-xs,
+  sm: $bp-sm,
+  md: $bp-md,
+  lg: $bp-lg,
+  xl: $bp-xl,
+);
 
 // Components
 $padding-x-sm: $space-sm;
@@ -115,7 +115,9 @@ $border-radius-lg: 6px;
 $border-width: 1px;
 
 $menu-bg: $body-bg;
-$menu-box-shadow: 0 0 0 1px rgb(0 0 0 / 8%), 0 3px 8px rgb(0 0 0 / 20%);
+$menu-box-shadow:
+  0 0 0 1px rgb(0 0 0 / 8%),
+  0 3px 8px rgb(0 0 0 / 20%);
 $menu-border-radius: $border-radius-sm;
 $menu-item-hover-bg: $shade-1;
 $menu-item-selected-bg: $shade-2;
@@ -127,11 +129,9 @@ $z-index-menu: 50;
 $z-index-modal: 60;
 $z-index-messages: 100;
 
-
 // Sections
 $section-padding: $space-xxxl + $space-xs;
 $section-padding-mobile: $space-xxl;
-
 
 // Buttons & forms
 $input-btn-focus-width: 2px;
@@ -225,11 +225,13 @@ $editable-border-color: $secondary;
 $editable-hover-percent: 0.04;
 $editable-hover-bg: rgba($shade-10, $editable-hover-percent);
 $editable-backdrop-bg: $shade-1;
-$editable-backdrop-hover-bg: color.adjust($shade-1, $lightness: -($editable-hover-percent * 100%)); // stylelint-disable-line scss/operator-no-unspaced
+$editable-backdrop-hover-bg: color.adjust(
+  $shade-1,
+  $lightness: -($editable-hover-percent * 100%)
+); // stylelint-disable-line scss/operator-no-unspaced
 
 // Icons
 $spinner-color: $secondary;
-
 
 // Badge
 $badge-font-size: 12px;
@@ -238,7 +240,6 @@ $badge-padding-y: $space-min - 2px;
 $badge-light-border-color: $shade-3;
 $badge-light-bg: $shade-0;
 
-
 // Zotero bib
 $zotero-bib-spinner-size: $space-xl;
 
@@ -246,7 +247,6 @@ $zotero-bib-spinner-size: $space-xl;
 $style-selector-bg: $secondary;
 $style-selector-hover-bg: color.adjust($secondary, $lightness: 4%);
 $style-selector-color: $shade-0;
-
 
 // Style installer
 $style-border-color: $shade-2;
@@ -269,13 +269,11 @@ $modal-header-padding-lg: $space-xl;
 $modal-inner-padding-lg: $space-xl;
 $modal-icon-spin-color: $shade-0;
 
-
 // Multiple choice dialog
 $result-border-color: $shade-2;
 $result-padding: $space-md;
 $result-hover-color: $shade-0;
 $result-hover-bg: $shade-1;
-
 
 // Message
 $message-font-size: $space-lg;
@@ -287,16 +285,16 @@ $message-warning-bg: $warning;
 $message-info-bg: $info;
 $message-success-bg: $success;
 
-
 // Permalink tools
 $permalink-spinner-size: $space-xl;
-
 
 // Menu (select, dropdown, …)
 $menu-color: $text-color;
 $menu-color-disabled: color.adjust($text-color, $lightness: 33%);
 $menu-bg: $body-bg;
-$menu-box-shadow: 0 0 0 1px rgb(0 0 0 / 8%), 0 3px 8px rgb(0 0 0 / 20%);
+$menu-box-shadow:
+  0 0 0 1px rgb(0 0 0 / 8%),
+  0 3px 8px rgb(0 0 0 / 20%);
 $menu-item-hover-bg: color.mix($shade-10, $shade-1, 2%);
 $menu-item-selected-bg: $shade-2;
 $menu-item-selected-hover-bg: $shade-3;
@@ -308,7 +306,6 @@ $menu-border-radius: $border-radius-sm;
 // Review
 $review-bg: color.mix($secondary, $shade-0, 7%);
 $review-border-color: color.mix($secondary, $shade-0, 14%);
-
 
 // Copy citation dialog
 $preview-bg: $review-bg;
@@ -329,8 +326,8 @@ $metadata-separator-color: $shade-3;
 // Creators
 $creators-last-name-max-width: 67%;
 $creators-value-padding-right-touch: 31px;
-$creator-color-transition: .5s cubic-bezier(1, 0, .5, .5);
-$creator-color-transition-delay: .1s;
+$creator-color-transition: 0.5s cubic-bezier(1, 0, 0.5, 0.5);
+$creator-color-transition-delay: 0.1s;
 
 $select-chevron-icon: "bg-icons/16/chevron-11-down-777.svg";
 $select-value-padding-desktop: 0 $input-btn-padding-x;

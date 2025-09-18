@@ -4,249 +4,267 @@
 @use "sass:math";
 
 .creators-entry {
-	position: relative;
+  position: relative;
 
-	&.color-exit,
-	&.color-exit .select-value {
-		color: variables.$blue;
-	}
+/*   &.color-exit,
+  &.color-exit .select-value {
+    color: variables.$blue;
+  }
 
-	&.color-exit-active,
-	&.color-exit-active .select-value {
-		color: inherit;
-		transition: color variables.$creator-color-transition;
-		transition-delay: variables.$creator-color-transition-delay;
-	}
+  &.color-exit-active,
+  &.color-exit-active .select-value {
+    color: inherit;
+    transition: color variables.$creator-color-transition;
+    transition-delay: variables.$creator-color-transition-delay;
+  } */
 
-	@include selectors.state(".panel.editing .creators-entry") {
-		$handle-width: 2 * variables.$default-padding-x-touch + variables.$space-lg + variables.$input-border-width;
+  @include selectors.state(".panel.editing .creators-entry") {
+    $handle-width: 2 * variables.$default-padding-x-touch +
+      variables.$space-lg + variables.$input-border-width;
 
-		padding-left: 2 * variables.$default-padding-x-touch + variables.$space-lg;
-		padding-right: $handle-width;
-		background: asset-url.image-url("icons/chevron-13.svg") no-repeat right ($handle-width + 4px) center variables.$input-bg;
+    padding-left: 2 * variables.$default-padding-x-touch + variables.$space-lg;
+    padding-right: $handle-width;
+    background: asset-url.image-url("icons/chevron-13.svg") no-repeat right
+      ($handle-width + 4px) center variables.$input-bg;
 
-		&.single,
-		&.virtual {
-			padding-right: 0;
-			background-position: right 12px center; // 16px
-		}
+    &.single,
+    &.virtual {
+      padding-right: 0;
+      background-position: right 12px center; // 16px
+    }
 
-		&::before {
-			left: 2 * variables.$default-padding-x-touch + variables.$space-lg;
-		}
+    &::before {
+      left: 2 * variables.$default-padding-x-touch + variables.$space-lg;
+    }
 
-		@include selectors.variant(".title + .creators-entry") {
-			padding-top: 0;
-			border-top-left-radius: variables.$input-border-radius;
-			border-top-right-radius: variables.$input-border-radius;
+    @include selectors.variant(".title + .creators-entry") {
+      padding-top: 0;
+      border-top-left-radius: variables.$input-border-radius;
+      border-top-right-radius: variables.$input-border-radius;
 
-			&::before {
-				@media (max-width: (variables.$bp-sm - 1px)) {
-					left: 0;
-				}
+      &::before {
+        @media (max-width: (variables.$bp-sm - 1px)) {
+          left: 0;
+        }
 
-				@media (max-width: (variables.$bp-md - 1px)) {
-					content: none;
-				}
-			}
-		}
+        @media (max-width: (variables.$bp-md - 1px)) {
+          content: none;
+        }
+      }
+    }
 
-		// Creators focus state
-		&:focus {
-			.keyboard:not(.specifity) & {
-				outline: none;
-				z-index: 2;
+    // Creators focus state
+    &:focus {
+      .keyboard:not(.specifity) & {
+        outline: none;
+        z-index: 2;
 
-				&::before,
-				&::after {
-					content: "";
-					position: absolute;
-					left: 0;
-					right: 0;
-					height: variables.$outline-width;
-					background-color: variables.$focus-color;
-				}
+        &::before,
+        &::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          height: variables.$outline-width;
+          background-color: variables.$focus-color;
+        }
 
-				&::before {
-					top: auto;
-					bottom: calc(100% - #{variables.$input-border-width});
-				}
+        &::before {
+          top: auto;
+          bottom: calc(100% - #{variables.$input-border-width});
+        }
 
-				&::after {
-					top: 100%;
-				}
-			}
-		}
-	}
+        &::after {
+          top: 100%;
+        }
+      }
+    }
+  }
 
-	.key {
-		@media (max-width: (variables.$bp-md - 1px)) {
-			@include selectors.state(".editing .creators-entry.virtual") {
-				flex-basis:
-					calc(
-						(100% - #{2 * variables.$default-padding-x-touch + variables.$input-border-width + variables.$space-lg}) * #{math.div(variables.$metadata-list-offset, 100%)}
-					); // Align with creators
-			}
-		}
+  .key {
+    @media (max-width: (variables.$bp-md - 1px)) {
+      @include selectors.state(".editing .creators-entry.virtual") {
+        flex-basis: calc(
+          (
+              100% - #{2 * variables.$default-padding-x-touch +
+                variables.$input-border-width + variables.$space-lg}
+            ) *
+            #{math.div(variables.$metadata-list-offset, 100%)}
+        ); // Align with creators
+      }
+    }
 
-		@media (min-width: variables.$bp-md) {
-			justify-content: flex-end;
-		}
+    @media (min-width: variables.$bp-md) {
+      justify-content: flex-end;
+    }
 
-		.input-group {
-			flex: 0 0 auto;
-			max-width: 100%;
-		}
+    .input-group {
+      flex: 0 0 auto;
+      max-width: 100%;
+    }
 
-		.select-component {
-			padding: 0;
-			border: none;
-			background-color: transparent;
-			line-height: normal;
-			color: variables.$key-color;
-			user-select: none; // Reset
-			box-shadow: none;
+    .select-component {
+      padding: 0;
+      border: none;
+      background-color: transparent;
+      line-height: normal;
+      color: variables.$key-color;
+      user-select: none; // Reset
+      box-shadow: none;
 
-			.select-control {
-				justify-content: flex-end;
-				background-color: transparent;
-				border: none;
-				padding: 0;
-				box-shadow: none;
+      .select-control {
+        justify-content: flex-end;
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        box-shadow: none;
 
-				@media (max-width: (variables.$bp-md - 1px)) {
-					flex-direction: row-reverse;
-					padding: (variables.$input-btn-padding-y-sm + 1px) 0;
-				}
+        @media (max-width: (variables.$bp-md - 1px)) {
+          flex-direction: row-reverse;
+          padding: (variables.$input-btn-padding-y-sm + 1px) 0;
+        }
 
-				@include selectors.state(".select-component:hover", ".select-component.is-focused") {
-					@include selectors.state(".select-component:not(.is-disabled)") {
-						cursor: pointer;
-						color: variables.$link-color;
-					}
-				}
-			}
+        @include selectors.state(
+          ".select-component:hover",
+          ".select-component.is-focused"
+        ) {
+          @include selectors.state(".select-component:not(.is-disabled)") {
+            cursor: pointer;
+            color: variables.$link-color;
+          }
+        }
+      }
 
-			.select-multi-value-wrapper {
-				flex: 0 0 auto;
-				max-width: 100%;
-			}
+      .select-multi-value-wrapper {
+        flex: 0 0 auto;
+        max-width: 100%;
+      }
 
-			.select-value {
-				flex: 0 0 auto;
-				position: static;
-				padding: 0;
-				max-width: 100%;
-			}
+      .select-value {
+        flex: 0 0 auto;
+        position: static;
+        padding: 0;
+        max-width: 100%;
+      }
 
-			.select-input {
-				position: absolute;
-			}
+      .select-input {
+        position: absolute;
+      }
 
-			.select-arrow-container {
-				order: -1;
-			}
+      .select-arrow-container {
+        order: -1;
+      }
 
-			.select-arrow {
-				background-image: asset-url.image-url("bg-icons/16/chevron-11-down-777.svg");
+      .select-arrow {
+        background-image: asset-url.image-url(
+          "bg-icons/16/chevron-11-down-777.svg"
+        );
 
-				@include selectors.state(".creators-entry:hover") {
-					@include selectors.state(".select-component:not(.is-disabled)") {
-						display: block;
-					}
-				}
+        @include selectors.state(".creators-entry:hover") {
+          @include selectors.state(".select-component:not(.is-disabled)") {
+            display: block;
+          }
+        }
 
-				@include selectors.state(".select-component:hover") {
-					background-image: asset-url.image-url("bg-icons/16/chevron-11-down-secondary.svg");
-				}
+        @include selectors.state(".select-component:hover") {
+          background-image: asset-url.image-url(
+            "bg-icons/16/chevron-11-down-secondary.svg"
+          );
+        }
 
-				@include selectors.state(".select-component.is-focused") {
-					display: block;
-					background-image: asset-url.image-url("bg-icons/16/chevron-11-down-secondary.svg");
-				}
-			}
+        @include selectors.state(".select-component.is-focused") {
+          display: block;
+          background-image: asset-url.image-url(
+            "bg-icons/16/chevron-11-down-secondary.svg"
+          );
+        }
+      }
 
-			.select-menu-outer {
-				text-align: left;
-				width: auto;
-				white-space: nowrap;
-				right: auto;
-			}
-		}
-	}
+      .select-menu-outer {
+        text-align: left;
+        width: auto;
+        white-space: nowrap;
+        right: auto;
+      }
+    }
+  }
 
-	.value {
-		@media (max-width: (variables.$bp-md - 1px)) {
-			@include selectors.state(".editing .creators-entry") {
-				align-items: center;
-				padding-right: variables.$creators-value-padding-right-touch;
-			}
+  .value {
+    @media (max-width: (variables.$bp-md - 1px)) {
+      @include selectors.state(".editing .creators-entry") {
+        align-items: center;
+        padding-right: variables.$creators-value-padding-right-touch;
+      }
 
-			@include selectors.state(".editing .creators-entry.single") {
-				padding-right: variables.$creators-value-padding-right-touch + variables.$space-xs;
-			}
+      @include selectors.state(".editing .creators-entry.single") {
+        padding-right: variables.$creators-value-padding-right-touch +
+          variables.$space-xs;
+      }
 
-			@include selectors.state(".editing .creators-entry.virtual") {
-				padding-right: variables.$creators-value-padding-right-touch + variables.$space-xs;
-			}
+      @include selectors.state(".editing .creators-entry.virtual") {
+        padding-right: variables.$creators-value-padding-right-touch +
+          variables.$space-xs;
+      }
 
-			@include selectors.state(".creators-entry.virtual") {
-				color: variables.$placeholder-color;
-			}
-		}
+      @include selectors.state(".creators-entry.virtual") {
+        color: variables.$placeholder-color;
+      }
+    }
 
-		@media (min-width: variables.$bp-md) {
-			> *:not(:first-child) {
-				margin-left: 2px;
-			}
+    @media (min-width: variables.$bp-md) {
+      > *:not(:first-child) {
+        margin-left: 2px;
+      }
 
-			> *:not(:last-child) {
-				margin-right: 2px;
-			}
-		}
+      > *:not(:last-child) {
+        margin-right: 2px;
+      }
+    }
 
-		.editable {
-			flex: 1 1 0;
+    .editable {
+      flex: 1 1 0;
 
-			::placeholder {
-				color: transparent; // Hide
-			}
+      ::placeholder {
+        color: transparent; // Hide
+      }
 
-			&:first-child {
-				@include selectors.state(".creators-entry.creators-twoslot") {
-					display: flex;
-					flex: 0 1 auto;
-					max-width: calc(#{variables.$creators-last-name-max-width} - 30px); // Substract buttons and margins / 2
+      &:first-child {
+        @include selectors.state(".creators-entry.creators-twoslot") {
+          display: flex;
+          flex: 0 1 auto;
+          max-width: calc(
+            #{variables.$creators-last-name-max-width} - 30px
+          ); // Substract buttons and margins / 2
 
-					&::after {
-						content: ",";
-						flex: 0 0 auto;
-					}
+          &::after {
+            content: ",";
+            flex: 0 0 auto;
+          }
 
-					.editable-content {
-						position: relative;
-						z-index: 1; // Higher than comma
-					}
+          .editable-content {
+            position: relative;
+            z-index: 1; // Higher than comma
+          }
 
-					.input-group {
-						flex: 1 1 auto;
-					}
-				}
-			}
+          .input-group {
+            flex: 1 1 auto;
+          }
+        }
+      }
 
-			&:last-of-type {
-				margin-right: 6px; // 8px
-			}
-		}
+      &:last-of-type {
+        margin-right: 6px; // 8px
+      }
+    }
 
-		.btn {
-			padding: 0;
-			border: none;
-			flex: 0 0 auto;
+    .btn {
+      padding: 0;
+      border: none;
+      flex: 0 0 auto;
 
-			&:focus {
-				outline: none;
-			}
-		}
-	}
+      &:focus {
+        outline: none;
+      }
+    }
+  }
 }

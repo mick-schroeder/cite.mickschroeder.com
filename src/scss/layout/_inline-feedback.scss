@@ -1,26 +1,26 @@
 .inline-feedback {
-	display: block;
-	position: relative;
+  display: block;
+  position: relative;
 
-	.shorter {
-		position: absolute;
-		left: 0;
-		top: 0;
-		width: 100%;
-		visibility: hidden;
-	}
+  .shorter {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    visibility: hidden;
+  }
 
-	.feedback {
-		font-style: italic;
-	}
+  .feedback {
+    font-style: italic;
+  }
 
-	&.active {
-		:not(.feedback) {
-			visibility: hidden;
-		}
+  &.active {
+    :not(.feedback) {
+      visibility: hidden;
+    }
 
-		.feedback {
-			visibility: visible;
-		}
-	}
+    .feedback {
+      visibility: visible;
+    }
+  }
 }

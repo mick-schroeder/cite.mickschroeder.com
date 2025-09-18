@@ -1,43 +1,43 @@
 @use "../abstracts/variables";
 
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 // Do not remove the outline from checkboxes and radios
 a,
 li[tabindex] {
-	&:focus {
-		outline: none;
-		outline-offset: variables.$outline-offset;
+  &:focus {
+    outline: none;
+    outline-offset: variables.$outline-offset;
 
-		.keyboard & {
-			outline: variables.$outline-width solid variables.$outline-color;
-		}
-	}
+    .keyboard & {
+      outline: variables.$outline-width solid variables.$outline-color;
+    }
+  }
 }
 
 ::selection {
-	//color: variables.$shade-0;
-	//background-color: variables.$secondary;
+  //color: variables.$shade-0;
+  //background-color: variables.$secondary;
 }
 
 html,
 body,
 main,
 .zotero-bib-container {
-	height: 100%; // Stretch for spinner
+  height: 100%; // Stretch for spinner
 }
 
 .zotero-bib-container {
-	&.loading {
-		display: flex;
-		justify-content: center;
-		align-items: center;
+  &.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-		.icon-spin {
-			width: variables.$zotero-bib-spinner-size;
-			height: variables.$zotero-bib-spinner-size;
-		}
-	}
+    .icon-spin {
+      width: variables.$zotero-bib-spinner-size;
+      height: variables.$zotero-bib-spinner-size;
+    }
+  }
 }
