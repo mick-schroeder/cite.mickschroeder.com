@@ -82,13 +82,13 @@
   @media (prefers-color-scheme: dark) {
     :root {
     color-scheme: dark;
-    --background: oklch(0.141 0.005 285.823);
+    --background: oklch(0.15 0.00 49);
    --foreground: oklch(0.985 0 0);
-   --card: oklch(0.21 0.006 285.885);
+   --card: oklch(0.27 0.01 286);
    --card-foreground: oklch(0.985 0 0);
    --popover: oklch(0.21 0.006 285.885);
    --popover-foreground: oklch(0.985 0 0);
-   --primary: oklch(0.64 0.21 25);
+   --primary: oklch(0.71 0.17 22);
    --primary-foreground: oklch(0.971 0.013 17.38);
    --secondary: oklch(0.274 0.006 286.033);
    --secondary-foreground: oklch(0.985 0 0);

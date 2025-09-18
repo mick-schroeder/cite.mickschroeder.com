@@ -2,9 +2,11 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import { Fragment, useCallback, useRef, useState, memo } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Icon } from 'web-common/components';
+import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Icon } from 'web-common/components';
 import { isTriggerEvent, pick } from 'web-common/utils';
 import { useFocusManager } from 'web-common/hooks';
+import { Button } from './ui/button';
+import { Quote,Copy,Check,Trash } from 'lucide-react';
 
 import { useDnd } from '../hooks';
 
@@ -125,7 +127,7 @@ const BibliographyItem = memo(props => {
 			onFocus={receiveFocus}
 			onBlur={receiveBlur}
 		>
-			<div className="citation" ref={containerRef}>
+			<div className="citation border-t px-3" ref={containerRef}>
 				{allowReorder && (
 					<div className="drag-handle" onMouseDown={onDrag} onTouchStart={onDrag}>
 						<Icon type="24/grip" role="presentation" width="24" height="24" />
@@ -139,25 +141,35 @@ const BibliographyItem = memo(props => {
 				{!isNumericStyle && (
 					<Fragment>
 					<Button
-						icon
+						variant="outline"
+						size="sm"
 						title={copyText}
-						className={cx('d-xs-none d-md-block btn-outline-secondary btn-copy')}
+						className={cx('d-xs-none d-md-block', 'btn-copy')}
 						onClick={handleCopyCitationClick}
-						tabIndex={ -3 }
+						tabIndex={-3}
 					>
-						<Icon type={'16/quote'} role="presentation" width="16" height="16" />
+						<Quote className="h-4 w-4 text-muted-foreground"/>
 					</Button>
 					<Button
-						icon
+						variant="outline"
+						size="sm"
 						title={intl.formatMessage({ id: 'zbib.citation.copyBibliographyEntry', defaultMessage: 'Copy Bibliography Entry' })}
 						disabled={copySingleState.citationKey === rawItem.key}
-						className={cx('d-xs-none d-md-block btn-outline-secondary btn-copy',
-							{ 'success': isCopied }
-						)}
+						className={cx('d-xs-none d-md-block', 'btn-copy', { 'success': isCopied })}
 						onClick={handleCopySingleClick}
 						tabIndex={-3}
 					>
-							<Icon type={isCopied ? '16/tick' : '16/copy'} role="presentation" width="16" height="16" />
+						{isCopied ? <Check className="h-4 w-4 text-muted-foreground" /> : <Copy className="h-4 w-4 text-muted-foreground" />}
+					</Button>
+					<Button
+						variant="outline"
+						size="sm"
+						title={ intl.formatMessage({ id: 'zbib.citation.deleteEntry', defaultMessage: 'Delete Entry' }) }	
+						className=""
+						onClick={onDeleteCitation}
+						tabIndex={-3}
+					>
+						<Trash className="h-4 w-4 text-muted-foreground" />
 					</Button>
 					</Fragment>
 				)}
@@ -229,15 +241,7 @@ const BibliographyItem = memo(props => {
 						)}
 					</DropdownMenu>
 				</Dropdown>
-				<Button
-					icon
-					title={ intl.formatMessage({ id: 'zbib.citation.deleteEntry', defaultMessage: 'Delete Entry' }) }
-					className="btn-outline-secondary btn-remove"
-					onClick={onDeleteCitation}
-					tabIndex={-3}
-				>
-					<Icon type={'16/remove-sm'} role="presentation" width="16" height="16" />
-				</Button>
+				
 				<script type="application/vnd.zotero.data+json">
 					{JSON.stringify(rawItem)}
 				</script>

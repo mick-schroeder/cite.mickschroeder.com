@@ -44,28 +44,18 @@
 	}
 
 	.write & {
-		&:not(.empty) {
-			padding-top: variables.$section-padding-mobile - 17px;
-
-			@media (min-width: variables.$bp-md) {
-				padding-top: variables.$section-padding - 22px;
-			}
-		}
-
+	
 		.bibliography-title {
 			display: flex;
 			align-items: center;
-			transition: background-color variables.$input-transition;
+			//transition: background-color variables.$input-transition;
 			border-radius: variables.$border-radius-sm;
-			margin-bottom: variables.$space-xl - 12px;
+			//margin-bottom: variables.$space-xl - 12px;
 
 			@media (min-width: variables.$bp-md) {
-				margin-bottom: variables.$space-xxl - 18px;
+				//margin-bottom: variables.$space-xxl - 18px;
 
-				&:hover {
-					background-color: variables.$shade-1;
-					transition: background-color 0.15s 0.15s ease;
-				}
+
 			}
 
 			.input-group {
@@ -80,22 +70,35 @@
 
 			.editable-content {
 				line-height: variables.$headings-line-height;
-				padding: 8px 0;
+				padding: 0;
 				text-align: left;
 				overflow-wrap: break-word;
+				font-size: inherit;
+				font-weight: inherit;
+				letter-spacing: inherit;
+				color: inherit;
+				background-color: transparent;
 
 				@media (min-width: variables.$bp-md) {
 					text-align: inherit;
 				}
 			}
 
+			.editable:hover .editable-content {
+				background-color: transparent;
+			}
+
 			.editable-control {
-				border-width: 1px;
-				box-shadow: 0 0 0 2px variables.$secondary;
+				border: none;
+				box-shadow: none;
 				line-height: normal; // Heading line-height would clip decenders
-				padding: 8px 0;
+				padding: 0;
 				text-align: left;
-				margin: -5.5px;
+				margin: 0;
+				font-size: inherit;
+				font-weight: inherit;
+				letter-spacing: inherit;
+				background: transparent;
 
 				@media (min-width: variables.$bp-md) {
 					text-align: inherit;
@@ -196,23 +199,7 @@
 		}
 	}
 
-	.read-only & {
-		border-top: none;
-		padding-top: variables.$section-padding-mobile - 10px; // t height
-
-		@media (min-width: variables.$bp-md) {
-			padding-top: variables.$section-padding - 12px; // t height
-		}
-
-		.h2 {
-			margin-bottom: variables.$space-xl - 17px;
-
-			@media (min-width: variables.$bp-md) {
-				margin-bottom: (variables.$space-xxl - 19px);
-			}
-		}
-	}
-
+	
 	.export-tools {
 		margin-top: 3em;
 	}

@@ -21,9 +21,7 @@
 		@include selectors.state(".editable:hover:not(.disabled)") {
 			cursor: pointer;
 
-			@media (min-width: variables.$bp-md) {
-				background-color: variables.$editable-hover-bg; // Use transparency so you can see through the comma between last and first name
-			}
+		
 		}
 
 		&.placeholder {
@@ -63,7 +61,7 @@
 
 			@include selectors.state(".editable:hover") {
 				@media (min-width: variables.$bp-md) {
-					background-color: variables.$editable-hover-bg;
+					//background-color: variables.$editable-hover-bg;
 					z-index: 1; // render one layer up to cover spinner in textarea #423
 				}
 			}
@@ -110,7 +108,7 @@
 						background-color: variables.$editable-backdrop-bg;
 
 						@include selectors.state(".editable:hover") {
-							background-color: variables.$editable-backdrop-hover-bg;
+							//background-color: variables.$editable-backdrop-hover-bg;
 						}
 					}
 				}
@@ -175,7 +173,7 @@
 			// Do not increase specificity with :not(.is-disabled)
 			@include selectors.state(".pseudo-editable:hover") {
 				cursor: pointer;
-				background-color: variables.$editable-hover-bg;
+				//background-color: variables.$editable-hover-bg;
 				border-color: transparent;
 			}
 

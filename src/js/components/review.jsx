@@ -137,16 +137,21 @@ const Review = ({ isTranslating, itemUnderReview, onReviewEdit, onReviewDelete, 
 						>
 							<CircleX className="size-4" aria-hidden="true" />
 							<FormattedMessage id="zbib.general.close" defaultMessage="Close" />
-						</Button></CardAction>
+						</Button>
+						</CardAction>
   </CardHeader>
   <CardContent>
-    <div className="background-background p-6 rounded-lg border shadow-md" dangerouslySetInnerHTML={ { __html: html } } />
+	<h3 className='my-2 text-muted-foreground font-bold'><FormattedMessage id="zbib.review.citation" defaultMessage="Citation" /></h3>
+    <div className="bg-background p-6 rounded-lg border shadow-md text-sm" dangerouslySetInnerHTML={ { __html: html } } />
+	<h3 className='my-2 text-muted-foreground font-bold'><FormattedMessage id="zbib.review.filename" defaultMessage="Filename" /></h3>	
+    <div className="bg-background p-6 rounded-lg border shadow-md text-sm" dangerouslySetInnerHTML={ { __html: html } } />
+
   </CardContent>
   <CardFooter>
     <div className="container">
 					
 					<div
-						className="flex gap-2 justify-center"
+						className="flex flex-wrap gap-2 justify-center"
 						role="toolbar"
 						tabIndex={ 0 }
 						ref={ toolbarRef }

@@ -14,7 +14,8 @@ import {
 import { buttonVariants } from './ui/button';
 import { Badge } from './ui/badge';
 
-import About from './about';
+import About2 from './about2';
+//import Brand from './brand';
 import BibliographySection from './bibliographySection';
 import CiteTools from './cite-tools';
 import ConfirmAddDialog from './confirm-add-dialog';
@@ -71,93 +72,124 @@ const ZBib = props => {
 	};
 
 	return (
-        <div className={ cx(className) }>
-			<div className="zotero-bib-inner container mx-auto max-w-screen-lg px-4 md:px-6">
-				<div className="messages">
-					{ props.messages.map(message => (
-						<Message
-							{ ...message }
-							{ ...pick(props, ['onDismiss', 'onUndoDelete', 'onReadMore', 'onShowDuplicate'])}
-							key={ message.id }
-						/>
-						))
-					}
+		<div className={ cx(className) }>
+			<div className="zotero-bib-inner">
+				<header className="bg-background top-0 z-50 w-full">
+					<nav
+						className="meta-nav flex items-center gap-2 mb-4 md:mb-6"
+						aria-label={ navLabel }
+						tabIndex={ 0 }
+						ref={ navRef }
+						onFocus={ receiveFocus }
+						onBlur={ receiveBlur }
+						onKeyDown={ handleKeyDown }
+					>
+						<NavigationMenu className="ml-auto bg-background/70 px-2 py-1 backdrop-blur-sm" viewport={ false }>
+							<NavigationMenuList className="justify-end gap-1 md:gap-2">
+								<NavigationMenuItem>
+									<NavigationMenuLink
+										asChild
+										className={ navLinkClass }
+										tabIndex={ -2 }
+									>
+										<button type="button" onClick={ props.onHelpClick }>
+											<FormattedMessage id="zbib.about" defaultMessage="About" />
+										</button>
+									</NavigationMenuLink>
+								</NavigationMenuItem>
+								<NavigationMenuItem>
+									<NavigationMenuLink
+										asChild
+										className={ navLinkClass }
+										tabIndex={ -2 }
+									>
+										<button type="button" onClick={ props.onHelpClick }>
+											<FormattedMessage id="zbib.help" defaultMessage="Help" />
+										</button>
+									</NavigationMenuLink>
+								</NavigationMenuItem>
+								<NavigationMenuItem>
+									<NavigationMenuLink
+										asChild
+										className={ navLinkClass }
+										tabIndex={ -2 }
+									>
+										<button type="button" onClick={ props.onHelpClick }>
+											<FormattedMessage id="zbib.examples" defaultMessage="Examples" />
+										</button>
+									</NavigationMenuLink>
+								</NavigationMenuItem>
+								<NavigationMenuItem>
+									<NavigationMenuLink asChild className={ navLinkClass } tabIndex={ -2 }>
+										<a href="https://www.mickschroeder.com" target="_blank" rel="noreferrer noopener">
+											Mick Schroeder
+										</a>
+									</NavigationMenuLink>
+								</NavigationMenuItem>
+							</NavigationMenuList>
+						</NavigationMenu>
+					</nav>
+					<div className="messages">
+						{ props.messages.map(message => (
+							<Message
+								{ ...message }
+								{ ...pick(props, ['onDismiss', 'onUndoDelete', 'onReadMore', 'onShowDuplicate']) }
+								key={ message.id }
+							/>
+						)) }
+					</div>
+				</header>
+				<div className="container-wrapper flex-1">
+					<div className="flex justify-center py-2">
+											<Badge variant="secondary" className="rounded-full bg-card border border-border px-6 py-2 transition-colors">
+												<span className="inline-flex items-center">
+													<img src="/static/images/icon-cite.png" className="h-6 w-auto mr-2" alt="" aria-hidden="true" />
+													<a
+														href="https://www.mickschroeder.com"
+														target="_blank"
+														rel="noreferrer"
+														className="text-xl font-black tracking-tighter self-center whitespace-nowrap text-foreground/60 hover:text-foreground hover:underline transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+													>
+														Mick Schroeder's
+													</a>
+													<a href="/" className="inline-flex items-center hover:underline rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background">
+														<span className="ml-2 text-xl font-black tracking-tighter self-center whitespace-nowrap text-foreground">
+															Citation Generator
+														</span>
+													</a>
+												</span>
+											</Badge>
+										</div>
+					<div className="container mx-auto py-4 flex justify-center px-4 md:px-6">
+						
+						<div className="grid gap-6 xl:grid-cols-5 xl:items-start">
+							<div className="flex flex-col gap-6 xl:col-span-2">
+								{ !props.isReadOnly && (
+									<section className="section section-cite">
+										
+										<div className="">
+											<CiteTools { ...pick(props, ['isTranslating', 'onEditorOpen', 'onTranslationCancel', 'onTranslationRequest', 'identifier', 'citationStyle', 'citationStyles', 'onCitationStyleChanged']) } />
+										</div>
+									</section>
+								) }
+								{ (!props.isReadOnly && (props.isTranslating || props.itemUnderReview)) && (
+									<Review { ...pick(props, ['isTranslating', 'itemUnderReview', 'onReviewEdit', 'onReviewDelete', 'onReviewDismiss', 'styleHasBibliography']) } />
+								) }
+							</div>
+							<div className="xl:col-span-3">
+								<BibliographySection { ...pick(props, ['bibliography', 'bibliographyRendered', 'bibliographyRenderedNodes',
+									'citationStyle', 'citationStyles', 'copySingleState', 'getCopyData', 'hydrateItemsCount',
+									'isHydrated', 'isNoteStyle', 'isNumericStyle', 'isPrintMode', 'isReadOnly', 'isReady',
+									'isSortedStyle', 'localCitationsCount', 'onCancelPrintMode', 'onCitationCopyDialogOpen',
+									'onCitationStyleChanged', 'onCopySingle', 'onDeleteCitations', 'onDeleteEntry', 'onDownloadFile',
+									'onEditorOpen', 'onOverride', 'onReorderCitations', 'onSaveToZoteroShow', 'onTitleChanged',
+									'styleHasBibliography', 'title']) }
+								/>
+							</div>
+						</div>
+					</div>
 				</div>
-
-				{
-				!props.isReadOnly && (
-					<section className="section section-cite">
-						<nav
-							className="meta-nav flex items-center gap-2 mb-4 md:mb-6"
-							aria-label={ navLabel }
-							tabIndex={0}
-							ref={ navRef }
-							onFocus={ receiveFocus }
-							onBlur={ receiveBlur }
-							onKeyDown={ handleKeyDown }
-						>
-								<NavigationMenu className="ml-auto rounded-lg border border-border bg-background/70 px-2 py-1 shadow-sm backdrop-blur-sm" viewport={ false }>
-									<NavigationMenuList className="justify-end gap-1 md:gap-2">
-										<NavigationMenuItem>
-											<NavigationMenuLink
-												asChild
-												className={ navLinkClass }
-												tabIndex={ -2 }
-											>
-												<button type="button" onClick={ props.onHelpClick }>
-													<FormattedMessage id="zbib.help" defaultMessage="Help" />
-												</button>
-											</NavigationMenuLink>
-										</NavigationMenuItem>
-										<NavigationMenuItem>
-											<NavigationMenuLink asChild className={ navLinkClass } tabIndex={ -2 }>
-												<a href="https://www.mickschroeder.com" target="_blank" rel="noreferrer noopener">
-													Mick Schroeder
-												</a>
-											</NavigationMenuLink>
-										</NavigationMenuItem>
-									</NavigationMenuList>
-								</NavigationMenu>
-						</nav>
-						<div className="py-6 flex justify-center px-4">
-							<Badge variant="secondary" className="rounded-full border border-border px-6 py-2 transition-colors">
-         					  <span className="inline-flex items-center ">
-								<img src="/static/images/icon-cite.png" className="h-6 w-auto mr-2" alt="" aria-hidden="true" />
-								<a
-								href="https://www.mickschroeder.com"
-								target="_blank"
-								rel="noreferrer"
-								className="text-xl font-black tracking-tighter self-center whitespace-nowrap text-foreground/60 hover:text-foreground hover:underline transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-								>
-								Mick Schroeder's
-								</a>
-								<a href="/" className="inline-flex items-center hover:underline rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background">
-									<span className="ml-2 text-xl font-black tracking-tighter self-center whitespace-nowrap text-foreground">
-									Citation Generator
-									</span>
-								</a>
-							</span>
-        					</Badge>
-						</div>
-						<div className="space-y-6">
-							 
-							<CiteTools { ...pick(props, ['isTranslating', 'onEditorOpen', 'onTranslationCancel', 'onTranslationRequest', 'identifier', 'citationStyle', 'citationStyles', 'onCitationStyleChanged']) } />
-						</div>
-					</section>
-				)
-				}
-				{(!props.isReadOnly && (props.isTranslating || props.itemUnderReview)) && (
-					<Review { ...pick(props, ['isTranslating', 'itemUnderReview', 'onReviewEdit', 'onReviewDelete', 'onReviewDismiss', 'styleHasBibliography']) } />
-				)}
-				<BibliographySection {...pick(props, ['bibliography', 'bibliographyRendered', 'bibliographyRenderedNodes',
-					'citationStyle', 'citationStyles', 'copySingleState', 'getCopyData', 'hydrateItemsCount',
-					'isHydrated', 'isNoteStyle', 'isNumericStyle', 'isPrintMode', 'isReadOnly', 'isReady',
-					'isSortedStyle', 'localCitationsCount', 'onCancelPrintMode', 'onCitationCopyDialogOpen',
-					'onCitationStyleChanged', 'onCopySingle', 'onDeleteCitations', 'onDeleteEntry', 'onDownloadFile',
-					'onEditorOpen', 'onOverride', 'onReorderCitations', 'onSaveToZoteroShow', 'onTitleChanged',
-					'styleHasBibliography', 'title']) }
-				/>
-				{
+				{/*
 					!props.isReadOnly && (
 						<section
 							aria-labelledby="link-to-this-version"
@@ -173,8 +205,8 @@ const ZBib = props => {
 							</div>
 						</section>
 					)
-				}
-				{
+				*/}
+				{/*
 					props.isReadOnly && (
 						<section className="section section-brand">
 							<div className="container">
@@ -182,11 +214,11 @@ const ZBib = props => {
 							</div>
 						</section>
 					)
-				}
+				*/}
 
 				{
 					!props.isReadOnly && (
-						<About onGetStartedClick={ props.onGetStartedClick } />
+						<About2 onGetStartedClick={ props.onGetStartedClick } />
 					)
 				}
 

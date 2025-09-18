@@ -54,7 +54,7 @@
 	display: flex;
 	align-items: center;
 	padding: (variables.$space-lg - 7px) (variables.$space-md - variables.$space-xs) (variables.$space-lg - 7px) variables.$space-md; // Caps height
-	border-top: 1px solid variables.$shade-2;
+	//border-top: 1px solid variables.$shade-2;
 	cursor: pointer;
 	position: relative;
 
@@ -83,7 +83,6 @@
 		box-shadow: 0 2px 20px rgba(variables.$shade-10, 0.2);
 
 		.drag-handle,
-		.btn-remove,
 		.citation-options-menu {
 			display: none;
 		}
@@ -91,7 +90,7 @@
 
 	&:hover {
 		@at-root #{selector.replace(&, ".citation", "body:not(.dnd-in-progress) .citation")} {
-			background-color: variables.$shade-1;
+		//	background-color: variables.$shade-1;
 
 			@media (min-width: variables.$bp-md) {
 				.drag-handle,
@@ -148,97 +147,8 @@
 		min-width: 0; // Enable word-wrap for long URLs
 	}
 
-	> .btn-icon,
-	.dropdown {
-		margin-top: -(variables.$space-lg);
-		margin-bottom: -(variables.$space-lg);
-	}
-
-	.show {
-		.dropdown-toggle {
-			background: variables.$btn-secondary-color;
-
-			.icon {
-				color: variables.$shade-0;
-			}
-		}
-
-		.dropdown-menu {
-			text-align: left;
-
-			.feedback {
-				color: variables.$btn-success-color;
-			}
-		}
-	}
-
-	> .btn-icon {
-		flex: 0 0 auto;
-	}
-
-	.btn-copy {
-		border-color: transparent;
-
-		&.success {
-			opacity: 1.0;
-			background-color: variables.$btn-success-color;
-
-			&:active {
-				background-color: color.adjust(variables.$btn-success-color, $lightness: -8%);
-			}
-
-			.icon {
-				color: variables.$shade-0;
-			}
-		}
-
-		&:focus {
-			@at-root #{selector.replace(&, ".citation", ".keyboard .citation")} {
-				border-color: variables.$btn-secondary-color;
-
-				&:active {
-					border-color: color.adjust(variables.$btn-secondary-color, $lightness: -8%);
-				}
-			}
-		}
-
-		&:active {
-			.icon {
-				color: variables.$shade-0;
-			}
-		}
-	}
-
+	.btn-copy,
 	.btn-remove {
-		position: absolute;
-		width: variables.$space-md;
-		height: variables.$space-md;
-		top: 50%;
-		right: -24px;
-		margin: -8px 0 0;
-		border-radius: 50%;
-		display: none;
-
-		&:active {
-			opacity: 1;
-		}
-
-		@media (min-width: variables.$bp-md) {
-			display: block;
-
-			@at-root #{selector.replace(&, ".citation", ".mouse .citation")} {
-				opacity: 0;
-			}
-
-			@at-root #{selector.replace(&, ".citation", ".keyboard .citation")} {
-				display: none;
-			}
-
-			&:active {
-				.icon {
-					color: variables.$shade-0;
-				}
-			}
-		}
+		// legacy overrides retained for print mode only
 	}
 }

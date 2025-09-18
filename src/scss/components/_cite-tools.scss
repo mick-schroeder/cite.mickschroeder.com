@@ -2,8 +2,6 @@
 
 .cite-tools {
 	
-	text-align: center;
-
 	.id-input-container {
 		display: flex;
 		margin-bottom: variables.$space-lg;
@@ -13,17 +11,11 @@
 		}
 	}
 
-	.input-group {
-		margin-right: variables.$space-min;
-	}
+	
 
 	.form-control {
-		font-size: 1.125em;
 		transition: border variables.$input-transition, box-shadow variables.$input-transition, padding variables.$input-transition;
 
-		&:focus {
-			padding-top: (variables.$input-padding-y-lg - 2px);
-			padding-bottom: (variables.$input-padding-y-lg - 2px);
-		}
+	
 	}
 }

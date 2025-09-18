@@ -8,7 +8,7 @@ import { noop, pick } from 'web-common/utils';
 
 
 const EditableContent = memo((props) => {
-	const { display, id, input, inputComponent, labelId, options, title } = props;
+	const { display, id, input, inputComponent, labelId, options, title, contentClassName } = props;
 	const value = props.value || (input && input.props.value);
 	const placeholder = props.placeholder || (input && input.props.placeholder);
 	const hasValue = !!(value || input && input.props.value);
@@ -30,7 +30,7 @@ const EditableContent = memo((props) => {
 			aria-labelledby={labelId}
 			id={id}
 			title={title}
-			className={cx(className)}
+			className={cx(className, contentClassName)}
 		>
 			{displayValue}
 		</div>
@@ -48,11 +48,26 @@ EditableContent.propTypes = {
 	options: PropTypes.array,
 	placeholder: PropTypes.string,
 	value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	contentClassName: PropTypes.string,
 };
 
 const Editable = props => {
-	const { children, input, isBusy, isDisabled, inputComponent = Input, isSelect,
-	isTextArea, tabIndex = 0, onClick = noop, onFocus = noop, ...rest } = props;
+	const {
+		children,
+		input,
+		isBusy,
+		isDisabled,
+		inputComponent = Input,
+	isSelect,
+	isTextArea,
+	tabIndex = 0,
+	onClick = noop,
+	onFocus = noop,
+	className: classNameProp,
+	contentClassName,
+	controlClassName,
+	...rest
+	} = props;
 
 	const isActive = (props.isActive || isBusy) && !isDisabled;
 	// input type auto-detection doesn't work if element is nested (which it can be, see
@@ -67,6 +82,10 @@ const Editable = props => {
 	const hasChildren = typeof children !== 'undefined';
 	const InputComponent = inputComponent;
 	const InputElement = input;
+	const forwardedProps = { ...rest };
+	delete forwardedProps.contentClassName;
+	delete forwardedProps.controlClassName;
+	delete forwardedProps.className;
 
 	return (
         <div
@@ -74,18 +93,18 @@ const Editable = props => {
 			tabIndex={ isDisabled ? null : isActive ? null : tabIndex }
 			onClick={ onClick }
 			onFocus={ onFocus }
-			className={ cx(className, { 'disabled': isDisabled }) }
+			className={ cx(className, classNameProp, { 'disabled': isDisabled }) }
 			{ ...pick(rest, p => p.startsWith('data-')) }
 		>
 			{ isActive ?
 				InputElement ? InputElement : <InputComponent
-					className={ cx(className, "editable-control") }
-					{ ...props }
-			/> : <Fragment>
+					className={ cx(className, 'editable-control', controlClassName) }
+					{ ...forwardedProps }
+				/> : <Fragment>
 						{
 						hasChildren ?
 							children :
-							<EditableContent { ...props } />
+							<EditableContent { ...forwardedProps } contentClassName={ contentClassName } />
 						}
 				</Fragment>
 			}
@@ -96,6 +115,8 @@ const Editable = props => {
 Editable.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
 	className: PropTypes.string,
+	contentClassName: PropTypes.string,
+	controlClassName: PropTypes.string,
 	input: PropTypes.element,
 	inputComponent: PropTypes.elementType,
 	isActive: PropTypes.bool,
