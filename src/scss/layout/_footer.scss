@@ -19,22 +19,6 @@ footer {
     color: inherit;
   }
 
-  &.faq-footer {
-    border-top-color: transparent;
-    max-width: variables.$container-width;
-    margin: auto;
-    position: relative;
-
-    &::before {
-      content: "";
-      position: absolute;
-      left: variables.$grid-gutter-width * 0.5;
-      right: variables.$grid-gutter-width * 0.5;
-      top: -1px;
-      height: 1px;
-      background-color: variables.$shade-2;
-    }
-  }
 
   .social-nav {
     margin-bottom: 12px;

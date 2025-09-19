@@ -489,7 +489,7 @@ const About2 = ({ onGetStartedClick }) => (
           <FormattedMessage
             id="zbib.about.CTA"
             description="cta-button"
-            defaultMessage="Start citing"
+            defaultMessage="Back to the top. Start citing..."
           />
         </ShadcnButton>
       </div>

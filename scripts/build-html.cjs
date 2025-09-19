@@ -48,7 +48,22 @@ const buildFaqPage = async () => {
   await fs.writeFile(dstFile, output);
   console.log("faq page generated");
 };
-
+const buildTermsPage = async () => {
+  const termsMarkdown = await fs.readFile(
+    path.join(__dirname, "..", "src", "html", "terms.md"),
+  );
+  const termsTemplate = await fs.readFile(
+    path.join(__dirname, "..", "src", "html", "terms.hbs"),
+  );
+  const dstFile = path.join(__dirname, "..", "build", "terms");
+  const template = Handlebars.compile(termsTemplate.toString());
+  const termsHTML = marked(termsMarkdown.toString(), { smartypants: true })
+    // Remove "-" at end of id attributes, which marked substitutes for question marks
+    .replace(/(id="[^"]+)-"/g, '$1"');
+  const output = addAnchors(await template({ terms: termsHTML }));
+  await fs.writeFile(dstFile, output);
+  console.log("terms, page generated");
+};
 const buildPage = async (pageName) => {
   const indexConfig = config.get("indexConfig");
   const srcFile = path.join(__dirname, "..", "src", "html", `${pageName}.hbs`);
@@ -74,6 +89,8 @@ const buildPage = async (pageName) => {
       buildPage("index"),
       buildPage("hydrate"),
       buildFaqPage(),
+      buildTermsPage(),
+
     ]);
   }
 })();
