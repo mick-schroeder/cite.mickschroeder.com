@@ -2,7 +2,8 @@ import { Fragment, memo, useCallback, useRef } from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
 import { useIntl, FormattedMessage } from "react-intl";
-import { Button as LegacyButton, Icon } from "web-common/components";
+import { Button as ShadcnButton } from "./ui/button";
+import { X } from "lucide-react";
 import { pick } from "web-common/utils";
 import { useFocusManager } from "web-common/hooks";
 import {
@@ -107,7 +108,7 @@ const ZBib = (props) => {
                     className={navLinkClass}
                     tabIndex={-2}
                   >
-                    <button type="button" onClick={props.onHelpClick}>
+                    <button type="button" onClick={props.onAboutClick}>
                       <FormattedMessage
                         id="zbib.about"
                         defaultMessage="About"
@@ -132,7 +133,7 @@ const ZBib = (props) => {
                     className={navLinkClass}
                     tabIndex={-2}
                   >
-                    <button type="button" onClick={props.onHelpClick}>
+                    <button type="button" onClick={props.onExamplesClick}>
                       <FormattedMessage
                         id="zbib.examples"
                         defaultMessage="Examples"
@@ -370,13 +371,13 @@ const ZBib = (props) => {
                   <h4 className="modal-title text-truncate text-lg font-semibold">
                     {saveToZotero}
                   </h4>
-                  <LegacyButton
-                    icon
-                    className="close"
+                  <ShadcnButton
+                    variant="ghost"
+                    size="icon"
                     onClick={props.onSaveToZoteroHide}
                   >
-                    <Icon type={"24/remove"} width="24" height="24" />
-                  </LegacyButton>
+                    <X className="h-6 w-6 text-primary" aria-hidden="true" />
+                  </ShadcnButton>
                 </div>
                 <div className="modal-body">
                   <p>
@@ -496,6 +497,8 @@ ZBib.propTypes = {
   onDismiss: PropTypes.func.isRequired,
   onGetStartedClick: PropTypes.func,
   onHelpClick: PropTypes.func.isRequired,
+  onAboutClick: PropTypes.func.isRequired,
+  onExamplesClick: PropTypes.func.isRequired,
   onReadMore: PropTypes.func.isRequired,
   onSaveToZoteroHide: PropTypes.func.isRequired,
   onStyleSwitchCancel: PropTypes.func.isRequired,

@@ -1073,7 +1073,23 @@ const BibWebContainer = (props) => {
   }, []);
 
   const handleHelpClick = useCallback((ev) => {
-    const target = document.querySelector(".zbib-illustration");
+    const target = document.querySelector("#help");
+    new SmoothScroll().animateScroll(target, ev.currentTarget, {
+      speed: 1000,
+      speedAsDuration: true,
+      offset: calcOffset(),
+    });
+  }, []);
+  const handleAboutClick = useCallback((ev) => {
+    const target = document.querySelector("#about");
+    new SmoothScroll().animateScroll(target, ev.currentTarget, {
+      speed: 1000,
+      speedAsDuration: true,
+      offset: calcOffset(),
+    });
+  }, []);
+  const handleExamplesClick = useCallback((ev) => {
+    const target = document.querySelector("#examples");
     new SmoothScroll().animateScroll(target, ev.currentTarget, {
       speed: 1000,
       speedAsDuration: true,
@@ -1974,6 +1990,8 @@ const BibWebContainer = (props) => {
       onStyleInstallerSelect={handleStyleInstallerSelect}
       onTitleChanged={handleTitleChange}
       onHelpClick={handleHelpClick}
+      onAboutClick={handleAboutClick}
+      onExamplesClick={handleExamplesClick}
       onCancelPrintMode={handleCancelPrintMode}
       onReadMore={handleReadMoreClick}
       onStyleSwitchCancel={handleStyleSwitchCancel}

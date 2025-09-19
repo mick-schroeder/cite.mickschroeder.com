@@ -120,21 +120,29 @@ const CiteTools = ({
 
   return (
     <div className="cite-tools">
-      <Card>
-        <CardHeader className="grid gap-4 md:grid-cols-[1fr_auto] md:items-start">
-          <div className="text-left">
-            <CardTitle className="text-left pb-2 text-2xl font-bold">
-              <FormattedMessage
+       <div className="mb-6 text-center px-6">
+<h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+      <FormattedMessage
                 id="zbib.brand.description"
                 defaultMessage="What would you like to cite?"
               />
-            </CardTitle>
-            <CardDescription className="">
-              <FormattedMessage
+    </h2>
+        <p className="text-muted-foreground text-xl">
+     <FormattedMessage
                 id="zbib.brand.description"
-                defaultMessage="Choose one of 10,000+ citation styles and enter your reference below to start creating your bibliography"
+                defaultMessage="Choose one of 10,000+ citation styles and enter your reference below to start creating your bibliography."
               />
-            </CardDescription>
+    </p>
+       </div>
+      
+              
+      <Card>
+        <CardHeader className="grid gap-4 md:grid-cols-[1fr_auto] md:items-start">
+          <div className="text-left">
+            <CardTitle className="">
+              Enter Reference Query
+            </CardTitle>
+  
           </div>
           <CardAction className="">
             <ShadcnButton

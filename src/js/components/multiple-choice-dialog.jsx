@@ -2,7 +2,9 @@ import PropTypes from "prop-types";
 import cx from "classnames";
 import { useCallback, useId, memo, useRef } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Button, Icon, Spinner } from "web-common/components";
+import { Button as ShadcnButton } from "./ui/button";
+import { X } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import { isTriggerEvent } from "web-common/utils";
 import { useFocusManager } from "web-common/hooks";
 
@@ -140,7 +142,7 @@ const MultipleChoiceDialog = (props) => {
       <div className="modal-content" tabIndex={-1}>
         <div className="modal-header">
           <h4 className="modal-title text-truncate">{title}</h4>
-          <Button
+          <ShadcnButton
             title={intl.formatMessage({
               id: "zbib.modal.closeDialog",
               defaultMessage: "Close Dialog",
@@ -149,13 +151,8 @@ const MultipleChoiceDialog = (props) => {
             className="close"
             onClick={onMultipleChoiceCancel}
           >
-            <Icon
-              type={"24/remove"}
-              role="presentation"
-              width="24"
-              height="24"
-            />
-          </Button>
+            <X className="h-6 w-6 text-primary" aria-hidden="true" />
+          </ShadcnButton>
         </div>
         <div className="modal-body" tabIndex={-1}>
           <ul
@@ -187,7 +184,7 @@ const MultipleChoiceDialog = (props) => {
                 values={{ count: multipleChoiceItems.length }}
               />
             </div>
-            <Button
+            <ShadcnButton
               ref={(ref) => (persistBtnWidth.current = ref?.offsetWidth)}
               style={
                 isTranslatingMore ? { width: persistBtnWidth.current } : {}
@@ -197,14 +194,14 @@ const MultipleChoiceDialog = (props) => {
               onClick={handleMoreButtonClick}
             >
               {isTranslatingMore ? (
-                <Spinner />
+                <LoaderCircle className="h-4 w-4 text-primary animate-spin" />
               ) : (
                 <FormattedMessage
                   id="zbib.multipleChoice.more"
                   defaultMessage="More…"
                 />
               )}
-            </Button>
+            </ShadcnButton>
           </div>
         )}
       </div>

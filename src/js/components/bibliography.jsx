@@ -7,12 +7,11 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  Icon,
 } from "web-common/components";
 import { isTriggerEvent, pick } from "web-common/utils";
 import { useFocusManager } from "web-common/hooks";
 import { Button as ShadcnButton} from "./ui/button";
-import { Quote, Copy, Check, Trash } from "lucide-react";
+import { Quote, Copy, Check, Trash, Grip, MoreVertical } from "lucide-react";
 
 import { useDnd } from "../hooks";
 
@@ -194,7 +193,7 @@ const BibliographyItem = memo((props) => {
             onMouseDown={onDrag}
             onTouchStart={onDrag}
           >
-            <Icon type="24/grip" role="presentation" width="24" height="24" />
+            <Grip className="h-6 w-6 text-primary" />
           </div>
         )}
         <div
@@ -260,7 +259,7 @@ const BibliographyItem = memo((props) => {
             title="Options"
             tabIndex={-3}
           >
-            <Icon type={"28/dots"} role="presentation" width="28" height="28" />
+            <MoreVertical className="h-7 w-7 text-primary" />
           </DropdownToggle>
           <DropdownMenu aria-label="Options" right>
             {!isNumericStyle && (

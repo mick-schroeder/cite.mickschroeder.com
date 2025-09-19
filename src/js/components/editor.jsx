@@ -1,4 +1,4 @@
-import { Button } from "web-common/components";
+import { Button as ShadcnButton } from "./ui/button";
 import { FormattedMessage, useIntl } from "react-intl";
 import { getZotero } from "web-common/zotero";
 import { useDebouncedCallback } from "use-debounce";
@@ -312,12 +312,12 @@ const Editor = (props) => {
       <div className="modal-content" tabIndex={-1}>
         <div className="modal-header">
           <h4 className="modal-title text-truncate">{itemTitle}</h4>
-          <Button
-            className="btn-outline-inverse-blue-dark"
+          <ShadcnButton
+            variant="outline"
             onClick={handleClose}
           >
             <FormattedMessage id="zbib.general.done" defaultMessage="Done" />
-          </Button>
+          </ShadcnButton>
         </div>
         <div className="modal-body">
           <div className={cx("editor", className)}>

@@ -1,4 +1,5 @@
-import { Button, Icon } from "web-common/components";
+import { X } from "lucide-react";
+import { Button as ShadcnButton } from "./ui/button";
 import { formatBib, formatFallback } from "web-common/cite";
 import { FormattedMessage, useIntl } from "react-intl";
 import { isTriggerEvent } from "web-common/utils";
@@ -243,7 +244,7 @@ const MultipleItemsDialog = (props) => {
       <div className="modal-content" tabIndex={-1}>
         <div className="modal-header">
           <h4 className="modal-title text-truncate">{title}</h4>
-          <Button
+          <ShadcnButton
             title={intl.formatMessage({
               id: "zbib.modal.closeDialog",
               defaultMessage: "Close Dialog",
@@ -252,13 +253,8 @@ const MultipleItemsDialog = (props) => {
             className="close"
             onClick={handleCancel}
           >
-            <Icon
-              type={"24/remove"}
-              role="presentation"
-              width="24"
-              height="24"
-            />
-          </Button>
+            <X className="h-6 w-6 text-primary" aria-hidden="true" />
+          </ShadcnButton>
         </div>
         <div className="modal-body" tabIndex={-1}>
           <MultipleLitemsList
@@ -277,7 +273,7 @@ const MultipleItemsDialog = (props) => {
           tabIndex={0}
         >
           <div className="selection-count">
-            <Button
+            <ShadcnButton
               className="btn btn-link"
               onClick={handleSelectAll}
               tabIndex={-2}
@@ -286,8 +282,8 @@ const MultipleItemsDialog = (props) => {
                 id="zbib.multipleItems.selectAll"
                 defaultMessage="Select All"
               />
-            </Button>
-            <Button
+            </ShadcnButton>
+            <ShadcnButton
               className="btn btn-link"
               onClick={handleClearSelection}
               tabIndex={-2}
@@ -296,9 +292,9 @@ const MultipleItemsDialog = (props) => {
                 id="zbib.multipleItems.clearSelection"
                 defaultMessage="Clear Selection"
               />
-            </Button>
+            </ShadcnButton>
           </div>
-          <Button
+          <ShadcnButton
             disabled={selectedItems.length === 0}
             className="btn-outline-secondary btn-min-width"
             onClick={handleAddSelected}
@@ -316,7 +312,7 @@ const MultipleItemsDialog = (props) => {
                 defaultMessage="Add Selected"
               />
             )}
-          </Button>
+          </ShadcnButton>
         </div>
       </div>
     </Modal>

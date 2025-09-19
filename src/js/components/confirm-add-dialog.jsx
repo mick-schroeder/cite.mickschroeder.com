@@ -1,7 +1,9 @@
 import { memo, useCallback, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Button, Icon, Tabs, Tab, TabPane } from "web-common/components";
+import { Button as ShadcnButton } from "./ui/button";
+import { Tabs, Tab, TabPane } from "web-common/components";
+import { X } from "lucide-react";
 import { isTriggerEvent } from "web-common/utils";
 import { formatBib, formatFallback } from "web-common/cite";
 
@@ -74,22 +76,17 @@ const ConfirmAddDialog = (props) => {
       <div className="modal-content" tabIndex={-1}>
         <div className="modal-header">
           <h4 className="modal-title text-truncate">{title}</h4>
-          <Button
+          <ShadcnButton
+            variant="ghost"
+            size="icon"
             title={intl.formatMessage({
               id: "zbib.modal.closeDialog",
               defaultMessage: "Close Dialog",
             })}
-            icon
-            className="close"
             onClick={onConfirmAddCancel}
           >
-            <Icon
-              type={"24/remove"}
-              role="presentation"
-              width="24"
-              height="24"
-            />
-          </Button>
+            <X className="h-6 w-6 text-primary" aria-hidden="true" />
+          </ShadcnButton>
         </div>
         <div
           ref={(ref) => (minModalBodyHeight.current = ref?.offsetHeight)}
@@ -140,9 +137,10 @@ const ConfirmAddDialog = (props) => {
           )}
         </div>
         <div className="modal-footer">
-          <Button
+          <ShadcnButton
             autoFocus
-            className="btn-outline-secondary btn-min-width"
+            variant="outline"
+            className="min-w-[8rem]"
             onClick={handleConfirm}
             onKeyDown={handleConfirm}
           >
@@ -164,7 +162,7 @@ const ConfirmAddDialog = (props) => {
             ) : (
               <FormattedMessage id="zbib.general.add" defaultMessage="Add" />
             )}
-          </Button>
+          </ShadcnButton>
         </div>
       </div>
     </Modal>

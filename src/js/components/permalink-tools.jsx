@@ -3,7 +3,8 @@ import cx from "classnames";
 import PropTypes from "prop-types";
 import { Fragment, useCallback, useState, memo } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-import { Button, Spinner } from "web-common/components";
+import { Button as ShadcnButton } from "./ui/button";
+import { LoaderCircle } from "lucide-react";
 
 const PermalinkTools = ({ bibliography, isSafari, onSave, permalink }) => {
   const [isSavingPermalink, setIsSavingPermalink] = useState(false);
@@ -30,13 +31,13 @@ const PermalinkTools = ({ bibliography, isSafari, onSave, permalink }) => {
   return (
     <div className={cx("permalink-tools", { loading: isSavingPermalink })}>
       {isSavingPermalink ? (
-        <Spinner />
+        <LoaderCircle className="h-4 w-4 text-primary animate-spin" />
       ) : permalink ? (
         <div className="btn-wrap">
-          <Button
-            className={cx("btn btn-lg btn-block btn-secondary", {
-              success: isRecentlyCopied,
-            })}
+          <ShadcnButton
+            variant="secondary"
+            size="lg"
+            className={cx("w-full", { "bg-green-500 text-white": isRecentlyCopied })}
             data-clipboard-text={permalink}
             onClick={handleCopy}
           >
@@ -49,7 +50,7 @@ const PermalinkTools = ({ bibliography, isSafari, onSave, permalink }) => {
                   id: "zbib.permalink.copyURL",
                   defaultMessage: "Copy URL",
                 })}
-          </Button>
+          </ShadcnButton>
           <a className="btn btn-lg btn-block btn-secondary" href={permalink}>
             <FormattedMessage id="zbib.permalink.view" defaultMessage="View" />
           </a>
@@ -74,16 +75,18 @@ const PermalinkTools = ({ bibliography, isSafari, onSave, permalink }) => {
               </p>
             </div>
           )}
-          <Button
+          <ShadcnButton
             disabled={bibliography.items.length === 0}
-            className="btn-lg btn-outline-secondary btn-min-width"
+            variant="outline"
+            size="lg"
+            className="min-w-[8rem]"
             onClick={handleCreateLink}
           >
             <FormattedMessage
               id="zbib.permalink.create"
               defaultMessage="Create"
             />
-          </Button>
+          </ShadcnButton>
         </Fragment>
       )}
     </div>

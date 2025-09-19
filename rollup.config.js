@@ -46,6 +46,11 @@ const config = {
       return false;
     },
   },
+  onwarn(warning, defaultHandler) {
+    // Suppress noisy Next.js-style `"use client"` notices coming from Radix/shadcn wrappers
+    if (warning.code === "MODULE_LEVEL_DIRECTIVE") return;
+    defaultHandler(warning);
+  },
   plugins: [
     webWorkerLoader({
       targetPlatform: "browser",

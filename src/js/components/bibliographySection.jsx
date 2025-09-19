@@ -9,7 +9,6 @@ import {
   memo,
 } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Spinner } from "web-common/components";
 import { pick } from "web-common/utils";
 import { usePrevious } from "web-common/hooks";
 import {
@@ -28,7 +27,7 @@ import Editable from "./ui/editable";
 import PlaceholderBibliography from "./placeholder-bibliography";
 import ExportTools from "./export-tools";
 import { Button as ShadcnButton } from "./ui/button";
-import { Pencil } from "lucide-react";
+import { Pencil, LoaderCircle } from "lucide-react";
 
 const BibliographySection = (props) => {
   const {
@@ -221,24 +220,10 @@ const BibliographySection = (props) => {
                   />
                 ) : (
                   <div className="spinner-container">
-                    <Spinner />
+                    <LoaderCircle className="h-4 w-4 text-primary animate-spin" />
                   </div>
                 )}
-                <ExportTools
-                  itemCount={
-                    isHydrated
-                      ? props.hydrateItemsCount
-                      : props.bibliography.items.length
-                  }
-                  {...pick(props, [
-                    "getCopyData",
-                    "onDownloadFile",
-                    "isHydrated",
-                    "isReadOnly",
-                    "isReady",
-                    "onSaveToZoteroShow",
-                  ])}
-                />
+                
                 {!isReadOnly && (isReady || isHydrated) && (
                   <DeleteAllButton
                     bibliographyCount={props.bibliography.items.length}
@@ -281,6 +266,32 @@ const BibliographySection = (props) => {
             )}
           </CardContent>
         </Card>
+        <div className="mt-6">
+<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight py-2">
+      
+      <FormattedMessage
+                  id="zbib.bibliography.export"
+                  defaultMessage="Export Bibliography"
+                />
+      </h3>  
+          <ExportTools
+                  itemCount={
+                    isHydrated
+                      ? props.hydrateItemsCount
+                      : props.bibliography.items.length
+                  }
+                  {...pick(props, [
+                    "getCopyData",
+                    "onDownloadFile",
+                    "isHydrated",
+                    "isReadOnly",
+                    "isReady",
+                    "onSaveToZoteroShow",
+                  ])}
+                />
+
+        </div>
+          
       </div>
     </section>
   );

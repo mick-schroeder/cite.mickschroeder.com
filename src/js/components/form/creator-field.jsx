@@ -12,10 +12,10 @@ import {
 } from "react";
 import { useIntl } from "react-intl";
 import {
-  Icon,
   SelectDivider,
   SelectOption,
 } from "web-common/components";
+import { User, UserMinus, UserPlus } from "lucide-react";
 import { Button as ShadcnButton } from "../ui/button";
 import { isTriggerEvent, omit, pick } from "web-common/utils";
 
@@ -477,7 +477,7 @@ const CreatorField = forwardRef((props, ref) => {
                 onClick={handleCreatorTypeSwitch}
                 title="Switch Creator Type"
               >
-                <Icon type={icon} role="presentation" width="20" height="20" />
+                <User className="h-5 w-5 text-primary" aria-hidden="true" />
               </ShadcnButton>
               {isDeleteAllowed ? (
                 <ShadcnButton
@@ -487,12 +487,7 @@ const CreatorField = forwardRef((props, ref) => {
                   onClick={handleCreatorRemove}
                   title="Remove Creator"
                 >
-                  <Icon
-                    type={"16/minus"}
-                    role="presentation"
-                    width="16"
-                    height="16"
-                  />
+                  <UserMinus className="h-4 w-4 text-primary" aria-hidden="true" />
                 </ShadcnButton>
               ) : (
                 <ShadcnButton
@@ -502,12 +497,7 @@ const CreatorField = forwardRef((props, ref) => {
                   disabled={true}
                   title="Remove Creator"
                 >
-                  <Icon
-                    type={"16/minus"}
-                    role="presentation"
-                    width="16"
-                    height="16"
-                  />
+                  <UserMinus className="h-4 w-4 text-primary" aria-hidden="true" />
                 </ShadcnButton>
               )}
               {isCreateAllowed ? (
@@ -518,12 +508,7 @@ const CreatorField = forwardRef((props, ref) => {
                   onClick={handleCreatorAdd}
                   title="Add Creator"
                 >
-                  <Icon
-                    type={"16/plus"}
-                    role="presentation"
-                    width="16"
-                    height="16"
-                  />
+                  <UserPlus className="h-4 w-4 text-primary" aria-hidden="true" />
                 </ShadcnButton>
               ) : (
                 <ShadcnButton
@@ -533,12 +518,7 @@ const CreatorField = forwardRef((props, ref) => {
                   disabled={true}
                   title="Add Creator"
                 >
-                  <Icon
-                    type={"16/plus"}
-                    role="presentation"
-                    width="16"
-                    height="16"
-                  />
+                  <UserPlus className="h-4 w-4 text-primary" aria-hidden="true" />
                 </ShadcnButton>
               )}
             </Fragment>

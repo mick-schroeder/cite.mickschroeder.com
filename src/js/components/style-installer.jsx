@@ -2,7 +2,8 @@ import cx from "classnames";
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useReducer, useRef, useId, memo } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-import { Icon, Spinner } from "web-common/components";
+import { X } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import { Button as ShadcnButton } from "./ui/button";
 import { useFocusManager, usePrevious } from "web-common/hooks";
 
@@ -310,10 +311,10 @@ const StyleInstaller = (props) => {
         <div className="modal-content" tabIndex={-1}>
           <div className="modal-header">
             <h4 className="modal-title text-truncate">{title}</h4>
-            <ShadcnButton variant="ghost" size="icon" className="close" onClick={handleCancel}>
-              <Icon type={"24/remove"} width="24" height="24" />
-            </ShadcnButton>
-          </div>
+          <ShadcnButton variant="ghost" size="icon" className="close" onClick={handleCancel}>
+            <X className="h-6 w-6 text-primary" aria-hidden="true" />
+          </ShadcnButton>
+          </div> 
           <div className="modal-body">
             <Input
               aria-label="Search Citation Styles"
@@ -380,7 +381,7 @@ const StyleInstaller = (props) => {
           </div>
         </div>
       ) : (
-        <Spinner />
+        <LoaderCircle className="h-4 w-4 text-primary animate-spin" />
       )}
     </Modal>
   );

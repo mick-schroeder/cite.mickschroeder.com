@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Fragment, memo } from "react";
 
-import { Button } from "web-common/components";
+import { Button as ShadcnButton } from "./ui/button";
 import Modal from "./modal";
 
 const Confirmation = (props) => {
@@ -30,13 +30,13 @@ const Confirmation = (props) => {
           </div>
           <div className="modal-body">{children}</div>
           <div className="modal-footer">
-            <div className="buttons">
-              <Button className="btn-outline-secondary" onClick={onCancel}>
+            <div className="buttons flex gap-2">
+              <ShadcnButton variant="outline" onClick={onCancel}>
                 {cancelLabel}
-              </Button>
-              <Button autoFocus className="btn-secondary" onClick={onConfirm}>
+              </ShadcnButton>
+              <ShadcnButton autoFocus onClick={onConfirm}>
                 {confirmLabel}
-              </Button>
+              </ShadcnButton>
             </div>
           </div>
         </div>

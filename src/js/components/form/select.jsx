@@ -9,7 +9,8 @@ import {
   useRef,
   useState,
 } from "react";
-import { Select, Spinner } from "web-common/components";
+import { Select } from "web-common/components";
+import { LoaderCircle } from "lucide-react";
 import { usePrevious } from "web-common/hooks";
 import { pick } from "web-common/utils";
 
@@ -157,7 +158,7 @@ const SelectInput = forwardRef((props, ref) => {
           {...pick(rest, (p) => p.startsWith("data-"))}
         />
       )}
-      {isBusy ? <Spinner className="small" /> : null}
+      {isBusy ? <LoaderCircle className="h-4 w-4 text-primary animate-spin" /> : null}
     </div>
   );
 });

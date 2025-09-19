@@ -2,7 +2,8 @@ import { memo } from "react";
 import PropTypes from "prop-types";
 import { FormattedMessage } from "react-intl";
 
-import { Button as ShadcnButton } from "./ui/button";import {
+import { Button as ShadcnButton } from "./ui/button";
+import {
   Quote,
   Type,
   FileText,
@@ -20,6 +21,9 @@ import { Button as ShadcnButton } from "./ui/button";import {
   Code2,
   Puzzle,
   FileDown,
+  Info,
+  HelpCircle,
+  ListChecks,
 } from "lucide-react";
 import { citationStylesCount } from "../../../data/citation-styles-data.json";
 
@@ -43,7 +47,8 @@ const About2 = ({ onGetStartedClick }) => (
           }} //eslint-disable-line react/display-name
         />
       </p>
-      <h2 className="scroll-m-20 border-b pb-2 pt-6 text-3xl font-semibold tracking-tight first:mt-0">
+      <h2 id="about" className="scroll-m-20 border-b pb-2 pt-6 text-3xl font-semibold tracking-tight first:mt-0">
+        <Info className="inline h-6 w-6 text-primary -mt-1 mr-2" aria-hidden="true" />
         <FormattedMessage
           id="zbib.about.section.about"
           description="about-section-title"
@@ -51,66 +56,83 @@ const About2 = ({ onGetStartedClick }) => (
         />
       </h2>
       <section className="features mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+        
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-muted p-2">
+          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Quote className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
           <h2 className="text-lg font-semibold tracking-tight">
-            Suggesting a Citation
+            <FormattedMessage
+              id="zbib.about.suggest.header"
+              description="suggesting-citation-header"
+              defaultMessage="Suggesting a citation"
+            />
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Paste a URL in the text box and click{" "}
-            <span className="font-medium">Suggest Citation</span>. Automatically
-            pull in data from thousands of medical and scientific journals,
-            newspapers, magazine articles, and library catalogs. You can also
-            use an identifier such as an ISBN, DOI, PMID, or arXiv ID, or you
-            can search by title.
-          </p>
-        </div>
-        <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-muted p-2">
-            <Palette className="h-8 w-8 text-primary" aria-hidden="true" />
-          </div>
-          <h2 className="text-lg font-semibold tracking-tight">
-            10,000+ Citation Styles
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Format your bibliography using AMA, APA, MLA, Chicago/Turabian, or
-            any of the 10,000+ other{" "}
-            <a
-              className="underline underline-offset-4 hover:text-foreground"
-              href="http://citationstyles.org/"
-            >
-              Citation Style Language (CSL)
-            </a>{" "}
-            styles{" "}
-            <a
-              className="underline underline-offset-4 hover:text-foreground"
-              href="https://github.com/citation-style-language/styles"
-            >
-              maintained
-            </a>{" "}
-            by CSL project members. For more information, check out{" "}
-            <a
-              className="underline underline-offset-4 hover:text-foreground"
-              href="http://citationstyles.org/"
-              rel="nofollow"
-            >
-              CitationStyles.org
-            </a>{" "}
-            and the{" "}
-            <a
-              className="underline underline-offset-4 hover:text-foreground"
-              href="https://github.com/citation-style-language/styles/wiki"
-            >
-              repository wiki
-            </a>
-            .
+            <FormattedMessage
+              id="zbib.about.suggest.description"
+              description="suggesting-citation-description"
+              defaultMessage="Paste a URL or identifier and select {action}. We’ll retrieve metadata from scholarly journals, news outlets, library catalogs, and more. You can also enter an ISBN, DOI, PMID, or arXiv ID, or search by title."
+              values={{
+                action: (
+                  <span className="font-medium">
+                    <FormattedMessage
+                      id="zbib.about.suggest.action"
+                      description="suggesting-citation-action"
+                      defaultMessage="Suggest Citation"
+                    />
+                  </span>
+                ),
+              }}
+            />
           </p>
         </div>
 
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-muted p-2">
+          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
+            <Palette className="h-8 w-8 text-primary" aria-hidden="true" />
+          </div>
+          <h2 className="text-lg font-semibold tracking-tight">
+            <FormattedMessage
+              id="zbib.about.styles.header"
+              description="citation-styles-header"
+              defaultMessage="10,000+ citation styles"
+            />
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            <FormattedMessage
+              id="zbib.about.styles.description"
+              description="citation-styles-description"
+              defaultMessage="Format your bibliography using AMA, APA, MLA, Chicago/Turabian, or any of the 10,000+ other {csl} styles {maintained} by CSL project members. For more information, check out {site} and the {wiki}."
+              values={{
+                csl: (
+                  <a className="underline underline-offset-4 hover:text-foreground" href="http://citationstyles.org/">
+                    Citation Style Language (CSL)
+                  </a>
+                ),
+                maintained: (
+                  <a className="underline underline-offset-4 hover:text-foreground" href="https://github.com/citation-style-language/styles">
+                    maintained
+                  </a>
+                ),
+                site: (
+                  <a className="underline underline-offset-4 hover:text-foreground" href="http://citationstyles.org/" rel="nofollow">
+                    CitationStyles.org
+                  </a>
+                ),
+                wiki: (
+                  <a className="underline underline-offset-4 hover:text-foreground" href="https://github.com/citation-style-language/styles/wiki">
+                    repository wiki
+                  </a>
+                ),
+              }}
+            />
+          </p>
+        </div>
+
+        <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
+          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Save className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
           <h2 className="text-lg font-semibold tracking-tight">
@@ -124,17 +146,14 @@ const About2 = ({ onGetStartedClick }) => (
             <FormattedMessage
               id="zbib.about.autosave.description"
               description="autosave-description"
-              defaultMessage="Mick Schroeder's Citation Generator automatically saves your bibliography to
-            your browser’s local storage — you can close the page and return to
-            it anytime. (If you’re using private / incognito mode in your
-            browser, your bibliography will be cleared when you close the
-            window.)"
+              defaultMessage="Your bibliography is stored in your browser, so you can close the page and return later. 
+              Note: in private or incognito windows, the data is erased when the window closes."
             />
           </p>
         </div>
 
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-muted p-2">
+          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Code2 className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
           <h2 className="text-lg font-semibold tracking-tight">Open Source</h2>
@@ -173,7 +192,7 @@ const About2 = ({ onGetStartedClick }) => (
                 href="https://github.com/mick-schroeder/schroeder-cite"
                 rel="external"
               >
-                Project on GitHub
+                <FormattedMessage id="zbib.about.opensource.projectLink" description="open-source-project-link" defaultMessage="Project on GitHub" />
               </a>
             </li>
             <li>
@@ -182,14 +201,14 @@ const About2 = ({ onGetStartedClick }) => (
                 href="https://github.com/zotero/bib-web"
                 rel="external"
               >
-                ZoteroBib Project on GitHub
+                <FormattedMessage id="zbib.about.opensource.zbibLink" description="open-source-zotero-project-link" defaultMessage="ZoteroBib Project on GitHub" />
               </a>
             </li>
           </ul>
         </div>
 
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-muted p-2">
+          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Puzzle className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
           <h2 className="text-lg font-semibold tracking-tight">
@@ -205,13 +224,14 @@ const About2 = ({ onGetStartedClick }) => (
                 href="https://chrome.google.com/webstore/detail/mick-schroeders-citation/gocmebnobccjiigdnakfmlieghedgdhk"
                 rel="external"
               >
-                Google Chrome Web Store
+                <FormattedMessage id="zbib.about.browser.chromeWebStore" description="browser-extensions-chrome-web-store" defaultMessage="Google Chrome Web Store" />
               </a>
             </li>
           </ul>
         </div>
       </section>
-      <h2 className="scroll-m-20 border-b pb-2 pt-6 text-3xl font-semibold tracking-tight first:mt-0">
+      <h2 id="help" className="scroll-m-20 border-b pb-2 pt-6 text-3xl font-semibold tracking-tight first:mt-0">
+        <HelpCircle className="inline h-6 w-6 text-primary -mt-1 mr-2" aria-hidden="true" />
         <FormattedMessage
           id="zbib.about.section.help"
           description="help-section-title"
@@ -220,7 +240,7 @@ const About2 = ({ onGetStartedClick }) => (
       </h2>
       <section className="features mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-muted p-2">
+          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Type className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
           <h2 className="text-lg font-semibold tracking-tight">
@@ -240,7 +260,7 @@ const About2 = ({ onGetStartedClick }) => (
         </div>
 
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-muted p-2">
+          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Pencil className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
           <h2 className="text-lg font-semibold tracking-tight">
@@ -260,7 +280,7 @@ const About2 = ({ onGetStartedClick }) => (
         </div>
 
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-muted p-2">
+          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Trash2 className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
           <h2 className="text-lg font-semibold tracking-tight">
@@ -289,7 +309,7 @@ const About2 = ({ onGetStartedClick }) => (
         </div>
 
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-muted p-2">
+          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <ClipboardCopy className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
           <h2 className="text-lg font-semibold tracking-tight">
@@ -309,7 +329,7 @@ const About2 = ({ onGetStartedClick }) => (
         </div>
 
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-muted p-2">
+          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Quote className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
           <h2 className="text-lg font-semibold tracking-tight">
@@ -322,7 +342,7 @@ const About2 = ({ onGetStartedClick }) => (
         </div>
 
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-muted p-2">
+          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <FileDown className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
           <h2 className="text-lg font-semibold tracking-tight">
@@ -331,12 +351,12 @@ const About2 = ({ onGetStartedClick }) => (
           <p className="mt-2 text-sm text-muted-foreground">
             Export your bibliography into many formats. Copy a formatted
             bibliography to your clipboard, export HTML (for websites) or
-            download .RTF (for word processors), .RIS, .BibTeX, or save to
-            Zotero.
+            download .RTF (for word processors), .RIS, .BibTeX.
           </p>
         </div>
       </section>
-      <h2 className="scroll-m-20 border-b pb-2 pt-6 text-3xl font-semibold tracking-tight first:mt-0">
+      <h2 id="examples" className="scroll-m-20 border-b pb-2 pt-6 text-3xl font-semibold tracking-tight first:mt-0">
+        <ListChecks className="inline h-6 w-6 text-primary -mt-1 mr-2" aria-hidden="true" />
         <FormattedMessage
           id="zbib.about.section.examples"
           description="examples-section-title"
@@ -345,7 +365,7 @@ const About2 = ({ onGetStartedClick }) => (
       </h2>
       <section className="features mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-muted p-2">
+          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Globe className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
           <h2 className="text-lg font-semibold tracking-tight">
@@ -375,7 +395,7 @@ const About2 = ({ onGetStartedClick }) => (
         </div>
 
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-muted p-2">
+          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Microscope className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
           <h2 className="text-lg font-semibold tracking-tight">
@@ -405,7 +425,7 @@ const About2 = ({ onGetStartedClick }) => (
         </div>
 
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-muted p-2">
+          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Hash className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
           <h2 className="text-lg font-semibold tracking-tight">Example: DOI</h2>
@@ -434,7 +454,7 @@ const About2 = ({ onGetStartedClick }) => (
         </div>
 
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-muted p-2">
+          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Book className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
           <h2 className="text-lg font-semibold tracking-tight">

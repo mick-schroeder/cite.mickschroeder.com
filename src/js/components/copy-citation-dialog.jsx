@@ -2,7 +2,7 @@ import cx from "classnames";
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useRef, useState, useMemo, memo } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-import { Spinner } from "web-common/components";
+import { LoaderCircle } from "lucide-react";
 import { usePrevious } from "web-common/hooks";
 import Modal from "./modal";
 import { Select as ShadcnSelect, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
@@ -365,7 +365,7 @@ const CopyCitationDialog = (props) => {
           </div>
         </div>
       ) : (
-        <Spinner />
+        <LoaderCircle className="h-4 w-4 text-primary animate-spin" />
       )}
     </Modal>
   );

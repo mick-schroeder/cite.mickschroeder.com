@@ -11,7 +11,7 @@ import {
 } from "react";
 import { noop, pick } from "web-common/utils";
 import { usePrevious } from "web-common/hooks";
-import { Spinner } from "web-common/components";
+import { LoaderCircle } from "lucide-react";
 
 const NATIVE_INPUT_PROPS = [
   "autoComplete",
@@ -156,7 +156,7 @@ const TextAreaInput = memo(
     return (
       <div className={groupClassName}>
         {textarea}
-        {isBusy && <Spinner />}
+        {isBusy && <LoaderCircle className="h-4 w-4 text-primary animate-spin" />}
       </div>
     );
   }),
