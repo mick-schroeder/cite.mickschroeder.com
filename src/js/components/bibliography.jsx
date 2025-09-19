@@ -11,7 +11,7 @@ import {
 import { isTriggerEvent, pick } from "web-common/utils";
 import { useFocusManager } from "web-common/hooks";
 import { Button as ShadcnButton} from "./ui/button";
-import { Quote, Copy, Check, Trash, Grip, MoreVertical } from "lucide-react";
+import { Quote, Copy, Check, Trash2, Grip, MoreVertical } from "lucide-react";
 
 import { useDnd } from "../hooks";
 
@@ -198,7 +198,7 @@ const BibliographyItem = memo((props) => {
         )}
         <div
           data-container-key={rawItem.key}
-          className="csl-entry-container"
+          className="csl-entry-container pr-2"
           dangerouslySetInnerHTML={{ __html: formattedItem }}
         />
         {!isNumericStyle && (
@@ -244,7 +244,7 @@ const BibliographyItem = memo((props) => {
               onClick={onDeleteCitation}
               tabIndex={-3}
             >
-              <Trash className="h-4 w-4 text-muted-foreground" />
+              <Trash2 className="h-4 w-4 text-muted-foreground" />
             </ShadcnButton>
           </Fragment>
         )}

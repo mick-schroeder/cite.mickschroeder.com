@@ -21,12 +21,9 @@
         display: block;
         height: 0;
         width: 100%;
-        background-color: rgba(variables.$asphalt-light, 0.2);
+        //background-color: rgba(variables.$asphalt-light, 0.2);
       }
 
-      &:last-child {
-        border-bottom: 1px solid variables.$shade-2;
-      }
 
       &.dnd-target.dnd-target-above::before,
       &.dnd-target.dnd-target-below::after {

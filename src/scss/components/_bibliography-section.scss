@@ -16,16 +16,7 @@
     }
   }
 
-  .empty-bibliography {
-    width: 160px;
-    height: auto;
-    margin-bottom: variables.$space-xl - 16px;
 
-    @media (min-width: variables.$bp-md) {
-      width: auto;
-      margin-bottom: variables.$space-xxl - 18px;
-    }
-  }
 
   .empty-title {
     margin-bottom: variables.$lead-font-size-mobile * 0.5;

@@ -1,30 +1,26 @@
-[![CI](https://github.com/zotero/zoterobib/actions/workflows/ci.yml/badge.svg)](https://github.com/zotero/zoterobib/actions/workflows/ci.yml)
-
-# Zotero Bib
+# Mick Schroeder's Citation Generator
 
 ## Overview
 
-This repo contains code for [Zotero Bib](https://zbib.org/), including React components, translation client, stylesheets and entry-point website.
+Free and open-source software that automatically suggests citations and helps write a bibliography for you. Forked from [zotero/bib-web](https://github.com/zotero/bib-web).
 
 ## Prerequisites
 
 1. Node JS with npm
-1. Basic command-line tools including rsync
-1. Existing translation-server
-1. Existing bib-server
-1. Existing styles-repo
+1. Basic Mac or Linux command-line tools including rsync
+1. Existing translation-server, bib-server, styles-repo
 
 ## Local Development version
 
 Getting The Library
 
-1. `git clone --recursive git@github.com:zotero/zoterobib.git`
+1. `git clone --recursive https://github.com/mick-schroeder/cite.mickschroeder.com.git`
 
-1. `cd zoterobib`
+1. `cd cite.mickschroeder.com`
 
 1. `npm install`
 
-1. `npm start`
+1. `npm run develop`
 
 This will serve demo on http://127.0.0.1:8001.
 
