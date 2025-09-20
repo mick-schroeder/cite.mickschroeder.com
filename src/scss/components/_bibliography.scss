@@ -24,7 +24,6 @@
         //background-color: rgba(variables.$asphalt-light, 0.2);
       }
 
-
       &.dnd-target.dnd-target-above::before,
       &.dnd-target.dnd-target-below::after {
         border-top: 1px solid variables.$shade-2;

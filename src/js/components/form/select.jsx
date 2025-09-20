@@ -158,7 +158,9 @@ const SelectInput = forwardRef((props, ref) => {
           {...pick(rest, (p) => p.startsWith("data-"))}
         />
       )}
-      {isBusy ? <LoaderCircle className="h-4 w-4 text-primary animate-spin" /> : null}
+      {isBusy ? (
+        <LoaderCircle className="h-4 w-4 text-primary animate-spin" />
+      ) : null}
     </div>
   );
 });

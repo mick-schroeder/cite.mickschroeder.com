@@ -11,10 +11,7 @@ import {
   useState,
 } from "react";
 import { useIntl } from "react-intl";
-import {
-  SelectDivider,
-  SelectOption,
-} from "web-common/components";
+import { SelectDivider, SelectOption } from "web-common/components";
 import { User, UserMinus, UserPlus } from "lucide-react";
 import { Button as ShadcnButton } from "../ui/button";
 import { isTriggerEvent, omit, pick } from "web-common/utils";
@@ -487,7 +484,10 @@ const CreatorField = forwardRef((props, ref) => {
                   onClick={handleCreatorRemove}
                   title="Remove Creator"
                 >
-                  <UserMinus className="h-4 w-4 text-primary" aria-hidden="true" />
+                  <UserMinus
+                    className="h-4 w-4 text-primary"
+                    aria-hidden="true"
+                  />
                 </ShadcnButton>
               ) : (
                 <ShadcnButton
@@ -497,7 +497,10 @@ const CreatorField = forwardRef((props, ref) => {
                   disabled={true}
                   title="Remove Creator"
                 >
-                  <UserMinus className="h-4 w-4 text-primary" aria-hidden="true" />
+                  <UserMinus
+                    className="h-4 w-4 text-primary"
+                    aria-hidden="true"
+                  />
                 </ShadcnButton>
               )}
               {isCreateAllowed ? (
@@ -508,7 +511,10 @@ const CreatorField = forwardRef((props, ref) => {
                   onClick={handleCreatorAdd}
                   title="Add Creator"
                 >
-                  <UserPlus className="h-4 w-4 text-primary" aria-hidden="true" />
+                  <UserPlus
+                    className="h-4 w-4 text-primary"
+                    aria-hidden="true"
+                  />
                 </ShadcnButton>
               ) : (
                 <ShadcnButton
@@ -518,7 +524,10 @@ const CreatorField = forwardRef((props, ref) => {
                   disabled={true}
                   title="Add Creator"
                 >
-                  <UserPlus className="h-4 w-4 text-primary" aria-hidden="true" />
+                  <UserPlus
+                    className="h-4 w-4 text-primary"
+                    aria-hidden="true"
+                  />
                 </ShadcnButton>
               )}
             </Fragment>

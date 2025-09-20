@@ -1,4 +1,5 @@
-# Mick Schroeder's Citation Generator 
+# Mick Schroeder's Citation Generator
+
 # Frequently Asked Questions (FAQ)
 
 <nav>
@@ -13,7 +14,7 @@
 
 ### What is Mick Schroeder's Citation Generator?
 
-This is a free and open-source service that helps you build a bibliography automatically from any computer or device, without creating an account or installing any software. 
+This is a free and open-source service that helps you build a bibliography automatically from any computer or device, without creating an account or installing any software.
 
 ### How much does it cost?
 
@@ -34,7 +35,6 @@ You can preview all styles avaiable using the [Zotero Style Repository](https://
 For more information, check out [CitationStyles.org](http://citationstyles.org/) and the [repository wiki](https://github.com/citation-style-language/styles/wiki).
 
 All styles are released under the [Creative Commons Attribution-ShareAlike 3.0 Unported license](http://creativecommons.org/licenses/by-sa/3.0/).
-
 
 ### Where is my bibliography stored?
 

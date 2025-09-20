@@ -34,5 +34,5 @@ export default {
     label: "Download BibTeX",
     isDownloadable: true,
     isCopyable: false,
-  }
+  },
 };

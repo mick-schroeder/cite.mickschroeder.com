@@ -1,7 +1,13 @@
 import { memo, useCallback } from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
-import { X, Info, CheckCircle2, AlertTriangle, AlertOctagon } from "lucide-react";
+import {
+  X,
+  Info,
+  CheckCircle2,
+  AlertTriangle,
+  AlertOctagon,
+} from "lucide-react";
 import { Button as ShadcnButton } from "./ui/button";
 
 const Message = ({
@@ -65,8 +71,7 @@ const Message = ({
       className={cx(
         "relative mx-auto max-w-2xl rounded-lg border p-4 shadow-sm flex flex-col items-center gap-3",
         {
-          info:
-            "border-sky-200 bg-sky-50 text-sky-900 dark:border-sky-800 dark:bg-sky-950/50 dark:text-sky-100",
+          info: "border-sky-200 bg-sky-50 text-sky-900 dark:border-sky-800 dark:bg-sky-950/50 dark:text-sky-100",
           success:
             "border-green-200 bg-green-50 text-green-900 dark:border-green-800 dark:bg-green-950/50 dark:text-green-100",
           warning:
@@ -100,8 +105,8 @@ const Message = ({
         <p id={htmlID} className="text-md font-semibold leading-relaxed">
           {message}
         </p>
-        {action && (
-          href ? (
+        {action &&
+          (href ? (
             <ShadcnButton
               asChild
               size="sm"
@@ -109,8 +114,7 @@ const Message = ({
               className={cx(
                 "h-8",
                 {
-                  info:
-                    "border-sky-300 text-sky-900 hover:bg-sky-100 dark:border-sky-700 dark:text-sky-100 dark:hover:bg-sky-900/50",
+                  info: "border-sky-300 text-sky-900 hover:bg-sky-100 dark:border-sky-700 dark:text-sky-100 dark:hover:bg-sky-900/50",
                   success:
                     "border-green-300 text-green-900 hover:bg-green-100 dark:border-green-700 dark:text-green-100 dark:hover:bg-green-900/50",
                   warning:
@@ -130,8 +134,7 @@ const Message = ({
               className={cx(
                 "h-8",
                 {
-                  info:
-                    "border-sky-300 text-sky-900 hover:bg-sky-100 dark:border-sky-700 dark:text-sky-100 dark:hover:bg-sky-900/50",
+                  info: "border-sky-300 text-sky-900 hover:bg-sky-100 dark:border-sky-700 dark:text-sky-100 dark:hover:bg-sky-900/50",
                   success:
                     "border-green-300 text-green-900 hover:bg-green-100 dark:border-green-700 dark:text-green-100 dark:hover:bg-green-900/50",
                   warning:
@@ -143,8 +146,7 @@ const Message = ({
             >
               {action}
             </ShadcnButton>
-          )
-        )}
+          ))}
       </div>
     </div>
   );

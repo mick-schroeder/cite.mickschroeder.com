@@ -90,7 +90,6 @@ const buildPage = async (pageName) => {
       buildPage("hydrate"),
       buildFaqPage(),
       buildTermsPage(),
-
     ]);
   }
 })();

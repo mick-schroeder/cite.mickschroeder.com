@@ -10,7 +10,7 @@ import {
 } from "web-common/components";
 import { isTriggerEvent, pick } from "web-common/utils";
 import { useFocusManager } from "web-common/hooks";
-import { Button as ShadcnButton} from "./ui/button";
+import { Button as ShadcnButton } from "./ui/button";
 import { Quote, Copy, Check, Trash2, Grip, MoreVertical } from "lucide-react";
 
 import { useDnd } from "../hooks";

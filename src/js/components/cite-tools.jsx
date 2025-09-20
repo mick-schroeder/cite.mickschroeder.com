@@ -119,14 +119,11 @@ const CiteTools = ({
   );
 
   return (
-    <div className="cite-tools">         
+    <div className="cite-tools">
       <Card>
         <CardHeader className="grid gap-4 md:grid-cols-[1fr_auto] md:items-start">
           <div className="text-left">
-            <CardTitle className="">
-              Enter Reference Query
-            </CardTitle>
-  
+            <CardTitle className="">Enter Reference Query</CardTitle>
           </div>
           <CardAction className="">
             <ShadcnButton

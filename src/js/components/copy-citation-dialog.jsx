@@ -5,7 +5,13 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { LoaderCircle } from "lucide-react";
 import { usePrevious } from "web-common/hooks";
 import Modal from "./modal";
-import { Select as ShadcnSelect, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import {
+  Select as ShadcnSelect,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 import { Button as ShadcnButton } from "./ui/button";
 import { Input as ShadcnInput } from "./ui/input";
 import { Checkbox } from "./ui/checkbox";
@@ -276,7 +282,12 @@ const CopyCitationDialog = (props) => {
                   >
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent side="top" position="popper" sticky="always" sideOffset={4}>
+                  <SelectContent
+                    side="top"
+                    position="popper"
+                    sticky="always"
+                    sideOffset={4}
+                  >
                     {locators.map((opt) => (
                       <SelectItem key={opt.value} value={opt.value}>
                         {opt.label}
@@ -307,13 +318,20 @@ const CopyCitationDialog = (props) => {
                 <Checkbox
                   id="omit-author"
                   disabled={isCopied}
-                  checked={copyCitationState.modifiers.mode === "SuppressAuthor"}
+                  checked={
+                    copyCitationState.modifiers.mode === "SuppressAuthor"
+                  }
                   onCheckedChange={(checked) =>
-                    handleSuppressAuthorChange({ currentTarget: { checked: Boolean(checked) } })
+                    handleSuppressAuthorChange({
+                      currentTarget: { checked: Boolean(checked) },
+                    })
                   }
                 />
                 <Label htmlFor="omit-author" className="text-sm">
-                  <FormattedMessage id="zbib.citation.omitAuthor" defaultMessage="Omit Author" />
+                  <FormattedMessage
+                    id="zbib.citation.omitAuthor"
+                    defaultMessage="Omit Author"
+                  />
                 </Label>
               </div>
             </div>
@@ -345,7 +363,7 @@ const CopyCitationDialog = (props) => {
                 />
               </ShadcnButton>
               <ShadcnButton
-               variant="outline"
+                variant="outline"
                 disabled={isCitationEmpty}
                 onClick={handleConfirm}
               >

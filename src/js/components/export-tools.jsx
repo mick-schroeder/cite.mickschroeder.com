@@ -9,19 +9,15 @@ import exportFormats from "../constants/export-formats";
 import cx from "classnames";
 
 const getFormatIcon = (format, cfg) => {
-  if (cfg?.isCopyable) return <ClipboardCopy className="h-4 w-4" aria-hidden="true" />;
-  if (format === "zotero") return <Library className="h-4 w-4" aria-hidden="true" />;
+  if (cfg?.isCopyable)
+    return <ClipboardCopy className="h-4 w-4" aria-hidden="true" />;
+  if (format === "zotero")
+    return <Library className="h-4 w-4" aria-hidden="true" />;
   return <FileDown className="h-4 w-4" aria-hidden="true" />;
 };
 
 const ExportTools = (props) => {
-  const {
-    getCopyData,
-    isHydrated,
-    isReady,
-    itemCount,
-    onDownloadFile,
-  } = props;
+  const { getCopyData, isHydrated, isReady, itemCount, onDownloadFile } = props;
   const [clipboardConfirmations, setClipboardConfirmations] = useState({});
   const whenReadyData = useRef(false);
 
@@ -43,7 +39,7 @@ const ExportTools = (props) => {
   );
 
   const copyToClipboard = useCallback(
-    async (format /*, isTopLevelButton*/ ) => {
+    async (format /*, isTopLevelButton*/) => {
       const text = await getCopyData(format);
       const result = copy(text);
       if (result) {
@@ -61,7 +57,7 @@ const ExportTools = (props) => {
       }
       copyToClipboard(format);
     },
-    [copyToClipboard, isHydrated, isReady]
+    [copyToClipboard, isHydrated, isReady],
   );
 
   const handleDownloadFormat = useCallback(
@@ -72,7 +68,7 @@ const ExportTools = (props) => {
       }
       onDownloadFile(format);
     },
-    [isHydrated, isReady, onDownloadFile]
+    [isHydrated, isReady, onDownloadFile],
   );
 
   const isCopied = clipboardConfirmations["plain"];
@@ -94,8 +90,7 @@ const ExportTools = (props) => {
     <div className="export-tools">
       <div className={cx("btn-group", { success: isCopied })}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
-          {Object.keys(exportFormats)
-            .map((format) => {
+          {Object.keys(exportFormats).map((format) => {
             const cfg = exportFormats[format];
             const copied = !!clipboardConfirmations[format];
             if (cfg.isCopyable) {
@@ -115,7 +110,10 @@ const ExportTools = (props) => {
                         {cfg.label}
                       </span>
                       <span className="shorter feedback" aria-hidden={!copied}>
-                        <FormattedMessage id="zbib.export.copiedFeedback" defaultMessage="Copied!" />
+                        <FormattedMessage
+                          id="zbib.export.copiedFeedback"
+                          defaultMessage="Copied!"
+                        />
                       </span>
                     </span>
                   </span>

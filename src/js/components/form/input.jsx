@@ -168,7 +168,9 @@ const Input = memo(
     return (
       <div className={groupClassName}>
         {inputComponent}
-        {isBusy ? <LoaderCircle className="h-4 w-4 text-primary animate-spin" /> : null}
+        {isBusy ? (
+          <LoaderCircle className="h-4 w-4 text-primary animate-spin" />
+        ) : null}
       </div>
     );
   }),

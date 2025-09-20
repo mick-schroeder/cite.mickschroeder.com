@@ -41,7 +41,7 @@ const handler = (req, resp) => {
       resp.setHeader("Content-Type", "text/html");
       resp.end(buf);
     });
-    } else if (req.url == "/terms") {
+  } else if (req.url == "/terms") {
     fs.readFile(path.join(__dirname, "..", "build", "terms"), (err, buf) => {
       resp.setHeader("Content-Type", "text/html");
       resp.end(buf);

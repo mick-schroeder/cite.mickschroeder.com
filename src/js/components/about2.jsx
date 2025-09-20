@@ -47,8 +47,14 @@ const About2 = ({ onGetStartedClick }) => (
           }} //eslint-disable-line react/display-name
         />
       </p>
-      <h2 id="about" className="scroll-m-20 border-b pb-2 pt-6 text-3xl font-semibold tracking-tight first:mt-0">
-        <Info className="inline h-6 w-6 text-primary -mt-1 mr-2" aria-hidden="true" />
+      <h2
+        id="about"
+        className="scroll-m-20 border-b pb-2 pt-6 text-3xl font-semibold tracking-tight first:mt-0"
+      >
+        <Info
+          className="inline h-6 w-6 text-primary -mt-1 mr-2"
+          aria-hidden="true"
+        />
         <FormattedMessage
           id="zbib.about.section.about"
           description="about-section-title"
@@ -56,8 +62,6 @@ const About2 = ({ onGetStartedClick }) => (
         />
       </h2>
       <section className="features mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-
-        
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
           <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Quote className="h-8 w-8 text-primary" aria-hidden="true" />
@@ -107,22 +111,35 @@ const About2 = ({ onGetStartedClick }) => (
               defaultMessage="Format your bibliography using AMA, APA, MLA, Chicago/Turabian, or any of the 10,000+ other {csl} styles {maintained} by CSL project members. For more information, check out {site} and the {wiki}."
               values={{
                 csl: (
-                  <a className="underline underline-offset-4 hover:text-foreground" href="http://citationstyles.org/">
+                  <a
+                    className="underline underline-offset-4 hover:text-foreground"
+                    href="http://citationstyles.org/"
+                  >
                     Citation Style Language (CSL)
                   </a>
                 ),
                 maintained: (
-                  <a className="underline underline-offset-4 hover:text-foreground" href="https://github.com/citation-style-language/styles">
+                  <a
+                    className="underline underline-offset-4 hover:text-foreground"
+                    href="https://github.com/citation-style-language/styles"
+                  >
                     maintained
                   </a>
                 ),
                 site: (
-                  <a className="underline underline-offset-4 hover:text-foreground" href="http://citationstyles.org/" rel="nofollow">
+                  <a
+                    className="underline underline-offset-4 hover:text-foreground"
+                    href="http://citationstyles.org/"
+                    rel="nofollow"
+                  >
                     CitationStyles.org
                   </a>
                 ),
                 wiki: (
-                  <a className="underline underline-offset-4 hover:text-foreground" href="https://github.com/citation-style-language/styles/wiki">
+                  <a
+                    className="underline underline-offset-4 hover:text-foreground"
+                    href="https://github.com/citation-style-language/styles/wiki"
+                  >
                     repository wiki
                   </a>
                 ),
@@ -192,7 +209,11 @@ const About2 = ({ onGetStartedClick }) => (
                 href="https://github.com/mick-schroeder/schroeder-cite"
                 rel="external"
               >
-                <FormattedMessage id="zbib.about.opensource.projectLink" description="open-source-project-link" defaultMessage="Project on GitHub" />
+                <FormattedMessage
+                  id="zbib.about.opensource.projectLink"
+                  description="open-source-project-link"
+                  defaultMessage="Project on GitHub"
+                />
               </a>
             </li>
             <li>
@@ -201,7 +222,11 @@ const About2 = ({ onGetStartedClick }) => (
                 href="https://github.com/zotero/bib-web"
                 rel="external"
               >
-                <FormattedMessage id="zbib.about.opensource.zbibLink" description="open-source-zotero-project-link" defaultMessage="ZoteroBib Project on GitHub" />
+                <FormattedMessage
+                  id="zbib.about.opensource.zbibLink"
+                  description="open-source-zotero-project-link"
+                  defaultMessage="ZoteroBib Project on GitHub"
+                />
               </a>
             </li>
           </ul>
@@ -224,14 +249,24 @@ const About2 = ({ onGetStartedClick }) => (
                 href="https://chrome.google.com/webstore/detail/mick-schroeders-citation/gocmebnobccjiigdnakfmlieghedgdhk"
                 rel="external"
               >
-                <FormattedMessage id="zbib.about.browser.chromeWebStore" description="browser-extensions-chrome-web-store" defaultMessage="Google Chrome Web Store" />
+                <FormattedMessage
+                  id="zbib.about.browser.chromeWebStore"
+                  description="browser-extensions-chrome-web-store"
+                  defaultMessage="Google Chrome Web Store"
+                />
               </a>
             </li>
           </ul>
         </div>
       </section>
-      <h2 id="help" className="scroll-m-20 border-b pb-2 pt-6 text-3xl font-semibold tracking-tight first:mt-0">
-        <HelpCircle className="inline h-6 w-6 text-primary -mt-1 mr-2" aria-hidden="true" />
+      <h2
+        id="help"
+        className="scroll-m-20 border-b pb-2 pt-6 text-3xl font-semibold tracking-tight first:mt-0"
+      >
+        <HelpCircle
+          className="inline h-6 w-6 text-primary -mt-1 mr-2"
+          aria-hidden="true"
+        />
         <FormattedMessage
           id="zbib.about.section.help"
           description="help-section-title"
@@ -310,7 +345,10 @@ const About2 = ({ onGetStartedClick }) => (
 
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
           <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
-            <ClipboardCopy className="h-8 w-8 text-primary" aria-hidden="true" />
+            <ClipboardCopy
+              className="h-8 w-8 text-primary"
+              aria-hidden="true"
+            />
           </div>
           <h2 className="text-lg font-semibold tracking-tight">
             <FormattedMessage
@@ -355,144 +393,7 @@ const About2 = ({ onGetStartedClick }) => (
           </p>
         </div>
       </section>
-      <h2 id="examples" className="scroll-m-20 border-b pb-2 pt-6 text-3xl font-semibold tracking-tight first:mt-0">
-        <ListChecks className="inline h-6 w-6 text-primary -mt-1 mr-2" aria-hidden="true" />
-        <FormattedMessage
-          id="zbib.about.section.examples"
-          description="examples-section-title"
-          defaultMessage="Examples"
-        />
-      </h2>
-      <section className="features mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
-        <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
-            <Globe className="h-8 w-8 text-primary" aria-hidden="true" />
-          </div>
-          <h2 className="text-lg font-semibold tracking-tight">
-            Example: Website URLs
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Enter a website address (URL):
-          </p>
-          <ul className="mt-2 list-disc pl-5 text-sm">
-            <li>
-              <a
-                className="underline underline-offset-4 hover:text-foreground break-all"
-                href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fwww.nejm.org%2Fdoi%2Ffull%2F10.1056%2FNEJMoa1403108"
-              >
-                https://nejm.org/…
-              </a>
-            </li>
-            <li>
-              <a
-                className="underline underline-offset-4 hover:text-foreground break-all"
-                href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fwww.nytimes.com%2F2013%2F03%2F05%2Fscience%2Fchasing-the-higgs-boson-how-2-teams-of-rivals-at-CERN-searched-for-physics-most-elusive-particle.html"
-              >
-                https://nytimes.com/…
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
-            <Microscope className="h-8 w-8 text-primary" aria-hidden="true" />
-          </div>
-          <h2 className="text-lg font-semibold tracking-tight">
-            Example: PubMed
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Enter a PMID (PubMed ID) or URL:
-          </p>
-          <ul className="mt-2 list-disc pl-5 text-sm">
-            <li>
-              <a
-                className="underline underline-offset-4 hover:text-foreground break-all"
-                href="https://cite.mickschroeder.com/?q=30280635"
-              >
-                30280635
-              </a>
-            </li>
-            <li>
-              <a
-                className="underline underline-offset-4 hover:text-foreground break-all"
-                href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fpubmed.ncbi.nlm.nih.gov%2F30280635%2F"
-              >
-                https://pubmed.ncbi.nlm.nih.gov/…
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
-            <Hash className="h-8 w-8 text-primary" aria-hidden="true" />
-          </div>
-          <h2 className="text-lg font-semibold tracking-tight">Example: DOI</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Provide a persistent “address” to many types of work, from journal
-            articles to research data sets:
-          </p>
-          <ul className="mt-2 list-disc pl-5 text-sm">
-            <li>
-              <a
-                className="underline underline-offset-4 hover:text-foreground break-all"
-                href="https://cite.mickschroeder.com/?q=10.1126%2Fscience.169.3946.635"
-              >
-                10.1126/science.169.3946.635
-              </a>
-            </li>
-            <li>
-              <a
-                className="underline underline-offset-4 hover:text-foreground break-all"
-                href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fdoi.org%2F10.1038/nature21360"
-              >
-                https://doi.org/…
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition">
-          <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
-            <Book className="h-8 w-8 text-primary" aria-hidden="true" />
-          </div>
-          <h2 className="text-lg font-semibold tracking-tight">
-            Example: ISBN
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            International Standard Book Number is a unique numeric book
-            identifier:
-          </p>
-          <ul className="mt-2 list-disc pl-5 text-sm">
-            <li>
-              <a
-                className="underline underline-offset-4 hover:text-foreground break-all"
-                href="https://cite.mickschroeder.com/?q=0323040683"
-              >
-                0323040683
-              </a>
-            </li>
-            <li>
-              <a
-                className="underline underline-offset-4 hover:text-foreground break-all"
-                href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fwww.amazon.com%2Fs%3Fk%3D0702052302"
-              >
-                https://amazon.com/…
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-        <div className="my-10 flex justify-center">
-        <ShadcnButton onClick={onGetStartedClick} size="lg" className="px-6 w-full sm:w-auto">
-          <FormattedMessage
-            id="zbib.about.CTA"
-            description="cta-button"
-            defaultMessage="Back to the top. Start citing..."
-          />
-        </ShadcnButton>
-      </div>
+      
     </div>
   </section>
 );

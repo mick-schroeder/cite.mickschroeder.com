@@ -312,10 +312,7 @@ const Editor = (props) => {
       <div className="modal-content" tabIndex={-1}>
         <div className="modal-header">
           <h4 className="modal-title text-truncate">{itemTitle}</h4>
-          <ShadcnButton
-            variant="outline"
-            onClick={handleClose}
-          >
+          <ShadcnButton variant="outline" onClick={handleClose}>
             <FormattedMessage id="zbib.general.done" defaultMessage="Done" />
           </ShadcnButton>
         </div>

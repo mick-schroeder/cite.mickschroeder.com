@@ -189,11 +189,21 @@
     outline-offset: 2px;
   }
 
-  *, *::before, *::after {
-    transition: color 120ms, background-color 120ms, border-color 120ms, box-shadow 120ms;
+  *,
+  *::before,
+  *::after {
+    transition:
+      color 120ms,
+      background-color 120ms,
+      border-color 120ms,
+      box-shadow 120ms;
   }
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { transition: none !important; }
+    *,
+    *::before,
+    *::after {
+      transition: none !important;
+    }
   }
 }
 
@@ -202,8 +212,12 @@
     @apply underline underline-offset-2;
     color: var(--primary);
   }
-  .link:hover { color: color-mix(in oklch, var(--primary) 80%, black); }
-  .dark .link:hover { color: color-mix(in oklch, var(--primary) 85%, white); }
+  .link:hover {
+    color: color-mix(in oklch, var(--primary) 80%, black);
+  }
+  .dark .link:hover {
+    color: color-mix(in oklch, var(--primary) 85%, white);
+  }
 
   /* shadcn-like subtle alerts */
   .alert {
@@ -291,5 +305,4 @@
   .modal-content {
     @apply bg-card;
   }
-  
 }

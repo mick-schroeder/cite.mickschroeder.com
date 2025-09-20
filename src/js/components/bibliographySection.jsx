@@ -223,7 +223,7 @@ const BibliographySection = (props) => {
                     <LoaderCircle className="h-4 w-4 text-primary animate-spin" />
                   </div>
                 )}
-                
+
                 {!isReadOnly && (isReady || isHydrated) && (
                   <DeleteAllButton
                     bibliographyCount={props.bibliography.items.length}
@@ -267,31 +267,28 @@ const BibliographySection = (props) => {
           </CardContent>
         </Card>
         <div className="mt-6">
-<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight py-2">
-      
-      <FormattedMessage
-                  id="zbib.bibliography.export"
-                  defaultMessage="Export Bibliography"
-                />
-      </h3>  
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight py-2">
+            <FormattedMessage
+              id="zbib.bibliography.export"
+              defaultMessage="Export Bibliography"
+            />
+          </h3>
           <ExportTools
-                  itemCount={
-                    isHydrated
-                      ? props.hydrateItemsCount
-                      : props.bibliography.items.length
-                  }
-                  {...pick(props, [
-                    "getCopyData",
-                    "onDownloadFile",
-                    "isHydrated",
-                    "isReadOnly",
-                    "isReady",
-                    "onSaveToZoteroShow",
-                  ])}
-                />
-
+            itemCount={
+              isHydrated
+                ? props.hydrateItemsCount
+                : props.bibliography.items.length
+            }
+            {...pick(props, [
+              "getCopyData",
+              "onDownloadFile",
+              "isHydrated",
+              "isReadOnly",
+              "isReady",
+              "onSaveToZoteroShow",
+            ])}
+          />
         </div>
-          
       </div>
     </section>
   );

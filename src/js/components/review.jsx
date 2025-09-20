@@ -151,7 +151,7 @@ const Review = ({
   );
 
   return (
-    <section aria-labelledby={id} className="pt-10">
+    <section aria-labelledby={id} className="pb-10">
       {isTranslating ? (
         <h2 id={id}>
           <FormattedMessage
@@ -281,7 +281,6 @@ const Review = ({
                       defaultMessage="Edit"
                     />
                   </ShadcnButton>
-                  
                 </div>
               </div>
             </CardFooter>

@@ -156,7 +156,9 @@ const TextAreaInput = memo(
     return (
       <div className={groupClassName}>
         {textarea}
-        {isBusy && <LoaderCircle className="h-4 w-4 text-primary animate-spin" />}
+        {isBusy && (
+          <LoaderCircle className="h-4 w-4 text-primary animate-spin" />
+        )}
       </div>
     );
   }),

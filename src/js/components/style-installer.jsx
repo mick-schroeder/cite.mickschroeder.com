@@ -90,14 +90,14 @@ const StyleItem = memo((props) => {
         {title}
       </div>
       {isActive ? (
-        <ShadcnButton size="sm" variant="outline"  disabled>
+        <ShadcnButton size="sm" variant="outline" disabled>
           <FormattedMessage
             id="zbib.styleInstaller.active"
             defaultMessage="Active"
           />
         </ShadcnButton>
       ) : isCore ? (
-        <ShadcnButton size="sm" variant="outline"  disabled>
+        <ShadcnButton size="sm" variant="outline" disabled>
           <FormattedMessage
             id="zbib.styleInstaller.default"
             defaultMessage="Default"
@@ -311,10 +311,15 @@ const StyleInstaller = (props) => {
         <div className="modal-content" tabIndex={-1}>
           <div className="modal-header">
             <h4 className="modal-title text-truncate">{title}</h4>
-          <ShadcnButton variant="ghost" size="icon" className="close" onClick={handleCancel}>
-            <X className="h-6 w-6 text-primary" aria-hidden="true" />
-          </ShadcnButton>
-          </div> 
+            <ShadcnButton
+              variant="ghost"
+              size="icon"
+              className="close"
+              onClick={handleCancel}
+            >
+              <X className="h-6 w-6 text-primary" aria-hidden="true" />
+            </ShadcnButton>
+          </div>
           <div className="modal-body">
             <Input
               aria-label="Search Citation Styles"

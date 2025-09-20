@@ -37,7 +37,9 @@ const PermalinkTools = ({ bibliography, isSafari, onSave, permalink }) => {
           <ShadcnButton
             variant="secondary"
             size="lg"
-            className={cx("w-full", { "bg-green-500 text-white": isRecentlyCopied })}
+            className={cx("w-full", {
+              "bg-green-500 text-white": isRecentlyCopied,
+            })}
             data-clipboard-text={permalink}
             onClick={handleCopy}
           >

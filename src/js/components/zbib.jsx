@@ -16,6 +16,8 @@ import { buttonVariants } from "./ui/button";
 import { Badge } from "./ui/badge";
 
 import About2 from "./about2";
+import Examples from "./examples";
+
 //import Brand from './brand';
 import BibliographySection from "./bibliographySection";
 import CiteTools from "./cite-tools";
@@ -87,6 +89,7 @@ const ZBib = (props) => {
   return (
     <div className={cx(className)}>
       <div className="zotero-bib-inner">
+      <div id="main" className="container-wrapper flex-1 mx-auto max-w-5xl px-4 md:px-6">
         <header className="bg-background top-0 z-50 w-full">
           <nav
             className="meta-nav flex items-center gap-2 mb-4 md:mb-6"
@@ -174,7 +177,6 @@ const ZBib = (props) => {
             ))}
           </div>
         </header>
-        <div className="container-wrapper flex-1">
           <div className="flex justify-center py-2">
             <Badge
               variant="secondary"
@@ -207,7 +209,7 @@ const ZBib = (props) => {
             </Badge>
             
           </div>
-           <div className="container mx-auto mb-6 text-center px-6">
+           <div className="mb-6 text-center">
           <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
                 <FormattedMessage
                           id="zbib.brand.description"
@@ -222,8 +224,8 @@ const ZBib = (props) => {
               </p>
                  </div>
                 
-          <div className="container mx-auto py-4 flex justify-center px-4 md:px-6">
-            <div className="grid gap-6 xl:grid-cols-5 xl:items-start">
+          <div className="py-4">
+            <div className="grid gap-8 xl:grid-cols-5 xl:items-start">
               <div className="flex flex-col gap-6 xl:col-span-2">
                 {!props.isReadOnly && (
                   <section className="section section-cite">
@@ -243,6 +245,11 @@ const ZBib = (props) => {
                     </div>
                   </section>
                 )}
+                          <Examples/>
+
+                </div>
+              <div className="xl:col-span-3">
+                
                 {!props.isReadOnly &&
                   (props.isTranslating || props.itemUnderReview) && (
                     <Review
@@ -256,8 +263,7 @@ const ZBib = (props) => {
                       ])}
                     />
                   )}
-              </div>
-              <div className="xl:col-span-3">
+              
                 <BibliographySection
                   {...pick(props, [
                     "bibliography",
@@ -295,6 +301,10 @@ const ZBib = (props) => {
               </div>
             </div>
           </div>
+             {!props.isReadOnly && (
+          <About2 onGetStartedClick={props.onGetStartedClick} />
+        )}
+<Footer {...pick(props, ["isReadOnly"])} />
         </div>
         {/*
 					!props.isReadOnly && (
@@ -323,11 +333,8 @@ const ZBib = (props) => {
 					)
 				*/}
 
-        {!props.isReadOnly && (
-          <About2 onGetStartedClick={props.onGetStartedClick} />
-        )}
-
-        <Footer {...pick(props, ["isReadOnly"])} />
+     
+        
         {(!props.isHydrated || (props.isHydrated && props.isReady)) && (
           <Fragment>
             <Confirmation

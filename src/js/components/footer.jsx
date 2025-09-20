@@ -12,9 +12,7 @@ const Footer = (props) => {
           <p>
             Forked from ZoteroBib © 2018 Corporation for Digital Scholarship
           </p>
-          <p>
-            © 2020-{new Date().getFullYear()} Mick Schroeder, LLC
-          </p>
+          <p>© 2020-{new Date().getFullYear()} Mick Schroeder, LLC</p>
           <p>
             <a
               href="/terms"
@@ -25,9 +23,7 @@ const Footer = (props) => {
           </p>
         </div>
         <div className="space-y-1 md:text-right">
-          <p>
-            License: GNU AGPL
-          </p>
+          <p>License: GNU AGPL</p>
           <p className="text-xs leading-snug max-w-md">
             This program is free software: you can redistribute it and/or modify
             it under the terms of the GNU Affero General Public License as
