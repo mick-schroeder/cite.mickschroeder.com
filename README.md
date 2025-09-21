@@ -77,6 +77,7 @@ On which port should the dev server listen, defaults to 8001.
 When accessing a remote bibliography, ZoteroBib can hydrate from pre-rendered HTML to avoid a spinner while loading. For development purposes, a hard-coded bibliography is stored in `hydrate.hbs` and is used to serve any request that includes a remote bibliography ID. To disable this behavior, set `NO_HYDRATE` to `1`, which will serve `index.hbs` instead, meaning the bibliography is always rendered client-side with a spinner.
 
 ## Attribution
+
 This project is forked from [zotero/bib-web](https://github.com/zotero/bib-web).  
 © 2018 Corporation for Digital Scholarship, licensed under AGPL-3.0-or-later.
 © 2020–2025 Mick Schroeder, LLC, licensed under AGPL-3.0-or-later.

@@ -1,12 +1,26 @@
 import { memo } from "react";
 import { FormattedMessage } from "react-intl";
-import { Globe, Microscope, Hash, Book, ListChecks, Atom, FileSearch, Library, Database, Newspaper } from "lucide-react";
+import {
+  Globe,
+  Microscope,
+  Hash,
+  Book,
+  ListChecks,
+  Atom,
+  FileSearch,
+  Library,
+  Database,
+  Newspaper,
+} from "lucide-react";
 
 const Examples = () => (
   <div id="examples" className="mt-4">
     <div className="rounded-lg border bg-card p-5 md:p-6 shadow-sm">
       <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">
-        <ListChecks className="inline h-5 w-5 text-primary -mt-1 mr-2" aria-hidden="true" />
+        <ListChecks
+          className="inline h-5 w-5 text-primary -mt-1 mr-2"
+          aria-hidden="true"
+        />
         <FormattedMessage
           id="zbib.about.section.examples"
           description="examples-section-title"
@@ -22,13 +36,25 @@ const Examples = () => (
           </span>
           <div>
             <h4 className="text-base font-semibold leading-6">Website URLs</h4>
-            <p className="mt-2 text-sm text-muted-foreground">Enter a website address (URL):</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Enter a website address (URL):
+            </p>
             <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
               <li>
-                <a className="underline underline-offset-4 hover:text-foreground break-all" href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fwww.nejm.org%2Fdoi%2Ffull%2F10.1056%2FNEJMoa1403108">https://nejm.org/…</a>
+                <a
+                  className="underline underline-offset-4 hover:text-foreground break-all"
+                  href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fwww.nejm.org%2Fdoi%2Ffull%2F10.1056%2FNEJMoa1403108"
+                >
+                  https://nejm.org/…
+                </a>
               </li>
               <li>
-                <a className="underline underline-offset-4 hover:text-foreground break-all" href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fwww.nytimes.com%2F2013%2F03%2F05%2Fscience%2Fchasing-the-higgs-boson-how-2-teams-of-rivals-at-CERN-searched-for-physics-most-elusive-particle.html">https://nytimes.com/…</a>
+                <a
+                  className="underline underline-offset-4 hover:text-foreground break-all"
+                  href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fwww.nytimes.com%2F2013%2F03%2F05%2Fscience%2Fchasing-the-higgs-boson-how-2-teams-of-rivals-at-CERN-searched-for-physics-most-elusive-particle.html"
+                >
+                  https://nytimes.com/…
+                </a>
               </li>
             </ul>
           </div>
@@ -41,13 +67,25 @@ const Examples = () => (
           </span>
           <div>
             <h4 className="text-base font-semibold leading-6">PubMed</h4>
-            <p className="mt-2 text-sm text-muted-foreground">Enter a PMID (PubMed ID) or URL:</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Enter a PMID (PubMed ID) or URL:
+            </p>
             <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
               <li>
-                <a className="underline underline-offset-4 hover:text-foreground break-all" href="https://cite.mickschroeder.com/?q=30280635">30280635</a>
+                <a
+                  className="underline underline-offset-4 hover:text-foreground break-all"
+                  href="https://cite.mickschroeder.com/?q=30280635"
+                >
+                  30280635
+                </a>
               </li>
               <li>
-                <a className="underline underline-offset-4 hover:text-foreground break-all" href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fpubmed.ncbi.nlm.nih.gov%2F30280635%2F">https://pubmed.ncbi.nlm.nih.gov/…</a>
+                <a
+                  className="underline underline-offset-4 hover:text-foreground break-all"
+                  href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fpubmed.ncbi.nlm.nih.gov%2F30280635%2F"
+                >
+                  https://pubmed.ncbi.nlm.nih.gov/…
+                </a>
               </li>
             </ul>
           </div>
@@ -60,13 +98,25 @@ const Examples = () => (
           </span>
           <div>
             <h4 className="text-base font-semibold leading-6">DOI</h4>
-            <p className="mt-2 text-sm text-muted-foreground">Persistent identifiers for many kinds of work:</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Persistent identifiers for many kinds of work:
+            </p>
             <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
               <li>
-                <a className="underline underline-offset-4 hover:text-foreground break-all" href="https://cite.mickschroeder.com/?q=10.1126%2Fscience.169.3946.635">10.1126/science.169.3946.635</a>
+                <a
+                  className="underline underline-offset-4 hover:text-foreground break-all"
+                  href="https://cite.mickschroeder.com/?q=10.1126%2Fscience.169.3946.635"
+                >
+                  10.1126/science.169.3946.635
+                </a>
               </li>
               <li>
-                <a className="underline underline-offset-4 hover:text-foreground break-all" href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fdoi.org%2F10.1038/nature21360">https://doi.org/…</a>
+                <a
+                  className="underline underline-offset-4 hover:text-foreground break-all"
+                  href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fdoi.org%2F10.1038/nature21360"
+                >
+                  https://doi.org/…
+                </a>
               </li>
             </ul>
           </div>
@@ -79,13 +129,25 @@ const Examples = () => (
           </span>
           <div>
             <h4 className="text-base font-semibold leading-6">ISBN</h4>
-            <p className="mt-2 text-sm text-muted-foreground">A unique numeric book identifier:</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              A unique numeric book identifier:
+            </p>
             <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
               <li>
-                <a className="underline underline-offset-4 hover:text-foreground break-all" href="https://cite.mickschroeder.com/?q=0323040683">0323040683</a>
+                <a
+                  className="underline underline-offset-4 hover:text-foreground break-all"
+                  href="https://cite.mickschroeder.com/?q=0323040683"
+                >
+                  0323040683
+                </a>
               </li>
               <li>
-                <a className="underline underline-offset-4 hover:text-foreground break-all" href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fwww.amazon.com%2Fs%3Fk%3D0702052302">https://amazon.com/…</a>
+                <a
+                  className="underline underline-offset-4 hover:text-foreground break-all"
+                  href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fwww.amazon.com%2Fs%3Fk%3D0702052302"
+                >
+                  https://amazon.com/…
+                </a>
               </li>
             </ul>
           </div>
@@ -97,8 +159,12 @@ const Examples = () => (
             <Library className="h-5 w-5 text-primary" aria-hidden="true" />
           </span>
           <div>
-            <h4 className="text-base font-semibold leading-6">Library Catalogs</h4>
-            <p className="mt-2 text-sm text-muted-foreground">Paste a catalog permalink (e.g., WorldCat):</p>
+            <h4 className="text-base font-semibold leading-6">
+              Library Catalogs
+            </h4>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Paste a catalog permalink (e.g., WorldCat):
+            </p>
             <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
               <li>
                 <a
@@ -118,8 +184,12 @@ const Examples = () => (
             <Database className="h-5 w-5 text-primary" aria-hidden="true" />
           </span>
           <div>
-            <h4 className="text-base font-semibold leading-6">Academic Databases</h4>
-            <p className="mt-2 text-sm text-muted-foreground">Many databases work (access permitting). Example:</p>
+            <h4 className="text-base font-semibold leading-6">
+              Academic Databases
+            </h4>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Many databases work (access permitting). Example:
+            </p>
             <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
               <li>
                 <a
@@ -139,8 +209,12 @@ const Examples = () => (
             <Newspaper className="h-5 w-5 text-primary" aria-hidden="true" />
           </span>
           <div>
-            <h4 className="text-base font-semibold leading-6">Publisher Sites</h4>
-            <p className="mt-2 text-sm text-muted-foreground">Direct article pages often work, too:</p>
+            <h4 className="text-base font-semibold leading-6">
+              Publisher Sites
+            </h4>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Direct article pages often work, too:
+            </p>
             <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
               <li>
                 <a

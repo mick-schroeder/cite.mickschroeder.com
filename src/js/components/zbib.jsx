@@ -89,109 +89,107 @@ const ZBib = (props) => {
   return (
     <div className={cx(className)}>
       <div className="zotero-bib-inner">
-      <div className="container-wrapper flex-1 mx-auto w-full max-w-6xl xl:max-w-7xl px-4 md:px-6 overflow-x-hidden">
-        <header className="bg-background top-0 z-50 w-full">
-          <nav
-            className="meta-nav -mx-4 px-4 flex items-center gap-2 mb-4 md:mb-6 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none]"
-            aria-label={navLabel}
-            tabIndex={0}
-            ref={navRef}
-            onFocus={receiveFocus}
-            onBlur={receiveBlur}
-            onKeyDown={handleKeyDown}
-          >
-            <span className="sr-only">Horizontal scroll for more</span>
-            <NavigationMenu
-              className="ml-auto bg-background/70 px-2 py-1 backdrop-blur-sm"
-              viewport={false}
+        <div className="container-wrapper flex-1 mx-auto w-full max-w-6xl xl:max-w-7xl px-4 md:px-6 overflow-x-hidden">
+          <header className="bg-background top-0 z-50 w-full">
+            <nav
+              className="meta-nav -mx-4 px-4 flex items-center gap-2 mb-4 md:mb-6 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none]"
+              aria-label={navLabel}
+              tabIndex={0}
+              ref={navRef}
+              onFocus={receiveFocus}
+              onBlur={receiveBlur}
+              onKeyDown={handleKeyDown}
             >
-              <NavigationMenuList className="justify-end gap-1 md:gap-2">
-                <NavigationMenuItem>
-                  <NavigationMenuLink
-                    asChild
-                    className={navLinkClass}
-                    tabIndex={-2}
-                  >
-                    <button type="button" onClick={props.onAboutClick}>
-                      <FormattedMessage
-                        id="zbib.about"
-                        defaultMessage="About"
-                      />
-                    </button>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink
-                    asChild
-                    className={navLinkClass}
-                    tabIndex={-2}
-                  >
-                    <button type="button" onClick={props.onHelpClick}>
-                      <FormattedMessage id="zbib.help" defaultMessage="Help" />
-                    </button>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink
-                    asChild
-                    className={navLinkClass}
-                    tabIndex={-2}
-                  >
-                    <button type="button" onClick={props.onExamplesClick}>
-                      <FormattedMessage
-                        id="zbib.examples"
-                        defaultMessage="Examples"
-                      />
-                    </button>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink
-                    asChild
-                    className={navLinkClass}
-                    tabIndex={-2}
-                  >
-                    <a
-                      href="/faq"
-                     
+              <span className="sr-only">Horizontal scroll for more</span>
+              <NavigationMenu
+                className="ml-auto bg-background/70 px-2 py-1 backdrop-blur-sm"
+                viewport={false}
+              >
+                <NavigationMenuList className="justify-end gap-1 md:gap-2">
+                  <NavigationMenuItem>
+                    <NavigationMenuLink
+                      asChild
+                      className={navLinkClass}
+                      tabIndex={-2}
                     >
-                      FAQ
-                    </a>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink
-                    asChild
-                    className={navLinkClass}
-                    tabIndex={-2}
-                  >
-                    <a
-                      href="https://www.mickschroeder.com"
-                      target="_blank"
-                      rel="noreferrer noopener"
+                      <button type="button" onClick={props.onAboutClick}>
+                        <FormattedMessage
+                          id="zbib.about"
+                          defaultMessage="About"
+                        />
+                      </button>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink
+                      asChild
+                      className={navLinkClass}
+                      tabIndex={-2}
                     >
-                      Mick Schroeder
-                    </a>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-          </nav>
-          <div className="messages break-words">
-            {props.messages.map((message) => (
-              <Message
-                {...message}
-                {...pick(props, [
-                  "onDismiss",
-                  "onUndoDelete",
-                  "onReadMore",
-                  "onShowDuplicate",
-                ])}
-                key={message.id}
-              />
-            ))}
-          </div>
-        </header>
+                      <button type="button" onClick={props.onHelpClick}>
+                        <FormattedMessage
+                          id="zbib.help"
+                          defaultMessage="Help"
+                        />
+                      </button>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink
+                      asChild
+                      className={navLinkClass}
+                      tabIndex={-2}
+                    >
+                      <button type="button" onClick={props.onExamplesClick}>
+                        <FormattedMessage
+                          id="zbib.examples"
+                          defaultMessage="Examples"
+                        />
+                      </button>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink
+                      asChild
+                      className={navLinkClass}
+                      tabIndex={-2}
+                    >
+                      <a href="/faq">FAQ</a>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink
+                      asChild
+                      className={navLinkClass}
+                      tabIndex={-2}
+                    >
+                      <a
+                        href="https://www.mickschroeder.com"
+                        target="_blank"
+                        rel="noreferrer noopener"
+                      >
+                        Mick Schroeder
+                      </a>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            </nav>
+            <div className="messages break-words">
+              {props.messages.map((message) => (
+                <Message
+                  {...message}
+                  {...pick(props, [
+                    "onDismiss",
+                    "onUndoDelete",
+                    "onReadMore",
+                    "onShowDuplicate",
+                  ])}
+                  key={message.id}
+                />
+              ))}
+            </div>
+          </header>
           <div className="flex justify-center py-2">
             <Badge
               variant="secondary"
@@ -222,23 +220,22 @@ const ZBib = (props) => {
                 </a>
               </span>
             </Badge>
-            
           </div>
-           <div className="mb-6 text-center">
-          <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-                <FormattedMessage
-                  id="zbib.brand.description"
-                  defaultMessage="What do you want to cite?"
-                />
-          </h2>
-          <p className="text-muted-foreground text-xl">
-            <FormattedMessage
-              id="zbib.brand.description"
-              defaultMessage="Pick from 10,000+ citation styles, then enter a URL, identifier, or title to begin your bibliography."
-            />
-          </p>
-                 </div>
-                
+          <div className="mb-6 text-center">
+            <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+              <FormattedMessage
+                id="zbib.brand.description"
+                defaultMessage="What do you want to cite?"
+              />
+            </h2>
+            <p className="text-muted-foreground text-xl">
+              <FormattedMessage
+                id="zbib.brand.description"
+                defaultMessage="Pick from 10,000+ citation styles, then enter a URL, identifier, or title to begin your bibliography."
+              />
+            </p>
+          </div>
+
           <div className="py-4">
             <div className="grid gap-6 xl:grid-cols-5 xl:items-start">
               <div className="flex flex-col gap-6 xl:col-span-2 min-w-0">
@@ -260,11 +257,9 @@ const ZBib = (props) => {
                     </div>
                   </section>
                 )}
-                          <Examples/>
-
-                </div>
+                <Examples />
+              </div>
               <div className="xl:col-span-3 min-w-0">
-                
                 {!props.isReadOnly &&
                   (props.isTranslating || props.itemUnderReview) && (
                     <Review
@@ -278,7 +273,7 @@ const ZBib = (props) => {
                       ])}
                     />
                   )}
-              
+
                 <BibliographySection
                   {...pick(props, [
                     "bibliography",
@@ -316,10 +311,10 @@ const ZBib = (props) => {
               </div>
             </div>
           </div>
-             {!props.isReadOnly && (
-          <About2 onGetStartedClick={props.onGetStartedClick} />
-        )}
-        <Footer {...pick(props, ["isReadOnly"])} />
+          {!props.isReadOnly && (
+            <About2 onGetStartedClick={props.onGetStartedClick} />
+          )}
+          <Footer {...pick(props, ["isReadOnly"])} />
         </div>
         {/*
 					!props.isReadOnly && (
@@ -348,8 +343,6 @@ const ZBib = (props) => {
 					)
 				*/}
 
-     
-        
         {(!props.isHydrated || (props.isHydrated && props.isReady)) && (
           <Fragment>
             <Confirmation

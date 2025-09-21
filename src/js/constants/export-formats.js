@@ -6,7 +6,8 @@ export default {
     include: "html",
     isDownloadable: false,
     isCopyable: true,
-  },html: {
+  },
+  html: {
     extension: "html",
     mime: "text/html",
     label: "Copy HTML",

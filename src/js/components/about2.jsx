@@ -394,7 +394,11 @@ const About2 = ({ onGetStartedClick }) => (
         </div>
       </section>
       <div className="my-10 flex justify-center">
-        <ShadcnButton onClick={onGetStartedClick} size="lg" className="px-6 w-full sm:w-auto">
+        <ShadcnButton
+          onClick={onGetStartedClick}
+          size="lg"
+          className="px-6 w-full sm:w-auto"
+        >
           <FormattedMessage
             id="zbib.about.CTA"
             description="cta-button"

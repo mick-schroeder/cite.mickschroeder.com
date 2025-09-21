@@ -51,7 +51,8 @@
     "build:tailwind": "tailwindcss -c tailwind.config.cjs -i src/styles/tailwind.css -o build/static/tailwind.css",
     "devel:tailwind": "tailwindcss -c tailwind.config.cjs -i src/styles/tailwind.css -o build/static/tailwind.css --watch",
     "prettier": "prettier --check .",
-    "prettier:fix": "prettier --write ."
+    "prett
+    ier:fix": "prettier --write ."
   },
   "dependencies": {
     "@babel/runtime": "^7.28.4",
