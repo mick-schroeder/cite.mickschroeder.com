@@ -14,7 +14,7 @@ Free and open-source software that automatically suggests citations and helps wr
 
 Getting The Library
 
-1. `git clone --recursive https://github.com/mick-schroeder/cite.mickschroeder.com.git`
+1. `git clone https://github.com/mick-schroeder/cite.mickschroeder.com.git`
 
 1. `cd cite.mickschroeder.com`
 

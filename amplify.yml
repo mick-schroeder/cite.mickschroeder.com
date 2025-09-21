@@ -7,7 +7,6 @@ frontend:
         - nvm use
         - node -v
         - sudo dnf -y install rsync
-        - git submodule update --init --recursive
         - npm ci
     build:
       commands:
