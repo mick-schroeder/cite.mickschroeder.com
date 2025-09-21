@@ -1,6 +1,6 @@
 # Mick Schroeder's Citation Generator
 
-# Frequently Asked Questions (FAQ)
+## Frequently Asked Questions (FAQ)
 
 <nav>
   <ul>

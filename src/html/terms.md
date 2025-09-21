@@ -1,6 +1,6 @@
 # Mick Schroeder's Citation Generator
 
-# Terms of Use & Privacy Policy
+## Terms of Use & Privacy Policy
 
 _Last updated: 2025_
 
