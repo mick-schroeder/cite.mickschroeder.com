@@ -39,7 +39,7 @@ const buildFaqPage = async () => {
   const faqTemplate = await fs.readFile(
     path.join(__dirname, "..", "src", "html", "faq.hbs"),
   );
-  const dstFile = path.join(__dirname, "..", "build", "faq");
+  const dstFile = path.join(__dirname, "..", "build", "faq.html");
   const template = Handlebars.compile(faqTemplate.toString());
   const faqHTML = marked(faqMarkdown.toString(), { smartypants: true })
     // Remove "-" at end of id attributes, which marked substitutes for question marks
@@ -55,19 +55,19 @@ const buildTermsPage = async () => {
   const termsTemplate = await fs.readFile(
     path.join(__dirname, "..", "src", "html", "terms.hbs"),
   );
-  const dstFile = path.join(__dirname, "..", "build", "terms");
+  const dstFile = path.join(__dirname, "..", "build", "terms.html");
   const template = Handlebars.compile(termsTemplate.toString());
   const termsHTML = marked(termsMarkdown.toString(), { smartypants: true })
     // Remove "-" at end of id attributes, which marked substitutes for question marks
     .replace(/(id="[^"]+)-"/g, '$1"');
   const output = addAnchors(await template({ terms: termsHTML }));
   await fs.writeFile(dstFile, output);
-  console.log("terms, page generated");
+  console.log("terms page generated");
 };
 const buildPage = async (pageName) => {
   const indexConfig = config.get("indexConfig");
   const srcFile = path.join(__dirname, "..", "src", "html", `${pageName}.hbs`);
-  const dstFile = path.join(__dirname, "..", "build", pageName);
+  const dstFile = path.join(__dirname, "..", "build", `${pageName}.html`);
   const page = await fs.readFile(srcFile);
   const template = Handlebars.compile(page.toString());
   const output = await template({ indexConfig });
@@ -83,7 +83,7 @@ const buildPage = async (pageName) => {
   await fs.ensureDir(dstDir);
   if (process.env.NODE_ENV?.startsWith("prod")) {
     // if doing a production build skip hydrate.hbs
-    await Promise.all([buildPage("index"), buildFaqPage()]);
+    await Promise.all([buildPage("index"), buildFaqPage(),buildTermsPage()]);
   } else {
     await Promise.all([
       buildPage("index"),
