@@ -6,7 +6,7 @@ const Footer = (props) => {
   const { isReadOnly } = props;
 
   return (
-    <footer className="w-full border-t bg-muted/30 py-6 text-sm text-muted-foreground dark:bg-muted/10">
+    <footer className="mt-10 w-full border-t bg-muted/30 py-6 text-sm text-muted-foreground dark:bg-muted/10">
       <div className="mx-auto max-w-5xl px-4 flex flex-col md:flex-row items-center justify-between gap-2 text-center md:text-left">
         <div className="space-y-1">
           <p>

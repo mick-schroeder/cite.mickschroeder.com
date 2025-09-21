@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { FormattedMessage } from "react-intl";
-import { Globe, Microscope, Hash, Book, ListChecks } from "lucide-react";
+import { Globe, Microscope, Hash, Book, ListChecks, Atom, FileSearch, Library, Database, Newspaper } from "lucide-react";
 
 const Examples = () => (
   <div id="examples" className="mt-4">
@@ -86,6 +86,69 @@ const Examples = () => (
               </li>
               <li>
                 <a className="underline underline-offset-4 hover:text-foreground break-all" href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fwww.amazon.com%2Fs%3Fk%3D0702052302">https://amazon.com/…</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Library Catalogs (WorldCat) */}
+        <div className="flex items-start gap-3">
+          <span className="rounded-md bg-background p-1.5">
+            <Library className="h-5 w-5 text-primary" aria-hidden="true" />
+          </span>
+          <div>
+            <h4 className="text-base font-semibold leading-6">Library Catalogs</h4>
+            <p className="mt-2 text-sm text-muted-foreground">Paste a catalog permalink (e.g., WorldCat):</p>
+            <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
+              <li>
+                <a
+                  className="underline underline-offset-4 hover:text-foreground break-all"
+                  href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fwww.worldcat.org%2Ftitle%2Foclc%2F318877771"
+                >
+                  https://worldcat.org/title/oclc/318877771
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Academic Databases (JSTOR) */}
+        <div className="flex items-start gap-3">
+          <span className="rounded-md bg-background p-1.5">
+            <Database className="h-5 w-5 text-primary" aria-hidden="true" />
+          </span>
+          <div>
+            <h4 className="text-base font-semibold leading-6">Academic Databases</h4>
+            <p className="mt-2 text-sm text-muted-foreground">Many databases work (access permitting). Example:</p>
+            <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
+              <li>
+                <a
+                  className="underline underline-offset-4 hover:text-foreground break-all"
+                  href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fwww.jstor.org%2Fstable%2F10.1086%2F683612"
+                >
+                  https://jstor.org/stable/10.1086/683612
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Publisher Sites (SpringerLink) */}
+        <div className="flex items-start gap-3">
+          <span className="rounded-md bg-background p-1.5">
+            <Newspaper className="h-5 w-5 text-primary" aria-hidden="true" />
+          </span>
+          <div>
+            <h4 className="text-base font-semibold leading-6">Publisher Sites</h4>
+            <p className="mt-2 text-sm text-muted-foreground">Direct article pages often work, too:</p>
+            <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
+              <li>
+                <a
+                  className="underline underline-offset-4 hover:text-foreground break-all"
+                  href="https://cite.mickschroeder.com/?q=https%3A%2F%2Flink.springer.com%2Farticle%2F10.1007%2Fs00134-020-06106-6"
+                >
+                  https://link.springer.com/article/10.1007/s00134-020-06106-6
+                </a>
               </li>
             </ul>
           </div>

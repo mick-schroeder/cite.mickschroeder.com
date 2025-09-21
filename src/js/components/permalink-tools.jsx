@@ -46,15 +46,15 @@ const PermalinkTools = ({ bibliography, isSafari, onSave, permalink }) => {
             {isRecentlyCopied
               ? intl.formatMessage({
                   id: "zbib.permalink.copyFeedback",
-                  defaultMessage: "Copied!",
+                  defaultMessage: "Link copied",
                 })
               : intl.formatMessage({
                   id: "zbib.permalink.copyURL",
-                  defaultMessage: "Copy URL",
+                  defaultMessage: "Copy link",
                 })}
           </ShadcnButton>
           <a className="btn btn-lg btn-block btn-secondary" href={permalink}>
-            <FormattedMessage id="zbib.permalink.view" defaultMessage="View" />
+            <FormattedMessage id="zbib.permalink.view" defaultMessage="Open" />
           </a>
         </div>
       ) : (
@@ -65,14 +65,14 @@ const PermalinkTools = ({ bibliography, isSafari, onSave, permalink }) => {
                 <strong>
                   <FormattedMessage
                     id="zbib.permalink.safari.warning"
-                    defaultMessage="If you don’t visit zbib.org for 7 days, your browser will automatically remove your bibliography."
+                    defaultMessage="Safari may clear local data for sites you haven’t opened in a week, which can remove your saved bibliography."
                   />
                 </strong>
               </p>
               <p>
                 <FormattedMessage
                   id="zbib.permalink.safari.recommendation"
-                  defaultMessage="We recommend saving your bibliography by creating a permalink."
+                  defaultMessage="To preserve your work, create a permalink copy."
                 />
               </p>
             </div>
@@ -86,7 +86,7 @@ const PermalinkTools = ({ bibliography, isSafari, onSave, permalink }) => {
           >
             <FormattedMessage
               id="zbib.permalink.create"
-              defaultMessage="Create"
+              defaultMessage="Create permalink"
             />
           </ShadcnButton>
         </Fragment>

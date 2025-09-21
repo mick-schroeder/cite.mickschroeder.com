@@ -8,11 +8,11 @@ const WhatsThis = () => {
       href="/faq#where-is-my-bibliography-stored"
       title={intl.formatMessage({
         id: `zbib.whatsThis`,
-        defaultMessage: "What’s this?",
+        defaultMessage: "Learn more about this",
       })}
       className="whats-this"
     >
-      <FormattedMessage id="zbib.whatsThis" defaultMessage="What’s this?" />
+      <FormattedMessage id="zbib.whatsThis" defaultMessage="Learn more" />
       <svg
         className="icon-question-mark"
         viewBox="0 0 16 16"

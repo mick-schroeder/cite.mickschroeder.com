@@ -54,7 +54,7 @@ const ZBib = (props) => {
   const intl = useIntl();
   const saveToZotero = intl.formatMessage({
     id: "zbib.saveToZotero.title",
-    defaultMessage: "Save to Zotero",
+    defaultMessage: "Export to Zotero",
   });
   const navLabel = intl.formatMessage({
     id: "zbib.navLabel",
@@ -89,10 +89,10 @@ const ZBib = (props) => {
   return (
     <div className={cx(className)}>
       <div className="zotero-bib-inner">
-      <div id="main" className="container-wrapper flex-1 mx-auto max-w-5xl px-4 md:px-6">
+      <div className="container-wrapper flex-1 mx-auto w-full max-w-6xl xl:max-w-7xl px-4 md:px-6 overflow-x-hidden">
         <header className="bg-background top-0 z-50 w-full">
           <nav
-            className="meta-nav flex items-center gap-2 mb-4 md:mb-6"
+            className="meta-nav -mx-4 px-4 flex items-center gap-2 mb-4 md:mb-6 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none]"
             aria-label={navLabel}
             tabIndex={0}
             ref={navRef}
@@ -100,6 +100,7 @@ const ZBib = (props) => {
             onBlur={receiveBlur}
             onKeyDown={handleKeyDown}
           >
+            <span className="sr-only">Horizontal scroll for more</span>
             <NavigationMenu
               className="ml-auto bg-background/70 px-2 py-1 backdrop-blur-sm"
               viewport={false}
@@ -151,6 +152,20 @@ const ZBib = (props) => {
                     tabIndex={-2}
                   >
                     <a
+                      href="/faq"
+                     
+                    >
+                      FAQ
+                    </a>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink
+                    asChild
+                    className={navLinkClass}
+                    tabIndex={-2}
+                  >
+                    <a
                       href="https://www.mickschroeder.com"
                       target="_blank"
                       rel="noreferrer noopener"
@@ -162,7 +177,7 @@ const ZBib = (props) => {
               </NavigationMenuList>
             </NavigationMenu>
           </nav>
-          <div className="messages">
+          <div className="messages break-words">
             {props.messages.map((message) => (
               <Message
                 {...message}
@@ -180,12 +195,12 @@ const ZBib = (props) => {
           <div className="flex justify-center py-2">
             <Badge
               variant="secondary"
-              className="rounded-full bg-card border border-border px-6 py-2 transition-colors"
+              className="rounded-full bg-card border border-border px-6 py-2 transition-colors max-w-full"
             >
-              <span className="inline-flex items-center">
+              <span className="flex flex-wrap items-center justify-center text-center gap-x-2">
                 <img
                   src="/static/images/icon-cite.png"
-                  className="h-6 w-auto mr-2"
+                  className="h-6 w-auto mr-2 mb-1 sm:mb-0"
                   alt=""
                   aria-hidden="true"
                 />
@@ -193,15 +208,15 @@ const ZBib = (props) => {
                   href="https://www.mickschroeder.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xl font-black tracking-tighter self-center whitespace-nowrap text-foreground/60 hover:text-foreground hover:underline transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  className="text-xl font-black tracking-tighter self-center break-words sm:whitespace-nowrap text-foreground/60 hover:text-foreground hover:underline transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   Mick Schroeder's
                 </a>
                 <a
                   href="/"
-                  className="inline-flex items-center hover:underline rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  className="inline-flex items-center justify-center basis-full sm:basis-auto mt-1 sm:mt-0 hover:underline rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
-                  <span className="ml-2 text-xl font-black tracking-tighter self-center whitespace-nowrap text-foreground">
+                  <span className="text-xl font-black tracking-tighter self-center break-words sm:whitespace-nowrap text-foreground">
                     Citation Generator
                   </span>
                 </a>
@@ -212,21 +227,21 @@ const ZBib = (props) => {
            <div className="mb-6 text-center">
           <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
                 <FormattedMessage
-                          id="zbib.brand.description"
-                          defaultMessage="What would you like to cite?"
-                        />
-              </h2>
-                  <p className="text-muted-foreground text-xl">
-               <FormattedMessage
-                          id="zbib.brand.description"
-                          defaultMessage="Choose one of 10,000+ citation styles and enter your reference below to start creating your bibliography."
-                        />
-              </p>
+                  id="zbib.brand.description"
+                  defaultMessage="What do you want to cite?"
+                />
+          </h2>
+          <p className="text-muted-foreground text-xl">
+            <FormattedMessage
+              id="zbib.brand.description"
+              defaultMessage="Pick from 10,000+ citation styles, then enter a URL, identifier, or title to begin your bibliography."
+            />
+          </p>
                  </div>
                 
           <div className="py-4">
-            <div className="grid gap-8 xl:grid-cols-5 xl:items-start">
-              <div className="flex flex-col gap-6 xl:col-span-2">
+            <div className="grid gap-6 xl:grid-cols-5 xl:items-start">
+              <div className="flex flex-col gap-6 xl:col-span-2 min-w-0">
                 {!props.isReadOnly && (
                   <section className="section section-cite">
                     <div className="">
@@ -248,7 +263,7 @@ const ZBib = (props) => {
                           <Examples/>
 
                 </div>
-              <div className="xl:col-span-3">
+              <div className="xl:col-span-3 min-w-0">
                 
                 {!props.isReadOnly &&
                   (props.isTranslating || props.itemUnderReview) && (
@@ -304,7 +319,7 @@ const ZBib = (props) => {
              {!props.isReadOnly && (
           <About2 onGetStartedClick={props.onGetStartedClick} />
         )}
-<Footer {...pick(props, ["isReadOnly"])} />
+        <Footer {...pick(props, ["isReadOnly"])} />
         </div>
         {/*
 					!props.isReadOnly && (
@@ -343,42 +358,38 @@ const ZBib = (props) => {
               onCancel={props.onStyleSwitchCancel}
               title={intl.formatMessage({
                 id: "zbib.confirmCase.title",
-                defaultMessage: "Converting Titles to Sentence Case",
+                defaultMessage: "Convert titles to sentence case",
               })}
               confirmLabel={intl.formatMessage({
                 id: "zbib.confirmCase.confirm",
-                defaultMessage: "OK, I’ll Edit Them",
+                defaultMessage: "OK, I’ll review titles",
               })}
             >
               <p>
                 <FormattedMessage
                   id="zbib.confirmCase.explanation"
-                  defaultMessage="The
-							style you’ve selected requires titles to be in sentence case rather than
-							title case. When you use this style, ZoteroBib will convert the titles of
-							entries to sentence case for you, but you’ll need to manually edit some
-							entries to capitalize proper nouns:"
+                  defaultMessage="The selected style uses sentence case for titles. We can convert titles automatically, but you may still need to fix proper nouns manually."
                 />
               </p>
 
               <p>
                 <FormattedMessage
                   id="zbib.confirmCase.titleCaseExample"
-                  defaultMessage="<b>Title case:</b> <i>{ titleCaseExample }</i>"
+                  defaultMessage="<b>Title case (as entered):</b> <i>{ titleCaseExample }</i>"
                   values={{ ...commonFormats, titleCaseExample }}
                 />
               </p>
               <p>
                 <FormattedMessage
                   id="zbib.confirmCase.conversionExample"
-                  defaultMessage="<b>ZoteroBib conversion:</b> <i>{ conversionExample }</i>"
+                  defaultMessage="<b>Automatic conversion:</b> <i>{ conversionExample }</i>"
                   values={{ ...commonFormats, conversionExample }}
                 />
               </p>
               <p>
                 <FormattedMessage
                   id="zbib.confirmCase.sentenceCaseExample"
-                  defaultMessage="<b>Sentence case:</b> <i>{ sentenceCaseExample }</i>"
+                  defaultMessage="<b>Sentence case (corrected):</b> <i>{ sentenceCaseExample }</i>"
                   values={{ ...commonFormats, sentenceCaseExample }} //eslint-disable-line react/display-name
                 />
               </p>
@@ -406,9 +417,7 @@ const ZBib = (props) => {
                   <p>
                     <FormattedMessage
                       id="zbib.saveToZotero.message"
-                      defaultMessage="Once you’ve <a>installed Zotero and the Zotero
-									Connector</a>, you can export your bibliography to Zotero by
-									clicking the “Save to Zotero” button in your browser’s toolbar."
+                      defaultMessage="After you’ve <a>installed Zotero and the Zotero Connector</a>, use the “Save to Zotero” button in your browser’s toolbar to export your bibliography."
                       values={{
                         a: (chunk) => (
                           <a

@@ -1,47 +1,48 @@
 # Mick Schroeder's Citation Generator
 
-# Terms of Use & Privacy Policy
+# Terms of Use & Privacy Policy  
+_Last updated: 2025_
 
 ## Terms of Use
-
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 See the [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.en.html) for more details.
 
+---
+
 ## Privacy Policy
 
-To better respect and protect your privacy, this notice explains the way your personal information is collected and used.
+We collect as little information as possible while keeping the site functional and sustainable.
 
-### Collection of Routine Information
+### What we collect
+- Basic technical data (IP, browser/device info, timestamps, pages viewed).  
+- Interaction data (how features are used, for improvements).  
+- Local-only data: your bibliography is saved in your browser. In private/incognito mode it is cleared when you close the window.
 
-This software tracks basic information about the user. This information includes, but is not limited to, IP addresses, device details, timestamps, user interaction with the software, and referring pages. There is no intention to personally identify specific users of this software.
+### Cookies & ads
+We use cookies for functionality and to display **Google AdSense** ads that support hosting costs.  
+- In the EU/UK we use **Google Consent Mode**: ads are non-personalized unless you allow personalization.  
+- Otherwise Google may show contextual (non-personalized) ads.  
+- Learn more: [Google Ads Privacy](https://policies.google.com/technologies/ads).  
 
-### Cookies
+### Analytics
+We may use **Google Analytics** to understand general usage trends. Analytics also follows Consent Mode.  
+- Opt-out: [Google Analytics Opt-out Add-on](https://tools.google.com/dlpage/gaoptout).  
 
-Where necessary, this software uses cookies to store information about a visitor’s preferences and history in order to better serve the user and/or present the user with customized content.
+### US Privacy
+In some US states you can opt out of personalized ads. To request this, email **privacy@mickschroeder.com**.  
 
-### Advertisement and Other Third Parties
-
-This site uses Google AdSense advertisements and Google Analytics. Advertising partners and other third parties may use cookies, scripts and/or web beacons to track user activities of this software in order to display advertisements and other useful information. Such tracking is done directly by the third parties through their own servers and is subject to their own privacy policies. This software has no access or control over these cookies, scripts and/or web beacons that may be used by third parties. Learn how to [opt out of Google’s cookie usage](http://www.google.com/privacy_ads.html).
-
-### Affiliate Links
-
-Some links to products on this website use affiliate links to Amazon and other ecommerce websites. If you purchase an item through one of these links, advertising fees are generated from a small percentage of the purchase price. Mick Schroeder is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com.
-
-### Links to Third Party Websites
-
-This software includes links to third party websites. We are not responsible for the content or privacy policies on these websites. You should be aware that the privacy policies of these websites may differ from this one.
+### Links
+We link to external sites. Their content and policies are their responsibility.  
 
 ### Security
+No system is 100% secure, but we minimize what we collect and store. Your bibliography stays in your browser.  
 
-The security of your personal information is important, but understand that no method of transmission over the Internet, or method of electronic storage, is 100% secure or anonymous. While we strive to store as little data as possible and use acceptable means to protect your information, we cannot guarantee absolute security. Your bibliography data is stored in your browser's local storage by default. Note that if you're using private/incognito mode in your browser, your bibliography will be deleted as soon as you close the window.
+### Changes
+We may update this policy from time to time.  
 
-### Changes To This Privacy Policy
-
-We reserve the right to update or change this privacy policy at any time.
-
-### Contact Information
-
-For any questions or concerns regarding the privacy policy, please email <contact@mickschroeder.com>.
+### Contact
+Privacy questions: **privacy@mickschroeder.com**  
+General inquiries: **contact@mickschroeder.com**

@@ -145,7 +145,7 @@ const MultipleChoiceDialog = (props) => {
           <ShadcnButton
             title={intl.formatMessage({
               id: "zbib.modal.closeDialog",
-              defaultMessage: "Close Dialog",
+              defaultMessage: "Close",
             })}
             icon
             className="close"

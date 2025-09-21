@@ -1,16 +1,15 @@
 export default {
-  html: {
-    extension: "html",
-    mime: "text/html",
-    label: "Copy HTML",
-    isDownloadable: false,
-    isCopyable: true,
-  },
   plain: {
     extension: "txt",
     mime: "text/plain",
     label: "Copy to Clipboard",
     include: "html",
+    isDownloadable: false,
+    isCopyable: true,
+  },html: {
+    extension: "html",
+    mime: "text/html",
+    label: "Copy HTML",
     isDownloadable: false,
     isCopyable: true,
   },

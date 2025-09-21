@@ -121,7 +121,7 @@ const BibliographySection = (props) => {
                   <FormattedMessage
                     wrapRichTextChunksInFragment={true}
                     id="zbib.bibliography.emptyTitle"
-                    defaultMessage="<i>Y</i>our bibliography is empty."
+                    defaultMessage="<i>Y</i>our bibliography has no entries yet."
                     values={{
                       i: (chunks) => (
                         <span style={{ letterSpacing: "-0.092em" }}>
@@ -135,7 +135,7 @@ const BibliographySection = (props) => {
                   <FormattedMessage
                     wrapRichTextChunksInFragment={true}
                     id="zbib.bibliography.emptyLead"
-                    defaultMessage="<i>T</i>o add a source, paste or type its URL, ISBN, DOI, PMID, arXiv ID, or title into the search box above"
+                    defaultMessage="<i>T</i>o begin, paste a URL or enter an ISBN, DOI, PMID, arXiv ID, or a title into the box above."
                     values={{
                       i: (chunks) => (
                         <span style={{ letterSpacing: "-0.111em" }}>
@@ -236,17 +236,14 @@ const BibliographySection = (props) => {
                   onCancel={handleCancel}
                   title={intl.formatMessage({
                     id: "zbib.confirmOverride.title",
-                    defaultMessage: "Clear existing bibliography?",
+                    defaultMessage: "Replace current bibliography?",
                   })}
                   confirmLabel="Continue"
                 >
                   <p>
                     <FormattedMessage
                       id="zbib.confirmOverride.prompt"
-                      defaultMessage="There is an existing bibliography with {localCitationsCount, plural,
-											one {# entry}
-											other {# entries}
-											} in the editor. If you continue, the existing bibliography will be replaced with this one."
+                      defaultMessage="There’s a bibliography open with {localCitationsCount, plural, one {# entry} other {# entries}}. If you continue, it will be replaced by this version."
                       values={{ localCitationsCount }}
                     />
                   </p>
@@ -260,7 +257,7 @@ const BibliographySection = (props) => {
               >
                 <FormattedMessage
                   id="zbib.bibliography.edit"
-                  defaultMessage="Edit Bibliography"
+                  defaultMessage="Edit this bibliography"
                 />
               </ShadcnButton>
             )}
@@ -270,7 +267,7 @@ const BibliographySection = (props) => {
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight py-2">
             <FormattedMessage
               id="zbib.bibliography.export"
-              defaultMessage="Export Bibliography"
+              defaultMessage="Export bibliography"
             />
           </h3>
           <ExportTools

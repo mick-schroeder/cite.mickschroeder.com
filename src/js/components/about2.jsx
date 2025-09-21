@@ -393,7 +393,15 @@ const About2 = ({ onGetStartedClick }) => (
           </p>
         </div>
       </section>
-      
+      <div className="my-10 flex justify-center">
+        <ShadcnButton onClick={onGetStartedClick} size="lg" className="px-6 w-full sm:w-auto">
+          <FormattedMessage
+            id="zbib.about.CTA"
+            description="cta-button"
+            defaultMessage="Return to the Top and Start Citing"
+          />
+        </ShadcnButton>
+      </div>
     </div>
   </section>
 );
