@@ -105,7 +105,7 @@ const BibliographySection = (props) => {
       })}
     >
       {" "}
-      <div className="container" suppressHydrationWarning={true}>
+      <div className="" suppressHydrationWarning={true}>
         <Card>
           <CardContent>
             {!isReadOnly && localCitationsCount === 0 ? (

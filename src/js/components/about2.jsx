@@ -29,7 +29,7 @@ import { citationStylesCount } from "../../../data/citation-styles-data.json";
 
 const About2 = ({ onGetStartedClick }) => (
   <section className="section pt-12">
-    <div className="container mx-auto max-w-screen-xl px-4 md:px-6">
+    <div className="">
       <h1 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl text-center">
         <FormattedMessage
           id="zbib.about.title"

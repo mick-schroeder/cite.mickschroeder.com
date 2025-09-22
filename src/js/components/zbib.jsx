@@ -6,18 +6,8 @@ import { Button as ShadcnButton } from "./ui/button";
 import { X } from "lucide-react";
 import { pick } from "web-common/utils";
 import { useFocusManager } from "web-common/hooks";
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuLink,
-} from "./ui/navigation-menu";
-import { buttonVariants } from "./ui/button";
-import { Badge } from "./ui/badge";
-
 import About2 from "./about2";
 import Examples from "./examples";
-
 //import Brand from './brand';
 import BibliographySection from "./bibliographySection";
 import CiteTools from "./cite-tools";
@@ -26,6 +16,7 @@ import Confirmation from "./confirmation";
 import CopyCitationDialog from "./copy-citation-dialog";
 import Editor from "./editor";
 import Footer from "./footer";
+import Navigation from "./navigation";
 import Message from "./message";
 import Modal from "./modal";
 import MultipleChoiceDialog from "./multiple-choice-dialog";
@@ -63,10 +54,6 @@ const ZBib = (props) => {
   const navRef = useRef(null);
   const { focusNext, focusPrev, receiveFocus, receiveBlur } =
     useFocusManager(navRef);
-  const navLinkClass = cx(
-    buttonVariants({ variant: "ghost", size: "sm" }),
-    "px-3 text-muted-foreground hover:text-foreground transition-colors rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-  );
 
   const handleKeyDown = useCallback(
     (ev) => {
@@ -89,92 +76,13 @@ const ZBib = (props) => {
   return (
     <div className={cx(className)}>
       <div className="zotero-bib-inner">
-        <div className="container-wrapper flex-1 mx-auto w-full max-w-6xl xl:max-w-7xl px-4 md:px-6 overflow-x-hidden">
+        <div 
+      className="container mx-auto px-4 md:px-6 max-w-screen-2xl lg:max-w-[min(90rem,calc(100vw-240px))]"
+        >
           <header className="bg-background top-0 z-50 w-full">
-            <nav
-              className="meta-nav -mx-4 px-4 flex items-center gap-2 mb-4 md:mb-6 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none]"
-              aria-label={navLabel}
-              tabIndex={0}
-              ref={navRef}
-              onFocus={receiveFocus}
-              onBlur={receiveBlur}
-              onKeyDown={handleKeyDown}
-            >
-              <span className="sr-only">Horizontal scroll for more</span>
-              <NavigationMenu
-                className="ml-auto bg-background/70 px-2 py-1 backdrop-blur-sm"
-                viewport={false}
-              >
-                <NavigationMenuList className="justify-end gap-1 md:gap-2">
-                  <NavigationMenuItem>
-                    <NavigationMenuLink
-                      asChild
-                      className={navLinkClass}
-                      tabIndex={-2}
-                    >
-                      <button type="button" onClick={props.onAboutClick}>
-                        <FormattedMessage
-                          id="zbib.about"
-                          defaultMessage="About"
-                        />
-                      </button>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <NavigationMenuLink
-                      asChild
-                      className={navLinkClass}
-                      tabIndex={-2}
-                    >
-                      <button type="button" onClick={props.onHelpClick}>
-                        <FormattedMessage
-                          id="zbib.help"
-                          defaultMessage="Help"
-                        />
-                      </button>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <NavigationMenuLink
-                      asChild
-                      className={navLinkClass}
-                      tabIndex={-2}
-                    >
-                      <button type="button" onClick={props.onExamplesClick}>
-                        <FormattedMessage
-                          id="zbib.examples"
-                          defaultMessage="Examples"
-                        />
-                      </button>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <NavigationMenuLink
-                      asChild
-                      className={navLinkClass}
-                      tabIndex={-2}
-                    >
-                      <a href="/faq">FAQ</a>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <NavigationMenuLink
-                      asChild
-                      className={navLinkClass}
-                      tabIndex={-2}
-                    >
-                      <a
-                        href="https://www.mickschroeder.com"
-                        target="_blank"
-                        rel="noreferrer noopener"
-                      >
-                        Mick Schroeder
-                      </a>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
-            </nav>
+           
+           <Navigation />
+
             <div className="messages break-words">
               {props.messages.map((message) => (
                 <Message
@@ -191,35 +99,7 @@ const ZBib = (props) => {
             </div>
           </header>
           <div className="flex justify-center py-2">
-            <Badge
-              variant="secondary"
-              className="rounded-full bg-card border border-border px-6 py-2 transition-colors max-w-full"
-            >
-              <span className="flex flex-wrap items-center justify-center text-center gap-x-2">
-                <img
-                  src="/static/images/icon-cite-round.svg"
-                  className="h-6 w-auto mr-2 mb-1 sm:mb-0"
-                  alt=""
-                  aria-hidden="true"
-                />
-                <a
-                  href="https://www.mickschroeder.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-xl font-black tracking-tighter self-center break-words sm:whitespace-nowrap text-foreground/60 hover:text-foreground hover:underline transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                >
-                  Mick Schroeder's
-                </a>
-                <a
-                  href="/"
-                  className="inline-flex items-center justify-center basis-full sm:basis-auto mt-1 sm:mt-0 hover:underline rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                >
-                  <span className="text-xl font-black tracking-tighter self-center break-words sm:whitespace-nowrap text-foreground">
-                    Citation Generator
-                  </span>
-                </a>
-              </span>
-            </Badge>
+           
           </div>
           <div className="mb-6 text-center">
             <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
@@ -321,7 +201,7 @@ const ZBib = (props) => {
 						<section
 							aria-labelledby="link-to-this-version"
 							className="section section-link space-y-4">
-							<div className="container">
+							<div className="">
 								<div className="header-wrapper">
 									<h2 id="link-to-this-version" className="scroll-m-20 text-2xl font-semibold tracking-tight">
 										<FormattedMessage id="zbib.linkToThis" defaultMessage="Link to this version" />
@@ -336,7 +216,7 @@ const ZBib = (props) => {
         {/*
 					props.isReadOnly && (
 						<section className="section section-brand">
-							<div className="container">
+							<div className="">
 								<Brand />
 							</div>
 						</section>

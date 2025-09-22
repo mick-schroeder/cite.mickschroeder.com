@@ -69,54 +69,42 @@ const Message = ({
       aria-live="polite"
       aria-labelledby={htmlID}
       role="status"
-      className={cx(
-        "relative mx-auto max-w-2xl",
-        {
-          info: "border-sky-300/70 bg-sky-50 text-sky-900 dark:border-sky-800 dark:bg-sky-950/50 dark:text-sky-100",
-          success:
-            "border-green-300/70 bg-green-50 text-green-900 dark:border-green-800 dark:bg-green-950/50 dark:text-green-100",
-          warning:
-            "border-amber-300/70 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-100",
-          error:
-            "border-red-400/80 bg-red-50 text-red-900 dark:border-red-800 dark:bg-red-950/50 dark:text-red-100",
-        }[category]
-      )}
-      variant={category === "error" ? "destructive" : "default"}
+      className="max-w-3xl mx-auto w-full"
+      variant={category === "warning" || category === "error" ? "destructive" : "default"}
     >
       {/* Dismiss */}
       <ShadcnButton
         title="Dismiss"
         variant="ghost"
         size="icon"
-        className="absolute right-2 top-2 text-muted-foreground hover:text-foreground"
+        className="absolute right-2 top-1 text-muted-foreground hover:text-foreground"
         onClick={handleDismiss}
         aria-label="Dismiss message"
       >
         <X className="h-5 w-5" aria-hidden="true" />
       </ShadcnButton>
 
-      <div className="flex w-full flex-wrap items-center justify-center gap-3 text-current">
-        {
+      
           {
-            info: <Info className="h-5 w-5" aria-hidden="true" />,
-            success: <CheckCircle2 className="h-5 w-5" aria-hidden="true" />,
-            warning: <AlertTriangle className="h-5 w-5" aria-hidden="true" />,
-            error: <AlertOctagon className="h-5 w-5" aria-hidden="true" />,
-          }[category]
-        }
-        <div className="flex min-w-0 flex-1 flex-col items-center text-center sm:items-start sm:text-left">
-          <AlertTitle className="sr-only">
-            {{
-              info: "Information",
-              success: "Success",
-              warning: "Warning",
-              error: "Error",
-            }[category]}
-          </AlertTitle>
-          <AlertDescription id={htmlID} className="text-base font-semibold leading-relaxed">
-            {message}
-          </AlertDescription>
-        </div>
+            {
+              info: <Info className="h-5 w-5 shrink-0" aria-hidden="true" />,
+              success: <CheckCircle2 className="h-5 w-5 shrink-0" aria-hidden="true" />,
+              warning: <AlertTriangle className="h-5 w-5 shrink-0" aria-hidden="true" />,
+              error: <AlertOctagon className="h-5 w-5 shrink-0" aria-hidden="true" />,
+            }[category]
+          }
+            <AlertTitle  className="text-md">
+              {{
+                info: "Information",
+                success: "Success",
+                warning: "Warning",
+                error: "Error",
+              }[category]}
+            </AlertTitle>
+            <AlertDescription id={htmlID} className="text-md">
+              {message}
+            </AlertDescription>
+       
 
         {action &&
           (href ? (
@@ -124,19 +112,7 @@ const Message = ({
               asChild
               size="sm"
               variant="outline"
-              className={cx(
-                "h-8 shrink-0",
-                {
-                  info:
-                    "border-sky-300 text-sky-900 hover:bg-sky-100 dark:border-sky-700 dark:text-sky-100 dark:hover:bg-sky-900/50",
-                  success:
-                    "border-green-300 text-green-900 hover:bg-green-100 dark:border-green-700 dark:text-green-100 dark:hover:bg-green-900/50",
-                  warning:
-                    "border-amber-300 text-amber-900 hover:bg-amber-100 dark:border-amber-700 dark:text-amber-100 dark:hover:bg-amber-900/50",
-                  error:
-                    "border-red-300 text-red-900 hover:bg-red-100 dark:border-red-700 dark:text-red-100 dark:hover:bg-red-900/50",
-                }[category]
-              )}
+              className="ml-4 shrink-0 self-start sm:self-center"
             >
               <a href={href}>{action}</a>
             </ShadcnButton>
@@ -145,24 +121,12 @@ const Message = ({
               variant="outline"
               size="sm"
               onClick={handleAction}
-              className={cx(
-                "h-8 shrink-0",
-                {
-                  info:
-                    "border-sky-300 text-sky-900 hover:bg-sky-100 dark:border-sky-700 dark:text-sky-100 dark:hover:bg-sky-900/50",
-                  success:
-                    "border-green-300 text-green-900 hover:bg-green-100 dark:border-green-700 dark:text-green-100 dark:hover:bg-green-900/50",
-                  warning:
-                    "border-amber-300 text-amber-900 hover:bg-amber-100 dark:border-amber-700 dark:text-amber-100 dark:hover:bg-amber-900/50",
-                  error:
-                    "border-red-300 text-red-900 hover:bg-red-100 dark:border-red-700 dark:text-red-100 dark:hover:bg-red-900/50",
-                }[category]
-              )}
+              className="ml-4 shrink-0 self-start sm:self-center"
             >
               {action}
             </ShadcnButton>
           ))}
-      </div>
+     
     </Alert>
   );
 };

@@ -216,7 +216,7 @@ const Review = ({
               />
             </CardContent>
             <CardFooter>
-              <div className="container">
+              <div className="">
                 <div
                   className="flex flex-wrap gap-2 justify-center"
                   role="toolbar"
