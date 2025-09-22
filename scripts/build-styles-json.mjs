@@ -13,12 +13,16 @@ const renamedStylesURL =
   "https://raw.githubusercontent.com/citation-style-language/styles/refs/heads/master/renamed-styles.json";
 
 const styles = [
-  "apa",
-  "chicago-shortened-notes-bibliography",
+  "american-medical-association",
   "modern-language-association",
+  "apa",
+  "harvard-cite-them-right",
+  "national-library-of-medicine",
+  "chicago-notes-bibliography",
   "turabian-notes-bibliography",
+  "vancouver",
 ];
-const defaultStyle = "modern-language-association";
+const defaultStyle = "american-medical-association";
 
 (async () => {
   const stylesJsonPath = join(__dirname, "..", "data", "styles.json");

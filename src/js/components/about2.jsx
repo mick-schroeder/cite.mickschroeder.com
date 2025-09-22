@@ -202,10 +202,14 @@ const About2 = ({ onGetStartedClick }) => (
             </a>
             .
           </p>
-          <ul className="mt-2 list-disc pl-5 text-sm">
-            <li>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <ShadcnButton
+              asChild
+              variant="secondary"
+              size="sm"
+              className="gap-2"
+            >
               <a
-                className="underline underline-offset-4 hover:text-foreground break-all"
                 href="https://github.com/mick-schroeder/schroeder-cite"
                 rel="external"
               >
@@ -215,21 +219,22 @@ const About2 = ({ onGetStartedClick }) => (
                   defaultMessage="Project on GitHub"
                 />
               </a>
-            </li>
-            <li>
-              <a
-                className="underline underline-offset-4 hover:text-foreground break-all"
-                href="https://github.com/zotero/bib-web"
-                rel="external"
-              >
+            </ShadcnButton>
+            <ShadcnButton
+              asChild
+              variant="secondary"
+              size="sm"
+              className="gap-2"
+            >
+              <a href="https://github.com/zotero/bib-web" rel="external">
                 <FormattedMessage
                   id="zbib.about.opensource.zbibLink"
                   description="open-source-zotero-project-link"
                   defaultMessage="ZoteroBib Project on GitHub"
                 />
               </a>
-            </li>
-          </ul>
+            </ShadcnButton>
+          </div>
         </div>
 
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
@@ -242,10 +247,14 @@ const About2 = ({ onGetStartedClick }) => (
           <p className="mt-2 text-sm text-muted-foreground">
             Automatically load the current page in your browser.
           </p>
-          <ul className="mt-2 list-disc pl-5 text-sm">
-            <li>
+          <div className="mt-4">
+            <ShadcnButton
+              asChild
+              variant="secondary"
+              size="sm"
+              className="gap-2"
+            >
               <a
-                className="underline underline-offset-4 hover:text-foreground break-all"
                 href="https://chrome.google.com/webstore/detail/mick-schroeders-citation/gocmebnobccjiigdnakfmlieghedgdhk"
                 rel="external"
               >
@@ -255,8 +264,8 @@ const About2 = ({ onGetStartedClick }) => (
                   defaultMessage="Google Chrome Web Store"
                 />
               </a>
-            </li>
-          </ul>
+            </ShadcnButton>
+          </div>
         </div>
       </section>
       <h2

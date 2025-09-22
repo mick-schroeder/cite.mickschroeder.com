@@ -117,4 +117,4 @@ Styles evolve, and sometimes teachers or publishers have specific requirements. 
 
 <h3 id="help">Something else isn’t working. Where can I get help?</h3>
 
-Please open an issue in the [GitHub repository](https://github.com/mick-schroeder/schroeder-cite). If you have coding skills, you’re welcome to suggest or contribute fixes.
+Please open an issue in the [GitHub repository](https://github.com/mick-schroeder/cite.mickschroeder.com). If you have coding skills, you’re welcome to suggest or contribute fixes.

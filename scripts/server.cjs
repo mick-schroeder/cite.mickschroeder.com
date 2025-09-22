@@ -13,10 +13,13 @@ const proxy = httpProxy.createProxyServer();
 
 const handler = (req, resp) => {
   const fallback = () => {
-    fs.readFile(path.join(__dirname, "..", "build", "index.html"), (err, buf) => {
-      resp.setHeader("Content-Type", "text/html");
-      resp.end(buf);
-    });
+    fs.readFile(
+      path.join(__dirname, "..", "build", "index.html"),
+      (err, buf) => {
+        resp.setHeader("Content-Type", "text/html");
+        resp.end(buf);
+      },
+    );
   };
 
   if (
@@ -42,15 +45,21 @@ const handler = (req, resp) => {
       resp.end(buf);
     });
   } else if (req.url == "/terms") {
-    fs.readFile(path.join(__dirname, "..", "build", "terms.html"), (err, buf) => {
-      resp.setHeader("Content-Type", "text/html");
-      resp.end(buf);
-    });
+    fs.readFile(
+      path.join(__dirname, "..", "build", "terms.html"),
+      (err, buf) => {
+        resp.setHeader("Content-Type", "text/html");
+        resp.end(buf);
+      },
+    );
   } else if (!process.env.NO_HYDRATE && req.url.match(/[a-z0-9]{32}/)) {
-    fs.readFile(path.join(__dirname, "..", "build", "hydrate.html"), (err, buf) => {
-      resp.setHeader("Content-Type", "text/html");
-      resp.end(buf);
-    });
+    fs.readFile(
+      path.join(__dirname, "..", "build", "hydrate.html"),
+      (err, buf) => {
+        resp.setHeader("Content-Type", "text/html");
+        resp.end(buf);
+      },
+    );
   } else {
     serve(req, resp, fallback);
   }

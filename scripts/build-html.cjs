@@ -83,7 +83,7 @@ const buildPage = async (pageName) => {
   await fs.ensureDir(dstDir);
   if (process.env.NODE_ENV?.startsWith("prod")) {
     // if doing a production build skip hydrate.hbs
-    await Promise.all([buildPage("index"), buildFaqPage(),buildTermsPage()]);
+    await Promise.all([buildPage("index"), buildFaqPage(), buildTermsPage()]);
   } else {
     await Promise.all([
       buildPage("index"),

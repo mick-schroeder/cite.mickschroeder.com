@@ -111,10 +111,13 @@ const BibliographySection = (props) => {
             {!isReadOnly && localCitationsCount === 0 ? (
               <Fragment>
                 <img
-                  className="empty-bibliography mx-auto"
-                  src="static/images/schroeder-cite-card.png"
+                  className="empty-bibliography mx-auto h-auto w-full max-w-[300px]"
+                  src="static/images/schroeder-cite-card.svg"
+                  alt=""
                   width="300"
                   height="300"
+                  loading="lazy"
+                  decoding="async"
                   role="presentation"
                 />
                 <h2 className="empty-title scroll-m-20 text-3xl font-semibold tracking-tight text-center">

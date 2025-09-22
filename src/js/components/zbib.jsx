@@ -197,7 +197,7 @@ const ZBib = (props) => {
             >
               <span className="flex flex-wrap items-center justify-center text-center gap-x-2">
                 <img
-                  src="/static/images/icon-cite.png"
+                  src="/static/images/icon-cite-round.svg"
                   className="h-6 w-auto mr-2 mb-1 sm:mb-0"
                   alt=""
                   aria-hidden="true"
