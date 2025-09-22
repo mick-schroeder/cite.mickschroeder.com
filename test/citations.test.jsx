@@ -56,7 +56,7 @@ describe('Citations', () => {
 			'zotero-bib-items',
 			JSON.stringify(localStorage100Items.slice(0, 5)) // improve performance by using a small slice
 		);
-		localStorage.setItem('zotero-bib-title', 'hello world');
+		localStorage.setItem('schroeder-cite-title', 'hello world');
 	});
 
 	afterEach(() => {
@@ -158,7 +158,7 @@ describe('Citations', () => {
 	});
 
 	test('For numeric citation style, does not display button to copy citation/bibliography entry', async () => {
-		localStorage.setItem('zotero-bib-citation-style', 'nature');
+		localStorage.setItem('schroeder-cite-citation-style', 'nature');
 		renderWithProviders(<Container />);
 
 		const firstCitation = getAllByRole(
@@ -170,7 +170,7 @@ describe('Citations', () => {
 	});
 
 	test('For numeric citation style, supports reordering', async () => {
-		localStorage.setItem('zotero-bib-citation-style', 'nature');
+		localStorage.setItem('schroeder-cite-citation-style', 'nature');
 		renderWithProviders(<Container />);
 		const user = userEvent.setup();
 		const firstCitation = getAllByRole(

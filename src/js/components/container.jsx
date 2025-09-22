@@ -92,7 +92,7 @@ const fetchAndSelectStyle = async (dispatch, styleName, opts = {}) => {
     const styleData = await fetchAndParseIndependentStyle(styleName);
     if (opts.store) {
       localStorage.setItem(
-        "zotero-bib-citation-style",
+        "schroeder-cite-citation-style",
         styleData.citationStyleName ?? styleName,
       );
     }
@@ -396,7 +396,7 @@ const BibWebContainer = (props) => {
 
   const [title, setTitle] = useState(
     props.title ||
-      (remoteId ? "" : localStorage.getItem("zotero-bib-title") || ""),
+      (remoteId ? "" : localStorage.getItem("schroeder-cite-title") || ""),
   );
   const prevTitle = usePrevious(title);
   const [identifier, setIdentifier] = useState("");
@@ -435,7 +435,7 @@ const BibWebContainer = (props) => {
       parent: null,
       isCore: true,
     })),
-    ...(JSON.parse(localStorage.getItem("zotero-bib-extra-citation-styles")) ||
+    ...(JSON.parse(localStorage.getItem("schroeder-cite-extra-citation-styles")) ||
       []),
   ]);
   citationStyles.sort((a, b) =>
@@ -679,7 +679,7 @@ const BibWebContainer = (props) => {
       id: getNextMessageId(),
       kind: "WELCOME_MESSAGE",
       message:
-        "ZoteroBib is a free service that helps you quickly create a bibliography in any citation style.",
+        "Mick Schroeder's Citation Generator is a free service that helps you quickly create a bibliography in any citation style.",
     };
     dispatch({ type: POST_MESSAGE, message });
   }, []);
@@ -860,7 +860,7 @@ const BibWebContainer = (props) => {
         }
       } else {
         fetchAndSelectStyle(dispatch, newCitationStyle);
-        localStorage.setItem("zotero-bib-citation-style", newCitationStyle);
+        localStorage.setItem("schroeder-cite-citation-style", newCitationStyle);
       }
     },
     [config.stylesURL, handleError],
@@ -1125,7 +1125,7 @@ const BibWebContainer = (props) => {
 
       if (state.isSentenceCaseStyle) {
         const itemsMetaData =
-          JSON.parse(localStorage.getItem("zotero-bib-items-metadata")) || {};
+          JSON.parse(localStorage.getItem("schroeder-cite-items-metadata")) || {};
 
         if (!(itemKey in itemsMetaData)) {
           itemsMetaData[itemKey] = {};
@@ -1138,7 +1138,7 @@ const BibWebContainer = (props) => {
           ]),
         ];
         localStorage.setItem(
-          "zotero-bib-items-metadata",
+          "schroeder-cite-items-metadata",
           JSON.stringify(itemsMetaData),
         );
       }
@@ -1257,12 +1257,12 @@ const BibWebContainer = (props) => {
       initialItems: bib.current.itemsRaw,
     });
 
-    localStorage.setItem("zotero-bib-citation-style", state.selected);
+    localStorage.setItem("schroeder-cite-citation-style", state.selected);
     localStorage.setItem(
-      "zotero-bib-extra-citation-styles",
+      "schroeder-cite-extra-citation-styles",
       JSON.stringify(citationStyles.filter((cs) => !cs.isCore)),
     );
-    localStorage.setItem("zotero-bib-title", title);
+    localStorage.setItem("schroeder-cite-title", title);
 
     isHydrated.current = false;
 
@@ -1358,7 +1358,7 @@ const BibWebContainer = (props) => {
       );
       setCitationStyles(newCitationStyles);
       localStorage.setItem(
-        "zotero-bib-extra-citation-styles",
+        "schroeder-cite-extra-citation-styles",
         JSON.stringify(newCitationStyles.filter((cs) => !cs.isCore)),
       );
     },
@@ -1375,10 +1375,10 @@ const BibWebContainer = (props) => {
 
       fetchAndSelectStyle(dispatch, newStyleMeta.name);
       localStorage.setItem(
-        "zotero-bib-extra-citation-styles",
+        "schroeder-cite-extra-citation-styles",
         JSON.stringify(newCitationStyles.filter((cs) => !cs.isCore)),
       );
-      localStorage.setItem("zotero-bib-citation-style", newStyleMeta.name);
+      localStorage.setItem("schroeder-cite-citation-style", newStyleMeta.name);
     },
     [citationStyles],
   );
@@ -1402,7 +1402,7 @@ const BibWebContainer = (props) => {
         isConfirmed: true,
       });
       localStorage.setItem(
-        "zotero-bib-citation-style",
+        "schroeder-cite-citation-style",
         revertCitationStyle.current,
       );
     }
@@ -1659,7 +1659,7 @@ const BibWebContainer = (props) => {
   const handleVisibilityChange = useCallback(() => {
     if (!isReadOnly && document.visibilityState === "visible") {
       const storageCitationStyle = localStorage.getItem(
-        "zotero-bib-citation-style",
+        "schroeder-cite-citation-style",
       );
       bib.current.reloadItems();
       citeproc.current.resetReferences(
@@ -1779,9 +1779,9 @@ const BibWebContainer = (props) => {
     if (
       !remoteId &&
       !isReadOnly &&
-      !localStorage.getItem("zotero-bib-visited")
+      !localStorage.getItem("schroeder-cite-visited")
     ) {
-      localStorage.setItem("zotero-bib-visited", "true");
+      localStorage.setItem("schroeder-cite-visited", "true");
       displayWelcomeMessage();
     }
   }, [displayWelcomeMessage, isReadOnly, remoteId]);
@@ -1792,7 +1792,7 @@ const BibWebContainer = (props) => {
       typeof prevTitle !== "undefined" &&
       !isReadOnly
     ) {
-      localStorage.setItem("zotero-bib-title", title);
+      localStorage.setItem("schroeder-cite-title", title);
     }
   }, [isReadOnly, title, prevTitle]);
 
@@ -1892,7 +1892,7 @@ const BibWebContainer = (props) => {
       const prefilledIdentifier = params.get("q") || "";
       const incomingCitationStyle = params.get("style") || "";
       const localCitationStyle =
-        localStorage.getItem("zotero-bib-citation-style") ||
+        localStorage.getItem("schroeder-cite-citation-style") ||
         coreCitationStyles.find((cs) => cs.isDefault).name;
 
       setIdentifier(prefilledIdentifier);

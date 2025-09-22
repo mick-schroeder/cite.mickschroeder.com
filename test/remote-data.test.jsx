@@ -63,7 +63,7 @@ describe('Remote Data', () => {
 			'zotero-bib-items',
 			JSON.stringify(localStorage100Items.slice(0, 5)) // improve performance by using a small slice
 		);
-		localStorage.setItem('zotero-bib-title', 'hello world');
+		localStorage.setItem('schroeder-cite-title', 'hello world');
 	});
 
 	afterEach(() => server.resetHandlers());

@@ -269,7 +269,7 @@ const processSentenceCaseAPAItems = (items, baseMappings) => {
     "shortTitle",
   ];
   const itemsMetaData =
-    JSON.parse(localStorage.getItem("zotero-bib-items-metadata")) || {};
+    JSON.parse(localStorage.getItem("schroeder-cite-items-metadata")) || {};
   items.forEach((item) => {
     Object.keys(item).forEach((k) => {
       if (typeof item[k] === "string" && whitelist.includes(k)) {

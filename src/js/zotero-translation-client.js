@@ -14,7 +14,7 @@ const defaults = {
     {},
   persist: true,
   override: false,
-  storagePrefix: "zotero-bib",
+  storagePrefix: "schroeder-cite",
 };
 
 const [COMPLETE, MULTIPLE_CHOICES, FAILED] = [

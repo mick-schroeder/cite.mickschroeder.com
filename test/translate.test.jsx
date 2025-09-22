@@ -54,7 +54,7 @@ describe('Translate', () => {
 			'zotero-bib-items',
 			JSON.stringify(localStorage100Items.slice(0, 5)) // improve performance by using a small slice
 		);
-		localStorage.setItem('zotero-bib-title', 'hello world');
+		localStorage.setItem('schroeder-cite-title', 'hello world');
 	});
 
 	afterEach(() => {
@@ -341,7 +341,7 @@ describe('Translate', () => {
 	});
 
 	test('Items are processed when translating while APA style selected', async () => {
-		localStorage.setItem('zotero-bib-citation-style', 'apa');
+		localStorage.setItem('schroeder-cite-citation-style', 'apa');
 		let hasTranslated = false;
 		server.use(
 			http.get('https://www.zotero.org/styles/apa', () => {
@@ -437,7 +437,7 @@ describe('Translate', () => {
 	});
 
 	test("It validates items returned from the translator", async () => {
-		localStorage.setItem('zotero-bib-citation-style', 'apa');
+		localStorage.setItem('schroeder-cite-citation-style', 'apa');
 		let hasTranslated = false;
 		server.use(
 			http.get('https://www.zotero.org/styles/apa', () => {

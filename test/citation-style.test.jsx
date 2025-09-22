@@ -50,7 +50,7 @@ describe('Editor', () => {
 			'zotero-bib-items',
 			JSON.stringify(localStorage100Items.slice(0, 5)) // improve performance by using a small slice
 		);
-		localStorage.setItem('zotero-bib-title', 'hello world');
+		localStorage.setItem('schroeder-cite-title', 'hello world');
 	});
 
 	afterEach(() => {
@@ -142,7 +142,7 @@ describe('Editor', () => {
 			}),
 		);
 		localStorage.setItem(
-			'zotero-bib-extra-citation-styles',
+			'schroeder-cite-extra-citation-styles',
 			JSON.stringify([{ "name": "nature", "title": "Nature", "isDependent": 0, "isCore": false }])
 		);
 		renderWithProviders(<Container />);
@@ -161,7 +161,7 @@ describe('Editor', () => {
 		const removeStyle = getByRole(natureEntry, 'button', { name: 'Remove' });
 		await user.click(removeStyle);
 		expect(getAllByRole(list, 'listitem')).toHaveLength(4);
-		expect(localStorage.getItem('zotero-bib-extra-citation-styles')).toEqual('[]');
+		expect(localStorage.getItem('schroeder-cite-extra-citation-styles')).toEqual('[]');
 	});
 
 	test('Does not allow removing default or active style', async () => {
@@ -178,10 +178,10 @@ describe('Editor', () => {
 			}),
 		);
 		localStorage.setItem(
-			'zotero-bib-extra-citation-styles',
+			'schroeder-cite-extra-citation-styles',
 			JSON.stringify([{ "name": "nature", "title": "Nature", "isDependent": 0, "isCore": false }])
 		);
-		localStorage.setItem('zotero-bib-citation-style', 'nature');
+		localStorage.setItem('schroeder-cite-citation-style', 'nature');
 		renderWithProviders(<Container />);
 		const user = userEvent.setup();
 		await screen.findByRole('list', { name: 'Bibliography' }, { timeout: 3000 });

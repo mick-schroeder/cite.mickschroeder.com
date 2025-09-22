@@ -83,12 +83,12 @@ describe('Import', () => {
 			'zotero-bib-items',
 			JSON.stringify(localStorage100Items.slice(0, 5)) // improve performance by using a small slice
 		);
-		localStorage.setItem('zotero-bib-title', 'hello world');
+		localStorage.setItem('schroeder-cite-title', 'hello world');
 	});
 
 	afterEach(() => {
 		server.resetHandlers();
-		localStorage.removeItem('zotero-bib-citation-style');
+		localStorage.removeItem('schroeder-cite-citation-style');
 	});
 
 	afterAll(() => {
@@ -134,7 +134,7 @@ describe('Import', () => {
 		expect(getByText(newItemSection, /1\./)).toBeInTheDocument();
 		const bibliography = screen.getByRole("list", { name: "Bibliography" });
 		expect(getAllByRole(bibliography, 'listitem')).toHaveLength(6);
-		expect(localStorage.getItem('zotero-bib-citation-style')).toBe('nature');
+		expect(localStorage.getItem('schroeder-cite-citation-style')).toBe('nature');
 	});
 
 	test('Installs citation style, even if provided as alias, when adding new citation via /import endpoint', async () => {
@@ -158,7 +158,7 @@ describe('Import', () => {
 		expect(getByText(newItemSection, /The complete Golden Retriever handbook/)).toBeInTheDocument();
 		const bibliography = screen.getByRole("list", { name: "Bibliography" });
 		expect(getAllByRole(bibliography, 'listitem')).toHaveLength(6);
-		expect(localStorage.getItem('zotero-bib-citation-style')).toBe('harvard-cite-them-right');
+		expect(localStorage.getItem('schroeder-cite-citation-style')).toBe('harvard-cite-them-right');
 	});
 
 	test('Presevers current citation style while adding new citation via /import endpoint', async () => {
@@ -181,7 +181,7 @@ describe('Import', () => {
 		expect(queryByText(newItemSection, /1\./)).not.toBeInTheDocument();
 		const bibliography = screen.getByRole("list", { name: "Bibliography" });
 		expect(getAllByRole(bibliography, 'listitem')).toHaveLength(6);
-		expect(localStorage.getItem('zotero-bib-citation-style')).toBeNull(); // unchanged
+		expect(localStorage.getItem('schroeder-cite-citation-style')).toBeNull(); // unchanged
 	});
 
 	test('Recognizes current and incoming citation styles are the same when adding via /import endpoint', async () => {
