@@ -676,11 +676,11 @@ const BibWebContainer = (props) => {
 
   const displayWelcomeMessage = useCallback(() => {
     const message = {
-      action: "Read More",
+      action: "Accept",
       id: getNextMessageId(),
       kind: "WELCOME_MESSAGE",
       message:
-        "Mick Schroeder's Citation Generator is a free service that helps you quickly create a bibliography in any citation style.",
+        "Mick Schroeder's Citation Generator uses cookies for Google Analytics and AdSense; by continuing to use it, you consent to this use.",
     };
     dispatch({ type: POST_MESSAGE, message });
   }, []);
