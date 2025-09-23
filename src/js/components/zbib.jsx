@@ -76,7 +76,7 @@ const ZBib = (props) => {
   return (
     <div className={cx(className)}>
       <div className="zotero-bib-inner">
-        <div className="container mx-auto px-4 md:px-6 max-w-screen-2xl lg:max-w-[min(90rem,calc(100vw-240px))]">
+        <div className="container mx-auto px-4 md:px-6 max-w-screen-2xl">
           <header className="bg-background top-0 z-50 w-full">
             <Navigation />
 

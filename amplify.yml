@@ -6,6 +6,7 @@ frontend:
         - nvm install
         - nvm use
         - node -v
+        - sudo dnf -y install rsync
         - npm ci
     build:
       commands:

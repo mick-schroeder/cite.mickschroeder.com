@@ -7,7 +7,7 @@ Free and open-source software that automatically suggests citations and helps wr
 ## Prerequisites
 
 1. Node JS with npm
-1. Basic Mac or Linux command-line tools including rsync
+1. Basic Mac or Linux command-line tools
 1. Existing translation-server, bib-server, styles-repo
 
 ## Local Development version
