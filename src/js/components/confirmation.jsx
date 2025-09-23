@@ -24,13 +24,8 @@ const Confirmation = (props) => {
       onRequestClose={onCancel}
     >
       <Fragment>
-        <div
-          className=""
-          tabIndex={-1}
-        >
-          <div className="px-6 py-4 text-sm">
-            {children}
-          </div>
+        <div className="" tabIndex={-1}>
+          <div className="px-6 py-4 text-sm">{children}</div>
           <div className="flex items-center justify-end gap-2 px-6 py-4">
             <ShadcnButton variant="outline" onClick={onCancel}>
               {cancelLabel}

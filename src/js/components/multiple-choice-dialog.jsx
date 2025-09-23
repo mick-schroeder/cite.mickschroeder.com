@@ -138,11 +138,9 @@ const MultipleChoiceDialog = (props) => {
       })}
       onRequestClose={onMultipleChoiceCancel}
       onAfterOpen={handleModalAfterOpen}
-      
     >
       <div className="modal-content" tabIndex={-1}>
         <div className="modal-header">
-          <h4 className="modal-title text-truncate">{title}</h4>
           <ShadcnButton
             title={intl.formatMessage({
               id: "zbib.modal.closeDialog",

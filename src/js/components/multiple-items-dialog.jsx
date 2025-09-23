@@ -242,9 +242,6 @@ const MultipleItemsDialog = (props) => {
       onRequestClose={handleCancel}
     >
       <div className="modal-content" tabIndex={-1}>
-        <div className="modal-header">
-          <h4 className="modal-title text-truncate">{title}</h4>
-        </div>
         <div className="modal-body" tabIndex={-1}>
           <MultipleLitemsList
             ref={listRef}

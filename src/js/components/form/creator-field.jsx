@@ -442,22 +442,22 @@ const CreatorField = forwardRef((props, ref) => {
           ) : isDual ? (
             <Fragment>
               <div className="flex-1">
-              <CreatorFieldInputWrap
-                {...inputProps}
-                name="lastName"
-                label="Last Name"
-                ref={(component) =>
-                  (fieldComponents.current["lastName"] = component)
-                }
-              />
-              <CreatorFieldInputWrap
-                {...inputProps}
-                name="firstName"
-                label="First Name"
-                ref={(component) =>
-                  (fieldComponents.current["firstName"] = component)
-                }
-              />
+                <CreatorFieldInputWrap
+                  {...inputProps}
+                  name="lastName"
+                  label="Last Name"
+                  ref={(component) =>
+                    (fieldComponents.current["lastName"] = component)
+                  }
+                />
+                <CreatorFieldInputWrap
+                  {...inputProps}
+                  name="firstName"
+                  label="First Name"
+                  ref={(component) =>
+                    (fieldComponents.current["firstName"] = component)
+                  }
+                />
               </div>
             </Fragment>
           ) : (

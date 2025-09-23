@@ -27,7 +27,7 @@ import Editable from "./ui/editable";
 import PlaceholderBibliography from "./placeholder-bibliography";
 import ExportTools from "./export-tools";
 import { Button as ShadcnButton } from "./ui/button";
-import { Pencil, LoaderCircle } from "lucide-react";
+import { Pencil, LoaderCircle, Download } from "lucide-react";
 
 const BibliographySection = (props) => {
   const {
@@ -268,8 +268,9 @@ const BibliographySection = (props) => {
             )}
           </CardContent>
         </Card>
-        <div className="mt-6">
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight py-2">
+        <div className="m-6">
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight py-2 flex items-center gap-2">
+            <Download className="h-6 w-6 text-primary" aria-hidden="true" />
             <FormattedMessage
               id="zbib.bibliography.export"
               defaultMessage="Export bibliography"

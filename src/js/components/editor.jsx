@@ -311,27 +311,22 @@ const Editor = (props) => {
       onRequestClose={handleClose}
     >
       <div className="modal-content" tabIndex={-1}>
-        <div className="modal-header">
-                
-        </div>
         <div className="modal-body">
-          <ScrollArea
-              className="mt-3 w-full h-[50vh] sm:h-[60vh] md:h-[60vh] rounded-md border"
-            >
-          <div className={cx("editor", className)}>
-            <ItemBox
-              creatorTypes={creatorTypeOptions}
-              fields={editor.fields}
-              onSave={handleItemUpdate}
-              ref={itemBox}
-            />
-          </div>
+          <ScrollArea className="mt-3 w-full h-[50vh] sm:h-[60vh] md:h-[60vh] rounded-md border">
+            <div className={cx("editor", className)}>
+              <ItemBox
+                creatorTypes={creatorTypeOptions}
+                fields={editor.fields}
+                onSave={handleItemUpdate}
+                ref={itemBox}
+              />
+            </div>
           </ScrollArea>
-  <div className="flex justify-center mt-4">
-    <ShadcnButton variant="" onClick={handleClose}>
-      <FormattedMessage id="zbib.general.done" defaultMessage="Done" />
-    </ShadcnButton>
-  </div>
+          <div className="flex justify-center mt-4">
+            <ShadcnButton variant="" onClick={handleClose}>
+              <FormattedMessage id="zbib.general.done" defaultMessage="Done" />
+            </ShadcnButton>
+          </div>
         </div>
       </div>
     </Modal>

@@ -179,7 +179,11 @@ const ItemBox = memo(
     );
 
     return (
-      <ol className={cx("divide-y divide-border rounded-md bg-card", { "ring-2 ring-ring": isEditing })}>
+      <ol
+        className={cx("divide-y divide-border rounded-md bg-card", {
+          "ring-2 ring-ring": isEditing,
+        })}
+      >
         {fields.map((field) =>
           field.key === "creators" ? (
             <Creators

@@ -21,32 +21,26 @@ const ExportTools = (props) => {
   const [clipboardConfirmations, setClipboardConfirmations] = useState({});
   const whenReadyData = useRef(false);
 
-  const handleClipoardSuccess = useCallback(
-    (format) => {
-      if (clipboardConfirmations[format]) {
-        return;
-      }
-
-      setClipboardConfirmations({ ...clipboardConfirmations, [format]: true });
+  const handleClipboardSuccess = useCallback((format) => {
+    setClipboardConfirmations((prev) => {
+      if (prev[format]) return prev; // already showing
+      const next = { ...prev, [format]: true };
       setTimeout(() => {
-        setClipboardConfirmations({
-          ...clipboardConfirmations,
-          [format]: false,
-        });
-      }, 1000);
-    },
-    [clipboardConfirmations],
-  );
+        setClipboardConfirmations((p) => ({ ...p, [format]: false }));
+      }, 1200);
+      return next;
+    });
+  }, []);
 
   const copyToClipboard = useCallback(
     async (format /*, isTopLevelButton*/) => {
       const text = await getCopyData(format);
-      const result = copy(text);
-      if (result) {
-        handleClipoardSuccess(format);
+      const ok = copy(text);
+      if (ok) {
+        handleClipboardSuccess(format);
       }
     },
-    [getCopyData, handleClipoardSuccess],
+    [getCopyData, handleClipboardSuccess],
   );
 
   const handleCopyFormat = useCallback(
@@ -82,14 +76,14 @@ const ExportTools = (props) => {
         const { format } = whenReadyData.current;
         onDownloadFile(format);
       }
-      whenReadyData.current = false;
+      whenReadyData.current = null;
     }
   }, [copyToClipboard, isReady, onDownloadFile]);
 
   return (
-    <div className="export-tools">
+    <div className="export-tools py-4 md:px-10">
       <div className={cx("btn-group", { success: isCopied })}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
           {Object.keys(exportFormats).map((format) => {
             const cfg = exportFormats[format];
             const copied = !!clipboardConfirmations[format];
@@ -97,7 +91,7 @@ const ExportTools = (props) => {
               return (
                 <ShadcnButton
                   key={format}
-                  disabled={itemCount === 0}
+                  disabled={itemCount === 0 || copied}
                   size="lg"
                   onClick={() => handleCopyFormat(format)}
                   data-format={format}
@@ -105,16 +99,15 @@ const ExportTools = (props) => {
                 >
                   <span className="inline-flex items-center gap-2">
                     {getFormatIcon(format, cfg)}
-                    <span className={cx("inline-feedback", { active: copied })}>
-                      <span className="default-text" aria-hidden={copied}>
-                        {cfg.label}
-                      </span>
-                      <span className="shorter feedback" aria-hidden={!copied}>
+                    <span aria-live="polite">
+                      {copied ? (
                         <FormattedMessage
                           id="zbib.export.copiedFeedback"
                           defaultMessage="Copied!"
                         />
-                      </span>
+                      ) : (
+                        cfg.label
+                      )}
                     </span>
                   </span>
                 </ShadcnButton>

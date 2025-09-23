@@ -16,7 +16,11 @@ type NavigationProps = {
   onExamplesClick: () => void;
 };
 
-const Navigation = ({ onAboutClick, onHelpClick, onExamplesClick }: NavigationProps) => {
+const Navigation = ({
+  onAboutClick,
+  onHelpClick,
+  onExamplesClick,
+}: NavigationProps) => {
   const intl = useIntl();
   const navLabel = intl.formatMessage({
     id: "zbib.navLabel",
@@ -24,7 +28,8 @@ const Navigation = ({ onAboutClick, onHelpClick, onExamplesClick }: NavigationPr
   });
 
   const navRef = useRef<HTMLElement | null>(null);
-  const { focusNext, focusPrev, receiveFocus, receiveBlur } = useFocusManager(navRef);
+  const { focusNext, focusPrev, receiveFocus, receiveBlur } =
+    useFocusManager(navRef);
 
   const handleKeyDown = useCallback(
     (ev: React.KeyboardEvent) => {
@@ -60,7 +65,10 @@ const Navigation = ({ onAboutClick, onHelpClick, onExamplesClick }: NavigationPr
               aria-hidden="true"
             />
             <span className="text-lg md:text-xl font-black tracking-tight text-foreground">
-              <FormattedMessage id="zbib.brand" defaultMessage="Mick Schroeder's Citation Generator" />
+              <FormattedMessage
+                id="zbib.brand"
+                defaultMessage="Mick Schroeder's Citation Generator"
+              />
             </span>
           </a>
         </div>
@@ -97,13 +105,19 @@ const Navigation = ({ onAboutClick, onHelpClick, onExamplesClick }: NavigationPr
                     onClick={onExamplesClick}
                     className="px-3 py-1.5 rounded-md text-sm hover:underline"
                   >
-                    <FormattedMessage id="zbib.examples" defaultMessage="Examples" />
+                    <FormattedMessage
+                      id="zbib.examples"
+                      defaultMessage="Examples"
+                    />
                   </button>
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink asChild tabIndex={-2}>
-                  <a href="/faq" className="px-3 py-1.5 rounded-md text-sm hover:underline">
+                  <a
+                    href="/faq"
+                    className="px-3 py-1.5 rounded-md text-sm hover:underline"
+                  >
                     FAQ
                   </a>
                 </NavigationMenuLink>
@@ -113,45 +127,63 @@ const Navigation = ({ onAboutClick, onHelpClick, onExamplesClick }: NavigationPr
         </div>
 
         <div className="flex items-center justify-center md:justify-end gap-2 flex-wrap">
-          <ShadcnButton asChild variant="secondary" size="sm" className="h-8 px-2">
+          <ShadcnButton
+            asChild
+            variant="secondary"
+            size="sm"
+            className="h-8 px-2"
+          >
             <a
               href="https://www.mickschroeder.com"
               target="_blank"
               rel="noreferrer noopener"
-              aria-label={intl.formatMessage({ id: "zbib.social.site", defaultMessage: "Personal website" })}
+              aria-label={intl.formatMessage({
+                id: "zbib.social.site",
+                defaultMessage: "Personal website",
+              })}
             >
-             <span className="px-2">mickschroeder.com</span>
+              <span className="px-2">mickschroeder.com</span>
             </a>
           </ShadcnButton>
-          <ShadcnButton asChild variant="secondary" size="sm" className="h-8 px-2">
+          <ShadcnButton
+            asChild
+            variant="secondary"
+            size="sm"
+            className="h-8 px-2"
+          >
             <a
-                href="https://www.linkedin.com/in/schroedermick/"
-                target="_blank"
-                rel="noopener"
-                aria-label="LinkedIn"
+              href="https://www.linkedin.com/in/schroedermick/"
+              target="_blank"
+              rel="noopener"
+              aria-label="LinkedIn"
             >
-                <img
+              <img
                 src="/static/images/linkedin.svg"
                 alt="LinkedIn"
                 className="h-4 w-4 dark:invert"
-                />
+              />
             </a>
-            </ShadcnButton>
+          </ShadcnButton>
 
-            <ShadcnButton asChild variant="secondary" size="sm" className="h-8 px-2">
+          <ShadcnButton
+            asChild
+            variant="secondary"
+            size="sm"
+            className="h-8 px-2"
+          >
             <a
-                href="https://github.com/mick-schroeder/cite.mickschroeder.com"
-                target="_blank"
-                rel="noopener"
-                aria-label="GitHub"
+              href="https://github.com/mick-schroeder/cite.mickschroeder.com"
+              target="_blank"
+              rel="noopener"
+              aria-label="GitHub"
             >
-                <img
+              <img
                 src="/static/images/github.svg"
                 alt="GitHub"
                 className="h-4 w-4 dark:invert"
-                />
+              />
             </a>
-            </ShadcnButton>
+          </ShadcnButton>
         </div>
       </div>
     </nav>

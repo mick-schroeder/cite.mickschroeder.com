@@ -4,7 +4,7 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { Button as ShadcnButton } from "./ui/button";
 import { cn } from "../lib/utils";
 import { Loader2, X, BookOpen, Search, BookType } from "lucide-react";
-import Input from './form/input';
+import Input from "./form/input";
 import { usePrevious } from "web-common/hooks";
 import {
   Card,
@@ -126,15 +126,15 @@ const CiteTools = ({
           <div className="text-left">
             <CardTitle className="inline-flex items-center gap-2 primary">
               <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">
-        <BookOpen
-          className="inline h-5 w-5 text-primary -mt-1 mr-2"
-          aria-hidden="true"
-        />
-        <FormattedMessage
-          id="zbib.enterQuery"
-          defaultMessage="Enter Query"
-        />
-      </h3>
+                <BookOpen
+                  className="inline h-5 w-5 text-primary -mt-1 mr-2"
+                  aria-hidden="true"
+                />
+                <FormattedMessage
+                  id="zbib.enterQuery"
+                  defaultMessage="Enter Query"
+                />
+              </h3>
             </CardTitle>
           </div>
           <CardAction className="">
@@ -154,13 +154,13 @@ const CiteTools = ({
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
-             <label className="text-sm font-medium  inline-flex items-center gap-2">
-                <BookType className="size-4 text-primary" aria-hidden="true" />
-                {intl.formatMessage({
-                  id: "zbib.selectStyle",
-                  defaultMessage: "Select Citation Style",
-                })}
-              </label>
+            <label className="text-sm font-medium  inline-flex items-center gap-2">
+              <BookType className="size-4 text-primary" aria-hidden="true" />
+              {intl.formatMessage({
+                id: "zbib.selectStyle",
+                defaultMessage: "Select Citation Style",
+              })}
+            </label>
             <StyleSelector
               className="min-w-[220px]"
               citationStyle={selectedStyle}
@@ -177,21 +177,21 @@ const CiteTools = ({
               </label>
               <div className="relative">
                 <Input
-                aria-label={ prompt }
-                autoFocus
-                className="form-control form-control-lg id-input bg-background text-foreground mt-2"
-                isBusy={ isTranslating }
-                isReadOnly={ isTranslating }
-                onBlur={ () => true /* do not commit on blur */ }
-                onChange={ handleChange }
-                onCommit={ handleCiteOrCancel }
-                onPaste={ handlePaste }
-                placeholder={ prompt }
-                ref = { inputRef }
-                tabIndex={ 0 }
-                type="search"
-                value={ entry }
-              />
+                  aria-label={prompt}
+                  autoFocus
+                  className="form-control form-control-lg id-input bg-background text-foreground mt-2"
+                  isBusy={isTranslating}
+                  isReadOnly={isTranslating}
+                  onBlur={() => true /* do not commit on blur */}
+                  onChange={handleChange}
+                  onCommit={handleCiteOrCancel}
+                  onPaste={handlePaste}
+                  placeholder={prompt}
+                  ref={inputRef}
+                  tabIndex={0}
+                  type="search"
+                  value={entry}
+                />
               </div>
             </div>
           </div>
@@ -209,18 +209,27 @@ const CiteTools = ({
               canCancel ? (
                 <span className="inline-flex items-center gap-2">
                   <X className="size-4" aria-hidden="true" />
-                  <FormattedMessage id="zbib.general.cancel" defaultMessage="Cancel" />
+                  <FormattedMessage
+                    id="zbib.general.cancel"
+                    defaultMessage="Cancel"
+                  />
                 </span>
               ) : (
                 <span className="inline-flex items-center gap-2">
                   <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-                  <FormattedMessage id="zbib.general.cite" defaultMessage="Suggest Citation" />
+                  <FormattedMessage
+                    id="zbib.general.cite"
+                    defaultMessage="Suggest Citation"
+                  />
                 </span>
               )
             ) : (
               <span className="inline-flex items-center gap-2">
                 <Quote />
-                <FormattedMessage id="zbib.general.cite" defaultMessage="Suggest Citation" />
+                <FormattedMessage
+                  id="zbib.general.cite"
+                  defaultMessage="Suggest Citation"
+                />
               </span>
             )}
           </ShadcnButton>

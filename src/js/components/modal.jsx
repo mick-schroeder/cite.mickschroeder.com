@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, memo } from "react";
 import PropTypes from "prop-types";
 import { usePrevious } from "web-common/hooks";
 import { getScrollbarWidth, omit } from "web-common/utils";
-import { Dialog, DialogContent, DialogHeader,DialogTitle } from "./ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 
 // Preserve original scrollbar padding behavior to avoid layout shift
 let initialPadding = parseFloat(document.body.style.paddingRight);
@@ -19,7 +19,7 @@ const resetScrollbar = () => {
 
 /**
  * Modal (shadcn Dialog-backed)
- * 
+ *
  * Props compatibility notes (from previous ReactModal usage):
  * - isOpen: controlled open state → mapped to Dialog `open`
  * - onAfterOpen(ref): called after the dialog mounts/focuses (passed a ref to content)
@@ -48,7 +48,7 @@ const Modal = (props) => {
         onRequestClose();
       }
     },
-    [onRequestClose]
+    [onRequestClose],
   );
 
   const handleOpenAutoFocus = useCallback(
@@ -63,7 +63,7 @@ const Modal = (props) => {
         onAfterOpen(contentRef);
       }
     },
-    [onAfterOpen]
+    [onAfterOpen],
   );
 
   useEffect(() => {
@@ -79,8 +79,7 @@ const Modal = (props) => {
   }, []);
 
   // Combine legacy "modal-body" with any incoming className
-  const contentClass =
-    ["modal-body", className].filter(Boolean).join(" ");
+  const contentClass = ["modal-body", className].filter(Boolean).join(" ");
 
   // Omit ReactModal-specific props if they leak in
   const contentProps = omit(rest, [
@@ -100,8 +99,8 @@ const Modal = (props) => {
         {...contentProps}
       >
         <DialogHeader>
-            <DialogTitle>{contentlabel}</DialogTitle>
-          </DialogHeader>
+          <DialogTitle>{contentlabel}</DialogTitle>
+        </DialogHeader>
         {children}
       </DialogContent>
     </Dialog>

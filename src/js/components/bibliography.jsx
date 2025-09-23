@@ -16,7 +16,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu"
+} from "./ui/dropdown-menu";
 
 import { isTriggerEvent, pick } from "web-common/utils";
 import { useFocusManager } from "web-common/hooks";
@@ -196,7 +196,10 @@ const BibliographyItem = memo((props) => {
       onFocus={receiveFocus}
       onBlur={receiveBlur}
     >
-      <div className="citation border-t px-3 py-3 flex items-start md:items-center gap-3" ref={containerRef}>
+      <div
+        className="citation border-t px-3 py-3 flex items-start md:items-center gap-3"
+        ref={containerRef}
+      >
         {allowReorder && (
           <div
             className="w-6 shrink-0"
@@ -258,7 +261,17 @@ const BibliographyItem = memo((props) => {
           </ShadcnButton>
         </div>
         <div className=" ml-auto">
-          <DropdownMenu open={isDropdownOpen} onOpenChange={(open) => onToggleDropdown({ currentTarget: { closest: () => ({ dataset: { key: rawItem.key } }) }, stopPropagation: () => {} })} >
+          <DropdownMenu
+            open={isDropdownOpen}
+            onOpenChange={(open) =>
+              onToggleDropdown({
+                currentTarget: {
+                  closest: () => ({ dataset: { key: rawItem.key } }),
+                },
+                stopPropagation: () => {},
+              })
+            }
+          >
             <DropdownMenuTrigger asChild>
               <ShadcnButton
                 variant="ghost"
@@ -285,7 +298,9 @@ const BibliographyItem = memo((props) => {
                       success: isCopied,
                     })}
                   >
-                    <span className={cx("inline-feedback", { active: isCopied })}>
+                    <span
+                      className={cx("inline-feedback", { active: isCopied })}
+                    >
                       <span className="default-text" aria-hidden={isCopied}>
                         <FormattedMessage
                           id="zbib.citation.copyBibliographyEntry"
@@ -296,10 +311,19 @@ const BibliographyItem = memo((props) => {
                   </DropdownMenuItem>
                 </Fragment>
               )}
-              <DropdownMenuItem onClick={handleEditCitationClick} className="btn">
-                <FormattedMessage id="zbib.general.edit" defaultMessage="Edit" />
+              <DropdownMenuItem
+                onClick={handleEditCitationClick}
+                className="btn"
+              >
+                <FormattedMessage
+                  id="zbib.general.edit"
+                  defaultMessage="Edit"
+                />
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleDeleteCitationClick} className="btn">
+              <DropdownMenuItem
+                onClick={handleDeleteCitationClick}
+                className="btn"
+              >
                 <FormattedMessage
                   id="zbib.general.delete"
                   defaultMessage="Delete"

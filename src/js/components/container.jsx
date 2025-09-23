@@ -435,8 +435,9 @@ const BibWebContainer = (props) => {
       parent: null,
       isCore: true,
     })),
-    ...(JSON.parse(localStorage.getItem("schroeder-cite-extra-citation-styles")) ||
-      []),
+    ...(JSON.parse(
+      localStorage.getItem("schroeder-cite-extra-citation-styles"),
+    ) || []),
   ]);
   citationStyles.sort((a, b) =>
     a.title.toUpperCase().localeCompare(b.title.toUpperCase()),
@@ -1125,7 +1126,8 @@ const BibWebContainer = (props) => {
 
       if (state.isSentenceCaseStyle) {
         const itemsMetaData =
-          JSON.parse(localStorage.getItem("schroeder-cite-items-metadata")) || {};
+          JSON.parse(localStorage.getItem("schroeder-cite-items-metadata")) ||
+          {};
 
         if (!(itemKey in itemsMetaData)) {
           itemsMetaData[itemKey] = {};

@@ -215,7 +215,7 @@
   .dark .link:hover {
     color: color-mix(in oklch, var(--primary) 85%, white);
   }
-  
+
   .surface-muted {
     @apply rounded-lg border shadow-sm;
     background-color: color-mix(in oklch, var(--muted) 40%, transparent);
@@ -225,6 +225,4 @@
   .surface-card {
     @apply rounded-lg border bg-card text-card-foreground shadow;
   }
-
-
 }

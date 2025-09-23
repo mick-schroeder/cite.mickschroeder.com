@@ -82,7 +82,7 @@ const StyleItem = memo((props) => {
       className={cx(
         "style",
         { selected: isSelected },
-        "flex items-center justify-between gap-3 border-b px-4 py-2 overflow-hidden focus:outline-none mr-2"
+        "flex items-center justify-between gap-3 border-b px-4 py-2 overflow-hidden focus:outline-none mr-2",
       )}
       tabIndex={-2}
       ref={styleItemRef}
@@ -94,14 +94,14 @@ const StyleItem = memo((props) => {
         {title}
       </div>
       {isActive ? (
-        <ShadcnButton size="sm" variant="outline" disabled className="shrink-0">
+        <ShadcnButton size="sm" variant="" className="shrink-0">
           <FormattedMessage
             id="zbib.styleInstaller.active"
             defaultMessage="Active"
           />
         </ShadcnButton>
       ) : isCore ? (
-        <ShadcnButton size="sm" variant="outline" disabled className="shrink-0">
+        <ShadcnButton size="sm" variant="outline" className="shrink-0">
           <FormattedMessage
             id="zbib.styleInstaller.default"
             defaultMessage="Default"
@@ -125,7 +125,7 @@ const StyleItem = memo((props) => {
           tabIndex={-3}
           size="sm"
           variant="outline"
-          className="shrink-0"
+          className="shrink-0 px-4"
           onClick={onInstall}
         >
           <FormattedMessage id="zbib.styleInstaller.add" defaultMessage="Add" />
@@ -313,9 +313,6 @@ const StyleInstaller = (props) => {
     >
       {state.isReady ? (
         <div className="space-y-4" tabIndex={-1}>
-          <div className="flex items-center justify-between">
-            <h4 className="text-lg font-semibold tracking-tight truncate">{title}</h4>
-          </div>
           <div className="space-y-3">
             <div className="relative">
               <ShadcnInput
@@ -339,9 +336,7 @@ const StyleInstaller = (props) => {
                 />
               )}
             </div>
-            <ScrollArea
-              className="w-full h-[50vh] sm:h-[60vh] md:h-[60vh] rounded-md border"
-            >
+            <ScrollArea className="w-full h-[50vh] sm:h-[60vh] md:h-[60vh] rounded-md border">
               <ul
                 aria-label="Citation Styles"
                 className="style-list grid gap-2 p-2"
@@ -364,7 +359,8 @@ const StyleInstaller = (props) => {
                           isActive={style.name === activeCitationStyle}
                           isSelected={
                             state.items[state.selectedIndex]
-                              ? state.items[state.selectedIndex].name === style.name
+                              ? state.items[state.selectedIndex].name ===
+                                style.name
                               : false
                           }
                           isInstalled={!!styleData}
@@ -381,7 +377,8 @@ const StyleInstaller = (props) => {
                         isActive={style.name === activeCitationStyle}
                         isSelected={
                           state.items[state.selectedIndex]
-                            ? state.items[state.selectedIndex].name === style.name
+                            ? state.items[state.selectedIndex].name ===
+                              style.name
                             : false
                         }
                         isInstalled={true}

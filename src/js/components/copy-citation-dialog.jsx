@@ -162,9 +162,10 @@ const CopyCitationDialog = (props) => {
     [intl],
   );
 
-  const isCitationEmpty = typeof copyCitationState.inTextHtml === "string"
-    ? copyCitationState.inTextHtml.replace(/<[^>]*>/g, "").trim().length === 0
-    : true;
+  const isCitationEmpty =
+    typeof copyCitationState.inTextHtml === "string"
+      ? copyCitationState.inTextHtml.replace(/<[^>]*>/g, "").trim().length === 0
+      : true;
 
   const handleLabelChange = useCallback(
     (newValue) =>
@@ -351,7 +352,10 @@ const CopyCitationDialog = (props) => {
           <div className="modal-footer mt-3">
             <div className="flex w-full items-center justify-end gap-3">
               <ShadcnButton variant="outline" onClick={handleCancel}>
-                <FormattedMessage id="zbib.general.cancel" defaultMessage="Cancel" />
+                <FormattedMessage
+                  id="zbib.general.cancel"
+                  defaultMessage="Cancel"
+                />
               </ShadcnButton>
               <ShadcnButton
                 variant="default"

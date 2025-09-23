@@ -252,7 +252,11 @@ const Creators = (props) => {
   }
 
   return (
-    <ol className={cx("divide-y divide-border", { "ring-2 ring-ring": isDragging })}>
+    <ol
+      className={cx("divide-y divide-border", {
+        "ring-2 ring-ring": isDragging,
+      })}
+    >
       {creators.map((creator, index) => (
         <CSSTransition
           key={creator.id}

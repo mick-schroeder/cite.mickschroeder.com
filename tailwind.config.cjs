@@ -10,12 +10,11 @@ module.exports = {
     "./modules/web-common/**/*.{js,jsx}",
   ],
   theme: {
-    
     extend: {
       fontFamily: {
         sans: ["Helvetica Neue", "Helvetica", "Arial", ...fontFamily.sans],
       },
-      
+
       colors: {
         border: "var(--border)",
         input: "var(--input)",

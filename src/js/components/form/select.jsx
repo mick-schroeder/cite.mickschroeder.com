@@ -79,9 +79,10 @@ const SelectInput = forwardRef((props, ref) => {
 
   const handleChange = useCallback(
     (newValue, ev) => {
-      newValue = newValue !== null || (newValue === null && clearable)
-        ? newValue
-        : initialValue;
+      newValue =
+        newValue !== null || (newValue === null && clearable)
+          ? newValue
+          : initialValue;
 
       setValue(newValue);
 
