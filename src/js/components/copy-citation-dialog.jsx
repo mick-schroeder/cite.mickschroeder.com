@@ -2,7 +2,7 @@ import cx from "classnames";
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useRef, useState, useMemo, memo } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, CheckIcon, CopyIcon } from "lucide-react";
 import { usePrevious } from "web-common/hooks";
 import Modal from "./modal";
 import {
@@ -162,12 +162,9 @@ const CopyCitationDialog = (props) => {
     [intl],
   );
 
-  let isCitationEmpty = false;
-
-  if (typeof citationHtml === "string") {
-    isCitationEmpty =
-      copyCitationState.inTextHtml.replace(/<[^>]*>/g, "").trim().length === 0;
-  }
+  const isCitationEmpty = typeof copyCitationState.inTextHtml === "string"
+    ? copyCitationState.inTextHtml.replace(/<[^>]*>/g, "").trim().length === 0
+    : true;
 
   const handleLabelChange = useCallback(
     (newValue) =>
@@ -257,17 +254,14 @@ const CopyCitationDialog = (props) => {
           !copyCitationState.inTextHtml || !copyCitationState.bibliographyHtml,
       })}
       isOpen={activeDialog === "COPY_CITATION"}
-      contentLabel={title}
+      contentlabel={title}
       onRequestClose={onCitationCopyDialogClose}
     >
       {copyCitationState.inTextHtml ? (
         <div className="modal-content" tabIndex={-1}>
-          <div className="modal-header">
-            <h4 className="modal-title text-truncate">{title}</h4>
-          </div>
           <div className="modal-body">
-            <div className="form-row form-group">
-              <div className="col-xs-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <div className="w-full min-w-0">
                 <ShadcnSelect
                   value={copyCitationState.modifiers.label || "page"}
                   onValueChange={handleLabelChange}
@@ -296,7 +290,7 @@ const CopyCitationDialog = (props) => {
                   </SelectContent>
                 </ShadcnSelect>
               </div>
-              <div className="col-xs-6">
+              <div className="w-full min-w-0">
                 <ShadcnInput
                   aria-label={intl.formatMessage({
                     id: "zbib.citation.locator",
@@ -313,7 +307,7 @@ const CopyCitationDialog = (props) => {
                 />
               </div>
             </div>
-            <div className="form-group">
+            <div className="mb-4">
               <div className="flex items-center gap-2">
                 <Checkbox
                   id="omit-author"
@@ -347,37 +341,38 @@ const CopyCitationDialog = (props) => {
               </h5>
               <figure
                 aria-labelledby="copy-citation-preview-header"
-                className="bg-background p-6 rounded-lg border shadow-md text-sm"
+                className="bg-background p-4 rounded-md border text-sm max-h-[40vh] overflow-auto"
                 dangerouslySetInnerHTML={{
                   __html: copyCitationState.inTextHtml,
                 }}
               />
             </div>
           </div>
-          <div className="modal-footer">
-            <div className="buttons">
+          <div className="modal-footer mt-3">
+            <div className="flex w-full items-center justify-end gap-3">
               <ShadcnButton variant="outline" onClick={handleCancel}>
-                <FormattedMessage
-                  id="zbib.general.cancel"
-                  defaultMessage="Cancel"
-                />
+                <FormattedMessage id="zbib.general.cancel" defaultMessage="Cancel" />
               </ShadcnButton>
               <ShadcnButton
-                variant="outline"
+                variant="default"
                 disabled={isCitationEmpty}
                 onClick={handleConfirm}
+                className="min-w-[9rem]"
               >
-                <span className={cx("inline-feedback", { active: isCopied })}>
-                  <span className="default-text" aria-hidden={isCopied}>
-                    {title}
-                  </span>
-                  <span className="shorter feedback" aria-hidden={!isCopied}>
+                {isCopied ? (
+                  <span className="inline-flex items-center gap-2">
+                    <CheckIcon className="h-4 w-4" />
                     <FormattedMessage
                       id="zbib.citation.copiedFeedback"
                       defaultMessage="Copied!"
                     />
                   </span>
-                </span>
+                ) : (
+                  <span className="inline-flex items-center gap-2">
+                    <CopyIcon className="h-4 w-4" />
+                    {title}
+                  </span>
+                )}
               </ShadcnButton>
             </div>
           </div>

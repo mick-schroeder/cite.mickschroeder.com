@@ -12,6 +12,7 @@ import {
 import { noop, pick } from "web-common/utils";
 import { usePrevious } from "web-common/hooks";
 import { LoaderCircle } from "lucide-react";
+import { Input as ShadcnInput } from "../ui/input";
 
 const NATIVE_INPUT_PROPS = [
   "autoFocus",
@@ -96,7 +97,7 @@ const Input = memo(
         if (hasBeenCancelled.current || hasBeenCommitted.current) {
           return;
         }
-        const shouldCancel = onBlur(event);
+        const shouldCancel = onBlur(ev);
         if (shouldCancel) {
           onCancel(value !== initialValue, ev);
           input.current.blur();
@@ -119,7 +120,7 @@ const Input = memo(
 
     const handleKeyDown = useCallback(
       (ev) => {
-        switch (event.key) {
+        switch (ev.key) {
           case "Escape":
             onCancel(ev, value !== initialValue, ev);
             input.current.blur();
@@ -163,7 +164,7 @@ const Input = memo(
       ...pick(rest, (key) => key.match(/^(aria-|data-|on[A-Z]).*/)),
     };
 
-    var inputComponent = <input {...inputProps} />;
+    var inputComponent = <ShadcnInput {...inputProps} />;
 
     return (
       <div className={groupClassName}>

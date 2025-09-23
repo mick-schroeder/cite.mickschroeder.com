@@ -269,7 +269,7 @@ const ZBib = (props) => {
             </Confirmation>
             <Modal
               isOpen={props.activeDialog === "SAVE_TO_ZOTERO"}
-              contentLabel={saveToZotero}
+              contentlabel={saveToZotero}
               onRequestClose={props.onSaveToZoteroHide}
               className={cx("modal modal-centered")}
             >

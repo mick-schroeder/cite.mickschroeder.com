@@ -74,7 +74,7 @@ const CreatorTypeSelector = memo(
     return (
       <SelectInput
         aria-label="Creator Type"
-        className="form-control form-control-sm"
+        className="flex h-9 w-full px-3 py-1 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         isActive={isActive}
         onCancel={onCancel}
         onChange={() => true}
@@ -221,7 +221,9 @@ const CreatorFieldInputWrap = memo(
       <Input
         aria-label={label}
         autoFocus={false}
-        className={"form-control form-control-sm"}
+        className={
+          "flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+        }
         data-field-name={name}
         isDisabled={isReadOnly}
         onCancel={onCancel}
@@ -399,30 +401,29 @@ const CreatorField = forwardRef((props, ref) => {
         onDragStatusChange={onDragStatusChange}
         raw={raw}
       >
-        {shouldUseModalCreatorField ? (
-          <div className="truncate">{creatorLabel}</div>
-        ) : (
-          <CreatorTypeSelector
-            data-field-name="creatorType"
-            className="form-control form-control-sm"
-            index={index}
-            inputComponent={SelectInput}
-            isActive={active === "creatorType"}
-            isDisabled={isReadOnly}
-            onCancel={handleCancel}
-            onClick={handleFieldClick}
-            onCommit={handleEditableCommit}
-            onFocus={handleFieldFocus}
-            onReorder={onReorder}
-            options={creatorTypes}
-            ref={(component) =>
-              (fieldComponents.current["creatorType"] = component)
-            }
-            value={creator.creatorType}
-            creatorsCount={creatorsCount}
-          />
-        )}
-        <Fragment>
+        <div className="flex flex-wrap items-center gap-2">
+          {shouldUseModalCreatorField ? (
+            <div className="truncate">{creatorLabel}</div>
+          ) : (
+            <CreatorTypeSelector
+              data-field-name="creatorType"
+              index={index}
+              inputComponent={SelectInput}
+              isActive={active === "creatorType"}
+              isDisabled={isReadOnly}
+              onCancel={handleCancel}
+              onClick={handleFieldClick}
+              onCommit={handleEditableCommit}
+              onFocus={handleFieldFocus}
+              onReorder={onReorder}
+              options={creatorTypes}
+              ref={(component) =>
+                (fieldComponents.current["creatorType"] = component)
+              }
+              value={creator.creatorType}
+              creatorsCount={creatorsCount}
+            />
+          )}
           {shouldUseModalCreatorField ? (
             <div className="truncate">
               {isVirtual
@@ -440,6 +441,7 @@ const CreatorField = forwardRef((props, ref) => {
             </div>
           ) : isDual ? (
             <Fragment>
+              <div className="flex-1">
               <CreatorFieldInputWrap
                 {...inputProps}
                 name="lastName"
@@ -456,6 +458,7 @@ const CreatorField = forwardRef((props, ref) => {
                   (fieldComponents.current["firstName"] = component)
                 }
               />
+              </div>
             </Fragment>
           ) : (
             <CreatorFieldInputWrap
@@ -532,7 +535,7 @@ const CreatorField = forwardRef((props, ref) => {
               )}
             </Fragment>
           )}
-        </Fragment>
+        </div>
       </Field>
     </Fragment>
   );

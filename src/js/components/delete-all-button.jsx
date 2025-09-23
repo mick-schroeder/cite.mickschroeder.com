@@ -52,7 +52,7 @@ const DeleteAllButton = (props) => {
         })}
       >
         <p>
-          <span>
+          <span className="py-4">
             <FormattedMessage
               id="zbib.confirmDeleteAll.prompt"
               defaultMessage="{bibliographyCount, plural,

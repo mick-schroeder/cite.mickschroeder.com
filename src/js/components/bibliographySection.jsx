@@ -134,11 +134,11 @@ const BibliographySection = (props) => {
                     }}
                   />
                 </h2>
-                <p className="lead empty-lead text-lg text-muted-foreground">
+                <p className="lead empty-lead text-lg text-muted-foreground text-center">
                   <FormattedMessage
                     wrapRichTextChunksInFragment={true}
                     id="zbib.bibliography.emptyLead"
-                    defaultMessage="<i>T</i>o begin, paste a URL or enter an ISBN, DOI, PMID, arXiv ID, or a title into the box above."
+                    defaultMessage="To begin, enter a URL ISBN, DOI, PMID, arXiv ID."
                     values={{
                       i: (chunks) => (
                         <span style={{ letterSpacing: "-0.111em" }}>
@@ -228,10 +228,12 @@ const BibliographySection = (props) => {
                 )}
 
                 {!isReadOnly && (isReady || isHydrated) && (
-                  <DeleteAllButton
-                    bibliographyCount={props.bibliography.items.length}
-                    {...pick(props, ["onDeleteCitations"])}
-                  />
+                  <div className="flex justify-center">
+                    <DeleteAllButton
+                      bibliographyCount={props.bibliography.items.length}
+                      {...pick(props, ["onDeleteCitations"])}
+                    />
+                  </div>
                 )}
                 <Confirmation
                   isOpen={isReadOnly && isConfirmingOverride}

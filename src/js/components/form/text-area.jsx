@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { Textarea as ShadcnTextarea } from "../ui/textarea";
 import { noop, pick } from "web-common/utils";
 import { usePrevious } from "web-common/hooks";
 import { LoaderCircle } from "lucide-react";
@@ -115,13 +116,13 @@ const TextAreaInput = memo(
 
     const handleKeyDown = useCallback(
       (ev) => {
-        switch (event.key) {
+        switch (ev.key) {
           case "Escape":
             onCancel(value !== initialValue, ev);
             hasBeenCancelled.current = true;
             break;
           case "Enter":
-            if (event.shiftKey || isSingleLine) {
+            if (ev.shiftKey || isSingleLine) {
               onCommit(value, value !== initialValue, ev);
               hasBeenCommitted.current = true;
             }
@@ -140,7 +141,7 @@ const TextAreaInput = memo(
     }, [initialValue, value, prevInitialValue]);
 
     const textarea = (
-      <textarea
+      <ShadcnTextarea
         className={className}
         onBlur={handleBlur}
         onChange={handleChange}

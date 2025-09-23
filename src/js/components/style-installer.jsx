@@ -2,12 +2,12 @@ import cx from "classnames";
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useReducer, useRef, useId, memo } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-import { X } from "lucide-react";
 import { LoaderCircle } from "lucide-react";
 import { Button as ShadcnButton } from "./ui/button";
+import { Input as ShadcnInput } from "./ui/input";
+import { ScrollArea } from "./ui/scroll-area";
 import { useFocusManager, usePrevious } from "web-common/hooks";
 
-import Input from "./form/input";
 import Modal from "./modal";
 import SearchWorker from "web-worker:../style-search.worker.js";
 import { isTriggerEvent } from "../../../modules/web-common/utils/event";
@@ -79,25 +79,29 @@ const StyleItem = memo((props) => {
     <li
       aria-labelledby={id}
       data-style={name}
-      className={cx("style", { selected: isSelected })}
+      className={cx(
+        "style",
+        { selected: isSelected },
+        "flex items-center justify-between gap-3 border-b px-4 py-2 overflow-hidden focus:outline-none mr-2"
+      )}
       tabIndex={-2}
       ref={styleItemRef}
       onFocus={receiveFocus}
       onBlur={receiveBlur}
       onKeyDown={handleKeyDown}
     >
-      <div id={id} className="style-title">
+      <div id={id} className="style-title flex-1 min-w-0 font-medium truncate">
         {title}
       </div>
       {isActive ? (
-        <ShadcnButton size="sm" variant="outline" disabled>
+        <ShadcnButton size="sm" variant="outline" disabled className="shrink-0">
           <FormattedMessage
             id="zbib.styleInstaller.active"
             defaultMessage="Active"
           />
         </ShadcnButton>
       ) : isCore ? (
-        <ShadcnButton size="sm" variant="outline" disabled>
+        <ShadcnButton size="sm" variant="outline" disabled className="shrink-0">
           <FormattedMessage
             id="zbib.styleInstaller.default"
             defaultMessage="Default"
@@ -108,7 +112,7 @@ const StyleItem = memo((props) => {
           tabIndex={-3}
           size="sm"
           variant="destructive"
-          className=""
+          className="shrink-0"
           onClick={onDelete}
         >
           <FormattedMessage
@@ -121,7 +125,7 @@ const StyleItem = memo((props) => {
           tabIndex={-3}
           size="sm"
           variant="outline"
-          className=""
+          className="shrink-0"
           onClick={onInstall}
         >
           <FormattedMessage id="zbib.styleInstaller.add" defaultMessage="Add" />
@@ -301,55 +305,75 @@ const StyleInstaller = (props) => {
   return (
     <Modal
       isOpen={isOpen}
-      contentLabel={title}
-      className={cx("style-installer", "modal", "modal-lg", {
+      contentlabel={title}
+      className={cx("style-installer", "sm:max-w-2xl md:max-w-3xl", {
         loading: !state.isReady,
       })}
       onRequestClose={handleCancel}
     >
       {state.isReady ? (
-        <div className="modal-content" tabIndex={-1}>
-          <div className="modal-header">
-            <h4 className="modal-title text-truncate">{title}</h4>
-            <ShadcnButton
-              variant="ghost"
-              size="icon"
-              className="close"
-              onClick={handleCancel}
-            >
-              <X className="h-6 w-6 text-primary" aria-hidden="true" />
-            </ShadcnButton>
+        <div className="space-y-4" tabIndex={-1}>
+          <div className="flex items-center justify-between">
+            <h4 className="text-lg font-semibold tracking-tight truncate">{title}</h4>
           </div>
-          <div className="modal-body">
-            <Input
-              aria-label="Search Citation Styles"
-              autoFocus
-              className="form-control form-control-lg"
-              onChange={handleFilterChange}
-              onKeyDown={handleInputKeydown}
-              placeholder={intl.formatMessage({
-                id: "zbib.styleInstaller.searchPlaceholder",
-                defaultMessage: "Enter three or more characters to search",
-              })}
-              type="search"
-              value={state.filter}
-              isBusy={state.isSearching}
-            />
-            <ul
-              aria-label="Citation Styles"
-              className="style-list"
-              tabIndex={0}
-              ref={listRef}
-              onFocus={handleFocus}
-              onBlur={receiveBlur}
-              onKeyDown={handleKeyDown}
+          <div className="space-y-3">
+            <div className="relative">
+              <ShadcnInput
+                aria-label="Search Citation Styles"
+                autoFocus
+                type="search"
+                value={state.filter}
+                onChange={(e) => handleFilterChange(e.target.value)}
+                onKeyDown={handleInputKeydown}
+                placeholder={intl.formatMessage({
+                  id: "zbib.styleInstaller.searchPlaceholder",
+                  defaultMessage: "Enter three or more characters to search",
+                })}
+                className="w-full pr-9"
+                aria-busy={state.isSearching ? "true" : "false"}
+              />
+              {state.isSearching && (
+                <LoaderCircle
+                  className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-muted-foreground"
+                  aria-hidden="true"
+                />
+              )}
+            </div>
+            <ScrollArea
+              className="w-full h-[50vh] sm:h-[60vh] md:h-[60vh] rounded-md border"
             >
-              {state.filter.length > 2
-                ? state.items.map((style) => {
-                    const styleData = citationStyles.find(
-                      (cs) => cs.name === style.name,
-                    );
-                    return (
+              <ul
+                aria-label="Citation Styles"
+                className="style-list grid gap-2 p-2"
+                tabIndex={0}
+                ref={listRef}
+                onFocus={handleFocus}
+                onBlur={receiveBlur}
+                onKeyDown={handleKeyDown}
+              >
+                {state.filter.length > 2
+                  ? state.items.map((style) => {
+                      const styleData = citationStyles.find(
+                        (cs) => cs.name === style.name,
+                      );
+                      return (
+                        <StyleItem
+                          key={style.name}
+                          onDelete={handleDelete}
+                          onInstall={handleInstall}
+                          isActive={style.name === activeCitationStyle}
+                          isSelected={
+                            state.items[state.selectedIndex]
+                              ? state.items[state.selectedIndex].name === style.name
+                              : false
+                          }
+                          isInstalled={!!styleData}
+                          {...style}
+                          {...styleData}
+                        />
+                      );
+                    })
+                  : citationStyles.map((style) => (
                       <StyleItem
                         key={style.name}
                         onDelete={handleDelete}
@@ -357,36 +381,21 @@ const StyleInstaller = (props) => {
                         isActive={style.name === activeCitationStyle}
                         isSelected={
                           state.items[state.selectedIndex]
-                            ? state.items[state.selectedIndex].name ===
-                              style.name
+                            ? state.items[state.selectedIndex].name === style.name
                             : false
                         }
-                        isInstalled={!!styleData}
+                        isInstalled={true}
                         {...style}
-                        {...styleData}
                       />
-                    );
-                  })
-                : citationStyles.map((style) => (
-                    <StyleItem
-                      key={style.name}
-                      onDelete={handleDelete}
-                      onInstall={handleInstall}
-                      isActive={style.name === activeCitationStyle}
-                      isSelected={
-                        state.items[state.selectedIndex]
-                          ? state.items[state.selectedIndex].name === style.name
-                          : false
-                      }
-                      isInstalled={true}
-                      {...style}
-                    />
-                  ))}
-            </ul>
+                    ))}
+              </ul>
+            </ScrollArea>
           </div>
         </div>
       ) : (
-        <LoaderCircle className="h-4 w-4 text-primary animate-spin" />
+        <div className="py-8 flex items-center justify-center">
+          <LoaderCircle className="h-6 w-6 text-primary animate-spin" />
+        </div>
       )}
     </Modal>
   );

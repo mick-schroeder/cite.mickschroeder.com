@@ -28,6 +28,8 @@ const Creators = (props) => {
     isReadOnly,
   } = props;
 
+  const [isDragging, setIsDragging] = useState(false);
+
   const virtualCreators = useMemo(
     () => [
       {
@@ -187,6 +189,14 @@ const Creators = (props) => {
     [creators, handleSaveCreators],
   );
 
+  const handleDragStatusChange = useCallback(
+    (dragging) => {
+      setIsDragging(dragging);
+      if (onDragStatusChange) onDragStatusChange(dragging);
+    },
+    [onDragStatusChange],
+  );
+
   useEffect(() => {
     if (typeof prevValue !== "undefined" && !deepEqual(value, prevValue)) {
       setCreators(value.length ? enumerateObjects(value) : virtualCreators);
@@ -242,7 +252,7 @@ const Creators = (props) => {
   }
 
   return (
-    <Fragment>
+    <ol className={cx("divide-y divide-border", { "ring-2 ring-ring": isDragging })}>
       {creators.map((creator, index) => (
         <CSSTransition
           key={creator.id}
@@ -270,7 +280,7 @@ const Creators = (props) => {
             onCreatorAdd={handleCreatorAdd}
             onCreatorRemove={handleCreatorRemove}
             onCreatorTypeSwitch={handleCreatorTypeSwitch}
-            onDragStatusChange={onDragStatusChange}
+            onDragStatusChange={handleDragStatusChange}
             onAddMany={handleAddMany}
             onReorder={handleReorder}
             onReorderCancel={handleReorderCancel}
@@ -280,7 +290,7 @@ const Creators = (props) => {
           />
         </CSSTransition>
       ))}
-    </Fragment>
+    </ol>
   );
 };
 

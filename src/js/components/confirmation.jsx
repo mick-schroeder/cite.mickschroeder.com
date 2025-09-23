@@ -20,24 +20,24 @@ const Confirmation = (props) => {
       key="react-modal"
       className="modal modal-centered"
       isOpen={isOpen}
-      contentLabel={title}
+      contentlabel={title}
       onRequestClose={onCancel}
     >
       <Fragment>
-        <div className="modal-content" tabIndex={-1}>
-          <div className="modal-header">
-            <h4 className="modal-title text-truncate">{title}</h4>
+        <div
+          className=""
+          tabIndex={-1}
+        >
+          <div className="px-6 py-4 text-sm">
+            {children}
           </div>
-          <div className="modal-body">{children}</div>
-          <div className="modal-footer">
-            <div className="buttons flex gap-2">
-              <ShadcnButton variant="outline" onClick={onCancel}>
-                {cancelLabel}
-              </ShadcnButton>
-              <ShadcnButton autoFocus onClick={onConfirm}>
-                {confirmLabel}
-              </ShadcnButton>
-            </div>
+          <div className="flex items-center justify-end gap-2 px-6 py-4">
+            <ShadcnButton variant="outline" onClick={onCancel}>
+              {cancelLabel}
+            </ShadcnButton>
+            <ShadcnButton autoFocus onClick={onConfirm}>
+              {confirmLabel}
+            </ShadcnButton>
           </div>
         </div>
       </Fragment>

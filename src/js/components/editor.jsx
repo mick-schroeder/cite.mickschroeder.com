@@ -13,6 +13,7 @@ import {
 import { usePrevious } from "web-common/hooks";
 import cx from "classnames";
 import PropTypes from "prop-types";
+import { ScrollArea } from "./ui/scroll-area";
 
 import { hideFields, noEditFields } from "../constants/item";
 import { reverseMap } from "../utils";
@@ -302,7 +303,7 @@ const Editor = (props) => {
   return (
     <Modal
       isOpen={activeDialog === "EDITOR"}
-      contentLabel={intl.formatMessage({
+      contentlabel={intl.formatMessage({
         id: "zbib.editor.title",
         defaultMessage: "Item Editor",
       })}
@@ -311,12 +312,12 @@ const Editor = (props) => {
     >
       <div className="modal-content" tabIndex={-1}>
         <div className="modal-header">
-          <h4 className="modal-title text-truncate">{itemTitle}</h4>
-          <ShadcnButton variant="outline" onClick={handleClose}>
-            <FormattedMessage id="zbib.general.done" defaultMessage="Done" />
-          </ShadcnButton>
+                
         </div>
         <div className="modal-body">
+          <ScrollArea
+              className="mt-3 w-full h-[50vh] sm:h-[60vh] md:h-[60vh] rounded-md border"
+            >
           <div className={cx("editor", className)}>
             <ItemBox
               creatorTypes={creatorTypeOptions}
@@ -325,6 +326,12 @@ const Editor = (props) => {
               ref={itemBox}
             />
           </div>
+          </ScrollArea>
+  <div className="flex justify-center mt-4">
+    <ShadcnButton variant="" onClick={handleClose}>
+      <FormattedMessage id="zbib.general.done" defaultMessage="Done" />
+    </ShadcnButton>
+  </div>
         </div>
       </div>
     </Modal>

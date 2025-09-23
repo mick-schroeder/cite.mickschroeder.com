@@ -207,7 +207,6 @@
 
 @layer components {
   .link {
-    @apply underline underline-offset-2;
     color: var(--primary);
   }
   .link:hover {
@@ -216,30 +215,7 @@
   .dark .link:hover {
     color: color-mix(in oklch, var(--primary) 85%, white);
   }
-  .alert {
-    @apply rounded-lg border p-4 shadow-sm;
-  }
-  .alert-info {
-    background-color: color-mix(in oklch, var(--info) 15%, transparent);
-    color: var(--info-foreground);
-    border-color: color-mix(in oklch, var(--info) 40%, transparent);
-  }
-  .alert-success {
-    background-color: color-mix(in oklch, var(--success) 15%, transparent);
-    color: var(--success-foreground);
-    border-color: color-mix(in oklch, var(--success) 40%, transparent);
-  }
-  .alert-warning {
-    background-color: color-mix(in oklch, var(--warning) 15%, transparent);
-    color: var(--warning-foreground);
-    border-color: color-mix(in oklch, var(--warning) 40%, transparent);
-  }
-  .alert-error {
-    background-color: color-mix(in oklch, var(--error) 15%, transparent);
-    color: var(--error-foreground);
-    border-color: color-mix(in oklch, var(--error) 40%, transparent);
-  }
-
+  
   .surface-muted {
     @apply rounded-lg border shadow-sm;
     background-color: color-mix(in oklch, var(--muted) 40%, transparent);
@@ -250,55 +226,5 @@
     @apply rounded-lg border bg-card text-card-foreground shadow;
   }
 
-  .select-component {
-    @apply relative w-full min-w-[220px] rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm transition-colors focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background;
-  }
-  .select-component .select-control {
-    @apply flex w-full items-center gap-2;
-  }
-  .select-component .select-placeholder {
-    @apply text-muted-foreground;
-  }
-  .select-component .select-value-label {
-    @apply text-foreground;
-  }
-  .select-component .select-arrow-container {
-    @apply ml-auto text-muted-foreground transition-transform;
-  }
-  .select-component.is-open .select-arrow-container {
-    @apply rotate-180;
-  }
-  .select-menu-outer {
-    @apply absolute left-0 right-0 z-50 mt-2 min-w-[12rem] overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-xl;
-  }
-  .select-menu {
-    @apply max-h-60 overflow-y-auto py-1;
-  }
-  .select-option {
-    @apply flex cursor-pointer select-none items-center rounded-sm px-3 py-2 text-sm transition-colors;
-  }
-  .select-option:hover,
-  .select-option.is-focused {
-    @apply bg-accent text-accent-foreground;
-  }
-  .select-option.is-selected {
-    @apply bg-primary text-primary-foreground;
-  }
-  .select-option.select-divider {
-    @apply mx-1 my-1 h-px bg-border p-0;
-  }
-  .select-noresults {
-    @apply px-3 py-2 text-sm text-muted-foreground;
-  }
 
-  .select-control {
-    @apply bg-background;
-  }
-
-  .modal-backdrop {
-    @apply bg-black/70;
-  }
-  .modal-content {
-    @apply bg-card;
-  }
 }

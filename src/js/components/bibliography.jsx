@@ -2,12 +2,22 @@ import cx from "classnames";
 import PropTypes from "prop-types";
 import { Fragment, useCallback, useRef, useState, memo } from "react";
 import { useIntl, FormattedMessage } from "react-intl";
+// Removed web-common Dropdown imports
 import {
-  Dropdown,
-  DropdownItem,
   DropdownMenu,
-  DropdownToggle,
-} from "web-common/components";
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu"
+
 import { isTriggerEvent, pick } from "web-common/utils";
 import { useFocusManager } from "web-common/hooks";
 import { Button as ShadcnButton } from "./ui/button";
@@ -174,7 +184,7 @@ const BibliographyItem = memo((props) => {
       key={rawItem.key}
       data-dnd-candidate
       data-key={rawItem.key}
-      className={cx("citation-container", { error: isError })}
+      className={cx("citation-container min-h-[72px]", { error: isError })}
       onClick={onSelectCitation}
       tabIndex={-2}
       onKeyDown={handleKeyDown}
@@ -186,10 +196,10 @@ const BibliographyItem = memo((props) => {
       onFocus={receiveFocus}
       onBlur={receiveBlur}
     >
-      <div className="citation border-t px-3" ref={containerRef}>
+      <div className="citation border-t px-3 py-3 flex items-start md:items-center gap-3" ref={containerRef}>
         {allowReorder && (
           <div
-            className="drag-handle"
+            className="w-6 shrink-0"
             onMouseDown={onDrag}
             onTouchStart={onDrag}
           >
@@ -198,142 +208,135 @@ const BibliographyItem = memo((props) => {
         )}
         <div
           data-container-key={rawItem.key}
-          className="csl-entry-container pr-2"
+          className="csl-entry-container flex-1 min-w-0 pr-2"
           dangerouslySetInnerHTML={{ __html: formattedItem }}
         />
-        {!isNumericStyle && (
-          <Fragment>
-            <ShadcnButton
-              variant="outline"
-              size="sm"
-              title={copyText}
-              className={cx("d-xs-none d-md-block", "btn-copy")}
-              onClick={handleCopyCitationClick}
-              tabIndex={-3}
-            >
-              <Quote className="h-4 w-4 text-muted-foreground" />
-            </ShadcnButton>
-            <ShadcnButton
-              variant="outline"
-              size="sm"
-              title={intl.formatMessage({
-                id: "zbib.citation.copyBibliographyEntry",
-                defaultMessage: "Copy Bibliography Entry",
-              })}
-              disabled={copySingleState.citationKey === rawItem.key}
-              className={cx("d-xs-none d-md-block", "btn-copy", {
-                success: isCopied,
-              })}
-              onClick={handleCopySingleClick}
-              tabIndex={-3}
-            >
-              {isCopied ? (
-                <Check className="h-4 w-4 text-muted-foreground" />
-              ) : (
-                <Copy className="h-4 w-4 text-muted-foreground" />
-              )}
-            </ShadcnButton>
-            <ShadcnButton
-              variant="outline"
-              size="sm"
-              title={intl.formatMessage({
-                id: "zbib.citation.deleteEntry",
-                defaultMessage: "Delete Entry",
-              })}
-              className=""
-              onClick={onDeleteCitation}
-              tabIndex={-3}
-            >
-              <Trash2 className="h-4 w-4 text-muted-foreground" />
-            </ShadcnButton>
-          </Fragment>
-        )}
-        <Dropdown
-          isOpen={isDropdownOpen}
-          onToggle={onToggleDropdown}
-          className="citation-options-menu"
-        >
-          <DropdownToggle
-            color={null}
-            className="btn-icon dropdown-toggle"
-            title="Options"
+        <div className="hidden md:grid md:grid-cols-1">
+          {!isNumericStyle && (
+            <>
+              <ShadcnButton
+                variant="outline"
+                size="sm"
+                title={copyText}
+                className="btn-copy"
+                onClick={handleCopyCitationClick}
+                tabIndex={-3}
+              >
+                <Quote className="h-4 w-4 text-muted-foreground" />
+              </ShadcnButton>
+              <ShadcnButton
+                variant="outline"
+                size="sm"
+                title={intl.formatMessage({
+                  id: "zbib.citation.copyBibliographyEntry",
+                  defaultMessage: "Copy Bibliography Entry",
+                })}
+                disabled={copySingleState.citationKey === rawItem.key}
+                className={cx("btn-copy", { success: isCopied })}
+                onClick={handleCopySingleClick}
+                tabIndex={-3}
+              >
+                {isCopied ? (
+                  <Check className="h-4 w-4 text-muted-foreground" />
+                ) : (
+                  <Copy className="h-4 w-4 text-muted-foreground" />
+                )}
+              </ShadcnButton>
+            </>
+          )}
+          <ShadcnButton
+            variant="outline"
+            size="sm"
+            title={intl.formatMessage({
+              id: "zbib.citation.deleteEntry",
+              defaultMessage: "Delete Entry",
+            })}
+            onClick={onDeleteCitation}
             tabIndex={-3}
           >
-            <MoreVertical className="h-7 w-7 text-primary" />
-          </DropdownToggle>
-          <DropdownMenu aria-label="Options" right>
-            {!isNumericStyle && (
-              <Fragment>
-                <DropdownItem
-                  onClick={handleCopyCitationClick}
-                  className="btn d-xs-block d-md-none"
-                >
-                  {copyText}
-                </DropdownItem>
-                <DropdownItem
-                  onClick={handleCopySingleClick}
-                  className={cx("btn clipboard-trigger d-xs-block d-md-none", {
-                    success: isCopied,
-                  })}
-                >
-                  <span className={cx("inline-feedback", { active: isCopied })}>
-                    <span className="default-text" aria-hidden={isCopied}>
-                      <FormattedMessage
-                        id="zbib.citation.copyBibliographyEntry"
-                        defaultMessage="Copy Bibliography Entry"
-                      />
+            <Trash2 className="h-4 w-4 text-muted-foreground" />
+          </ShadcnButton>
+        </div>
+        <div className=" ml-auto">
+          <DropdownMenu open={isDropdownOpen} onOpenChange={(open) => onToggleDropdown({ currentTarget: { closest: () => ({ dataset: { key: rawItem.key } }) }, stopPropagation: () => {} })} >
+            <DropdownMenuTrigger asChild>
+              <ShadcnButton
+                variant="ghost"
+                size="icon"
+                className="btn-icon dropdown-toggle"
+                title="Options"
+                tabIndex={-3}
+              >
+                <MoreVertical className="h-7 w-7 text-primary" />
+              </ShadcnButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" aria-label="Options">
+              {!isNumericStyle && (
+                <Fragment>
+                  <DropdownMenuItem
+                    onClick={handleCopyCitationClick}
+                    className="btn"
+                  >
+                    {copyText}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={handleCopySingleClick}
+                    className={cx("btn clipboard-trigger", {
+                      success: isCopied,
+                    })}
+                  >
+                    <span className={cx("inline-feedback", { active: isCopied })}>
+                      <span className="default-text" aria-hidden={isCopied}>
+                        <FormattedMessage
+                          id="zbib.citation.copyBibliographyEntry"
+                          defaultMessage="Copy Bibliography Entry"
+                        />
+                      </span>
                     </span>
-                    <span className="shorter feedback" aria-hidden={!isCopied}>
+                  </DropdownMenuItem>
+                </Fragment>
+              )}
+              <DropdownMenuItem onClick={handleEditCitationClick} className="btn">
+                <FormattedMessage id="zbib.general.edit" defaultMessage="Edit" />
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleDeleteCitationClick} className="btn">
+                <FormattedMessage
+                  id="zbib.general.delete"
+                  defaultMessage="Delete"
+                />
+              </DropdownMenuItem>
+              {allowReorder && (
+                <Fragment>
+                  <DropdownMenuSeparator />
+                  {!isFirst && (
+                    <DropdownMenuItem onClick={handleMoveTop} className="btn">
                       <FormattedMessage
-                        id="zbib.export.copiedFeedback"
-                        defaultMessage="Copied!"
+                        id="zbib.citation.moveToTop"
+                        defaultMessage="Move to Top"
                       />
-                    </span>
-                  </span>
-                </DropdownItem>
-              </Fragment>
-            )}
-            <DropdownItem onClick={handleEditCitationClick} className="btn">
-              <FormattedMessage id="zbib.general.edit" defaultMessage="Edit" />
-            </DropdownItem>
-            <DropdownItem onClick={handleDeleteCitationClick} className="btn">
-              <FormattedMessage
-                id="zbib.general.delete"
-                defaultMessage="Delete"
-              />
-            </DropdownItem>
-            {allowReorder && (
-              <Fragment>
-                <DropdownItem divider />
-                {!isFirst && (
-                  <DropdownItem onClick={handleMoveTop} className="btn">
-                    <FormattedMessage
-                      id="zbib.citation.moveToTop"
-                      defaultMessage="Move to Top"
-                    />
-                  </DropdownItem>
-                )}
-                {!isFirst && (
-                  <DropdownItem onClick={handleMoveUp} className="btn">
-                    <FormattedMessage
-                      id="zbib.citation.moveUp"
-                      defaultMessage="Move Up"
-                    />
-                  </DropdownItem>
-                )}
-                {!isLast && (
-                  <DropdownItem onClick={handleMovedown} className="btn">
-                    <FormattedMessage
-                      id="zbib.citation.moveDown"
-                      defaultMessage="Move Down"
-                    />
-                  </DropdownItem>
-                )}
-              </Fragment>
-            )}
+                    </DropdownMenuItem>
+                  )}
+                  {!isFirst && (
+                    <DropdownMenuItem onClick={handleMoveUp} className="btn">
+                      <FormattedMessage
+                        id="zbib.citation.moveUp"
+                        defaultMessage="Move Up"
+                      />
+                    </DropdownMenuItem>
+                  )}
+                  {!isLast && (
+                    <DropdownMenuItem onClick={handleMovedown} className="btn">
+                      <FormattedMessage
+                        id="zbib.citation.moveDown"
+                        defaultMessage="Move Down"
+                      />
+                    </DropdownMenuItem>
+                  )}
+                </Fragment>
+              )}
+            </DropdownMenuContent>
           </DropdownMenu>
-        </Dropdown>
-
+        </div>
         <script type="application/vnd.zotero.data+json">
           {JSON.stringify(rawItem)}
         </script>

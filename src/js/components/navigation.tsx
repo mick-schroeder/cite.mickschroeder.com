@@ -8,7 +8,7 @@ import {
 } from "./ui/navigation-menu";
 import { useFocusManager } from "web-common/hooks";
 import { Button as ShadcnButton } from "./ui/button";
-import { Github, Linkedin, Globe } from "lucide-react";
+import { Smile } from "lucide-react";
 
 type NavigationProps = {
   onAboutClick: () => void;
@@ -47,10 +47,8 @@ const Navigation = ({ onAboutClick, onHelpClick, onExamplesClick }: NavigationPr
       onBlur={receiveBlur}
       onKeyDown={handleKeyDown}
     >
-      {/* 3-column layout: left logo, center nav, right socials */}
-      <div className="grid grid-cols-3 items-center gap-3">
-        {/* Left: Logo + Title */}
-        <div className="flex items-center gap-2 justify-start min-w-0">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center gap-3">
+        <div className="flex items-center gap-2 md:col-span-2 lg:col-span-1 justify-center md:justify-start min-w-0 text-center md:text-left">
           <a
             href="/"
             className="flex items-center gap-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -61,16 +59,15 @@ const Navigation = ({ onAboutClick, onHelpClick, onExamplesClick }: NavigationPr
               alt=""
               aria-hidden="true"
             />
-            <span className="text-lg md:text-xl font-black tracking-tight text-foreground truncate">
+            <span className="text-lg md:text-xl font-black tracking-tight text-foreground">
               <FormattedMessage id="zbib.brand" defaultMessage="Mick Schroeder's Citation Generator" />
             </span>
           </a>
         </div>
 
-        {/* Center: Internal navigation (shadcn NavigationMenu) */}
         <div className="flex justify-center">
           <NavigationMenu viewport={false}>
-            <NavigationMenuList className="gap-1 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none]">
+            <NavigationMenuList className="gap-1 flex-wrap justify-center">
               <NavigationMenuItem>
                 <NavigationMenuLink asChild tabIndex={-2}>
                   <button
@@ -115,8 +112,7 @@ const Navigation = ({ onAboutClick, onHelpClick, onExamplesClick }: NavigationPr
           </NavigationMenu>
         </div>
 
-        {/* Right: Social buttons (lucide icons in shadcn buttons) */}
-        <div className="flex items-center justify-end gap-1 md:gap-2">
+        <div className="flex items-center justify-center md:justify-end gap-2 flex-wrap">
           <ShadcnButton asChild variant="secondary" size="sm" className="h-8 px-2">
             <a
               href="https://www.mickschroeder.com"
@@ -124,7 +120,7 @@ const Navigation = ({ onAboutClick, onHelpClick, onExamplesClick }: NavigationPr
               rel="noreferrer noopener"
               aria-label={intl.formatMessage({ id: "zbib.social.site", defaultMessage: "Personal website" })}
             >
-              <Globe className="h-4 w-4" /> mickschroeder.com
+             <span className="px-2">mickschroeder.com</span>
             </a>
           </ShadcnButton>
           <ShadcnButton asChild variant="secondary" size="sm" className="h-8 px-2">

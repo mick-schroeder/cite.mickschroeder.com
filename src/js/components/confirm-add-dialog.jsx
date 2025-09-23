@@ -6,7 +6,6 @@ import { Tabs, Tab, TabPane } from "web-common/components";
 import { X } from "lucide-react";
 import { isTriggerEvent } from "web-common/utils";
 import { formatBib, formatFallback } from "web-common/cite";
-
 import Modal from "./modal";
 
 const ConfirmAddDialog = (props) => {
@@ -69,13 +68,12 @@ const ConfirmAddDialog = (props) => {
   return isReady ? (
     <Modal
       isOpen={activeDialog === "CONFIRM_ADD_DIALOG"}
-      contentLabel={title}
+      contentlabel={title}
       className="confirm-add-dialog modal modal-lg modal-with-footer"
       onRequestClose={onConfirmAddCancel}
     >
       <div className="modal-content" tabIndex={-1}>
         <div className="modal-header">
-          <h4 className="modal-title text-truncate">{title}</h4>
           <ShadcnButton
             variant="ghost"
             size="icon"

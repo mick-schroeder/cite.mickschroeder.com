@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Button as ShadcnButton } from "./ui/button";
 import { cn } from "../lib/utils";
-import { Loader2 } from "lucide-react";
+import { Loader2, X, BookOpen, Search, BookType } from "lucide-react";
+import Input from './form/input';
 import { usePrevious } from "web-common/hooks";
 import {
   Card,
@@ -123,7 +124,18 @@ const CiteTools = ({
       <Card>
         <CardHeader className="grid gap-4 md:grid-cols-[1fr_auto] md:items-start">
           <div className="text-left">
-            <CardTitle className="">Enter Reference Query</CardTitle>
+            <CardTitle className="inline-flex items-center gap-2 primary">
+              <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">
+        <BookOpen
+          className="inline h-5 w-5 text-primary -mt-1 mr-2"
+          aria-hidden="true"
+        />
+        <FormattedMessage
+          id="zbib.enterQuery"
+          defaultMessage="Enter Query"
+        />
+      </h3>
+            </CardTitle>
           </div>
           <CardAction className="">
             <ShadcnButton
@@ -142,6 +154,13 @@ const CiteTools = ({
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
+             <label className="text-sm font-medium  inline-flex items-center gap-2">
+                <BookType className="size-4 text-primary" aria-hidden="true" />
+                {intl.formatMessage({
+                  id: "zbib.selectStyle",
+                  defaultMessage: "Select Citation Style",
+                })}
+              </label>
             <StyleSelector
               className="min-w-[220px]"
               citationStyle={selectedStyle}
@@ -149,37 +168,30 @@ const CiteTools = ({
               onCitationStyleChanged={onCitationStyleChanged}
             />
             <div className="flex w-full flex-col gap-2 text-left">
-              <label className="text-sm font-medium text-muted-foreground">
+              <label className="text-sm font-medium  inline-flex items-center gap-2">
+                <Search className="size-4 text-primary" aria-hidden="true" />
                 {intl.formatMessage({
                   id: "zbib.enterQuery",
                   defaultMessage: "Enter Query",
                 })}
               </label>
               <div className="relative">
-                <input
-                  aria-label={prompt}
-                  autoFocus
-                  className="id-input h-11 w-full rounded-md border border-input bg-background px-4 pr-12 text-base text-foreground shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-60"
-                  disabled={isTranslating && !canCancel}
-                  onChange={handleInputChange}
-                  onKeyDown={handleInputKeyDown}
-                  onPaste={handlePaste}
-                  placeholder={prompt}
-                  readOnly={isTranslating}
-                  aria-busy={isTranslating}
-                  ref={inputRef}
-                  tabIndex={0}
-                  type="search"
-                  value={entry}
-                />
-                {isTranslating ? (
-                  <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-                    <Loader2
-                      className="size-4 animate-spin text-muted-foreground"
-                      aria-hidden="true"
-                    />
-                  </div>
-                ) : null}
+                <Input
+                aria-label={ prompt }
+                autoFocus
+                className="form-control form-control-lg id-input bg-background text-foreground mt-2"
+                isBusy={ isTranslating }
+                isReadOnly={ isTranslating }
+                onBlur={ () => true /* do not commit on blur */ }
+                onChange={ handleChange }
+                onCommit={ handleCiteOrCancel }
+                onPaste={ handlePaste }
+                placeholder={ prompt }
+                ref = { inputRef }
+                tabIndex={ 0 }
+                type="search"
+                value={ entry }
+              />
               </div>
             </div>
           </div>
@@ -195,26 +207,20 @@ const CiteTools = ({
           >
             {isTranslating ? (
               canCancel ? (
-                <FormattedMessage
-                  id="zbib.general.cancel"
-                  defaultMessage="Cancel"
-                />
+                <span className="inline-flex items-center gap-2">
+                  <X className="size-4" aria-hidden="true" />
+                  <FormattedMessage id="zbib.general.cancel" defaultMessage="Cancel" />
+                </span>
               ) : (
-                <>
+                <span className="inline-flex items-center gap-2">
                   <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-                  <FormattedMessage
-                    id="zbib.general.cite"
-                    defaultMessage="Suggest Citation"
-                  />
-                </>
+                  <FormattedMessage id="zbib.general.cite" defaultMessage="Suggest Citation" />
+                </span>
               )
             ) : (
               <span className="inline-flex items-center gap-2">
                 <Quote />
-                <FormattedMessage
-                  id="zbib.general.cite"
-                  defaultMessage="Suggest Citation"
-                />
+                <FormattedMessage id="zbib.general.cite" defaultMessage="Suggest Citation" />
               </span>
             )}
           </ShadcnButton>

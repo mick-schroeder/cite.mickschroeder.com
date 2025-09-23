@@ -20,12 +20,12 @@ const Field = memo(
         tabIndex={tabIndex}
         onClick={onClick}
         onKeyDown={onKeyDown}
-        className={cx("metadata", className)}
+        className={cx("flex flex-col gap-1 p-3 text-sm", className)}
         ref={ref}
         {...pick(props, (p) => p.startsWith("data-") || p.startsWith("aria-"))}
       >
-        <div className="key">{label}</div>
-        <div className="value">{value}</div>
+        <div className="text-xs font-medium text-muted-foreground">{label}</div>
+        <div className="text-sm text-foreground">{value}</div>
         {dragHandle}
       </li>
     );

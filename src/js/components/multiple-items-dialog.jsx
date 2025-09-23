@@ -236,7 +236,7 @@ const MultipleItemsDialog = (props) => {
   return (
     <Modal
       isOpen={!!isOpen}
-      contentLabel={title}
+      contentlabel={title}
       className="multiple-items-dialog modal modal-lg modal-with-footer"
       onAfterOpen={handleModalAfterOpen}
       onRequestClose={handleCancel}
@@ -244,17 +244,6 @@ const MultipleItemsDialog = (props) => {
       <div className="modal-content" tabIndex={-1}>
         <div className="modal-header">
           <h4 className="modal-title text-truncate">{title}</h4>
-          <ShadcnButton
-            title={intl.formatMessage({
-              id: "zbib.modal.closeDialog",
-              defaultMessage: "Close Dialog",
-            })}
-            icon
-            className="close"
-            onClick={handleCancel}
-          >
-            <X className="h-6 w-6 text-primary" aria-hidden="true" />
-          </ShadcnButton>
         </div>
         <div className="modal-body" tabIndex={-1}>
           <MultipleLitemsList

@@ -132,12 +132,13 @@ const MultipleChoiceDialog = (props) => {
   return multipleChoiceItems && activeDialog === "MULTIPLE_CHOICE_DIALOG" ? (
     <Modal
       isOpen={activeDialog === "MULTIPLE_CHOICE_DIALOG"}
-      contentLabel={title}
+      contentlabel={title}
       className={cx("multiple-choice-dialog modal modal-lg", {
         "modal-with-footer": moreItemsLink,
       })}
       onRequestClose={onMultipleChoiceCancel}
       onAfterOpen={handleModalAfterOpen}
+      
     >
       <div className="modal-content" tabIndex={-1}>
         <div className="modal-header">

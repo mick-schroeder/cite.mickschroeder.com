@@ -65,11 +65,12 @@ const Message = ({
   }, [id, onDismiss]);
 
   return (
-    <Alert
+           <div className="flex justify-center items-center w-full">
+ <Alert
       aria-live="polite"
       aria-labelledby={htmlID}
       role="status"
-      className="max-w-3xl mx-auto w-full"
+      className="max-w-xl w-full"
       variant={category === "warning" || category === "error" ? "destructive" : "default"}
     >
       {/* Dismiss */}
@@ -83,14 +84,15 @@ const Message = ({
       >
         <X className="h-5 w-5" aria-hidden="true" />
       </ShadcnButton>
+      
 
       
           {
             {
-              info: <Info className="h-5 w-5 shrink-0" aria-hidden="true" />,
-              success: <CheckCircle2 className="h-5 w-5 shrink-0" aria-hidden="true" />,
-              warning: <AlertTriangle className="h-5 w-5 shrink-0" aria-hidden="true" />,
-              error: <AlertOctagon className="h-5 w-5 shrink-0" aria-hidden="true" />,
+              info: <Info className="h-10 w-10 shrink-0" aria-hidden="true" />,
+              success: <CheckCircle2 className="h-10 w-10 shrink-0" aria-hidden="true" />,
+              warning: <AlertTriangle className="h-10 w-10 shrink-0" aria-hidden="true" />,
+              error: <AlertOctagon className="h-10 w-10 shrink-0" aria-hidden="true" />,
             }[category]
           }
             <AlertTitle  className="text-md">
@@ -101,12 +103,11 @@ const Message = ({
                 error: "Error",
               }[category]}
             </AlertTitle>
-            <AlertDescription id={htmlID} className="text-md">
-              {message}
-            </AlertDescription>
-       
-
-        {action &&
+            <AlertDescription id={htmlID} className="text-md flex items-center ">
+             
+             <div>              {message}
+</div>
+      <div>{action &&
           (href ? (
             <ShadcnButton
               asChild
@@ -125,10 +126,17 @@ const Message = ({
             >
               {action}
             </ShadcnButton>
-          ))}
-     
+          ))}</div>
+       
+
+        
+                 </AlertDescription>
+
     </Alert>
+        </div>
+
   );
+  
 };
 
 Message.propTypes = {
