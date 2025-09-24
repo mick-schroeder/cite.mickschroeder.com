@@ -14,8 +14,8 @@ import { formatBib, formatFallback } from "web-common/cite";
 import { FormattedMessage } from "react-intl";
 import { useFocusManager } from "web-common/hooks";
 import copy from "copy-to-clipboard";
-import { Quote, FileText, CircleX, Trash, SquarePen, Copy, Check } from "lucide-react";
-import { buildCitationFilename } from "../filename";
+import { Quote, FileText, CircleX, Trash, SquarePen, Copy, Check, ExternalLink } from "lucide-react";
+import { buildCitationFilename, buildUnpaywallUrl } from "../filename";
 import {
   Card,
   CardAction,
@@ -105,6 +105,11 @@ const Review = ({
     return buildCitationFilename(itemUnderReview.item, plainCitation);
   }, [itemUnderReview, plainCitation]);
 
+  const unpaywallUrl = useMemo(() => {
+    if (!itemUnderReview?.item) return null;
+    return buildUnpaywallUrl(itemUnderReview.item);
+  }, [itemUnderReview]);
+
   const handleReviewCopyCitation = useCallback(async () => {
     if (!html) {
       return;
@@ -186,6 +191,13 @@ const Review = ({
       resetFocus();
     }
   }, [filename, resetFocus]);
+
+  const handleOpenUnpaywall = useCallback(() => {
+    if (!unpaywallUrl) return;
+    try {
+      window.open(unpaywallUrl, "_blank", "noopener,noreferrer");
+    } catch (_) {}
+  }, [unpaywallUrl]);
 
   useEffect(() => {
     setIsCopied(false);
@@ -272,86 +284,114 @@ const Review = ({
               </div>
             </CardContent>
             <CardFooter>
-              <div className="">
-                <div
-                  className="flex flex-wrap gap-2 justify-center"
-                  role="toolbar"
-                  tabIndex={0}
-                  ref={toolbarRef}
-                  onKeyDown={handleKeyDown}
-                  onFocus={receiveFocus}
-                  onBlur={receiveBlur}
-                >
-                  <ShadcnButton
-                    tabIndex={-2}
-                    type="button"
-                    variant="outline"
-                    onClick={handleReviewCopyFilenameCitation}
-                    aria-live="polite"
-                    className="flex items-center gap-2"
-                  >
-                    {isCopiedFilename ? (
-                      <>
-                        <Check className="size-4" aria-hidden="true" />
-                        <FormattedMessage
-                          id="zbib.review.copiedFilename"
-                          defaultMessage="Filename Copied"
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="size-4" aria-hidden="true" />
-                        <FormattedMessage
-                          id="zbib.review.copyFilename"
-                          defaultMessage="Copy Filename"
-                        />
-                      </>
-                    )}
-                  </ShadcnButton>
-                  <ShadcnButton
-                    tabIndex={-2}
-                    type="button"
-                    variant="outline"
-                    onClick={handleReviewCopyCitation}
-                    aria-live="polite"
-                    className="flex items-center gap-2"
-                  >
-                    {isCopied ? (
-                      <>
-                        <Check className="size-4" aria-hidden="true" />
-                        <FormattedMessage
-                          id="zbib.review.copiedCitation"
-                          defaultMessage="Citation Copied"
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="size-4" aria-hidden="true" />
-                        <FormattedMessage
-                          id="zbib.review.copyCitation"
-                          defaultMessage="Copy Citation"
-                        />
-                      </>
-                    )}
-                  </ShadcnButton>
-                  <ShadcnButton
-                    tabIndex={-2}
-                    onClick={handleReviewDelete}
-                    variant="destructive"
-                  >
-                    <Trash className="size-4" aria-hidden="true" />
-                    <FormattedMessage
-                      id="zbib.general.delete"
-                      defaultMessage="Delete"
-                    />
-                  </ShadcnButton>
-                  <ShadcnButton tabIndex={-2} onClick={handleReviewEdit}>
-                    <SquarePen className="size-4" aria-hidden="true" />
-                    <FormattedMessage
-                      id="zbib.general.edit"
-                      defaultMessage="Edit"
-                    />
-                  </ShadcnButton>
+              <div
+                className="w-full"
+                role="toolbar"
+                tabIndex={0}
+                ref={toolbarRef}
+                onKeyDown={handleKeyDown}
+                onFocus={receiveFocus}
+                onBlur={receiveBlur}
+              >
+                <div className="flex w-full flex-col items-center gap-4">
+                  {/* Row 1: Copy actions */}
+                  <div className="flex w-full flex-wrap justify-center gap-2">
+                    <ShadcnButton
+                      tabIndex={-2}
+                      type="button"
+                      variant="outline"
+                      onClick={handleReviewCopyFilenameCitation}
+                      aria-live="polite"
+                      className="flex items-center gap-2 w-full sm:w-auto"
+                    >
+                      {isCopiedFilename ? (
+                        <>
+                          <Check className="size-4" aria-hidden="true" />
+                          <FormattedMessage
+                            id="zbib.review.copiedFilename"
+                            defaultMessage="Filename Copied"
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="size-4" aria-hidden="true" />
+                          <FormattedMessage
+                            id="zbib.review.copyFilename"
+                            defaultMessage="Copy Filename"
+                          />
+                        </>
+                      )}
+                    </ShadcnButton>
+
+                    <ShadcnButton
+                      tabIndex={-2}
+                      type="button"
+                      variant="outline"
+                      onClick={handleReviewCopyCitation}
+                      aria-live="polite"
+                      className="flex items-center gap-2 w-full sm:w-auto"
+                    >
+                      {isCopied ? (
+                        <>
+                          <Check className="size-4" aria-hidden="true" />
+                          <FormattedMessage
+                            id="zbib.review.copiedCitation"
+                            defaultMessage="Citation Copied"
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="size-4" aria-hidden="true" />
+                          <FormattedMessage
+                            id="zbib.review.copyCitation"
+                            defaultMessage="Copy Citation"
+                          />
+                        </>
+                      )}
+                    </ShadcnButton>
+
+                    <ShadcnButton
+                      tabIndex={-2}
+                      type="button"
+                      variant="outline"
+                      onClick={handleOpenUnpaywall}
+                      disabled={!unpaywallUrl}
+                      className="flex items-center gap-2 w-full sm:w-auto"
+                    >
+                      <ExternalLink className="size-4" aria-hidden="true" />
+                      <FormattedMessage
+                        id="zbib.review.unpaywallPdf"
+                        defaultMessage="Unpaywall PDF"
+                      />
+                    </ShadcnButton>
+                  </div>
+
+                  {/* Row 2: Edit/Delete */}
+                  <div className="flex w-full flex-wrap justify-center gap-2">
+                    <ShadcnButton
+                      tabIndex={-2}
+                      onClick={handleReviewDelete}
+                      variant="destructive"
+                      className="w-full sm:w-auto"
+                    >
+                      <Trash className="size-4" aria-hidden="true" />
+                      <FormattedMessage
+                        id="zbib.general.delete"
+                        defaultMessage="Delete"
+                      />
+                    </ShadcnButton>
+                    <ShadcnButton
+                      tabIndex={-2}
+                      onClick={handleReviewEdit}
+                      className="w-full sm:w-auto"
+                    >
+                      <SquarePen className="size-4" aria-hidden="true" />
+                      <FormattedMessage
+                        id="zbib.general.edit"
+                        defaultMessage="Edit"
+                      />
+                    </ShadcnButton>
+                  </div>
                 </div>
               </div>
             </CardFooter>

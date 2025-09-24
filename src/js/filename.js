@@ -154,3 +154,31 @@ const buildCitationFilename = (item, fallbackPlainCitation = "") => {
 };
 
 export { buildCitationFilename, extractYearFromItem, filenamifySegment };
+
+// Build an Unpaywall URL from an item or DOI string.
+// Accepts DOI in forms like:
+//  - 10.1234/abcd
+//  - https://doi.org/10.1234/abcd
+//  - doi:10.1234/abcd
+// Returns "https://unpaywall.org/<DOI>" or null if no DOI present.
+const normalizeDoi = (val) => {
+  if (!val) return "";
+  const raw = `${val}`.trim();
+  const lowered = raw.toLowerCase();
+  if (lowered.startsWith("http://doi.org/") || lowered.startsWith("https://doi.org/")) {
+    return raw.replace(/^[a-z]+:\/\/doi\.org\//i, "");
+  }
+  if (lowered.startsWith("doi:")) {
+    return raw.replace(/^doi:/i, "").trim();
+  }
+  return raw;
+};
+
+const buildUnpaywallUrl = (itemOrDoi) => {
+  const doi = typeof itemOrDoi === "string" ? itemOrDoi : itemOrDoi?.DOI;
+  const norm = normalizeDoi(doi);
+  if (!norm) return null;
+  return `https://unpaywall.org/${norm}`;
+};
+
+export { buildUnpaywallUrl };

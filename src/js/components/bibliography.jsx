@@ -22,10 +22,10 @@ import {
 import { isTriggerEvent, pick } from "web-common/utils";
 import { useFocusManager } from "web-common/hooks";
 import { Button as ShadcnButton } from "./ui/button";
-import { FileText, Quote, Copy, Check, Trash2, Grip, MoreVertical, Pencil, ArrowUp, ArrowDown, ChevronsUp } from "lucide-react";
+import { FileText, Quote, Copy, Check, Trash2, Grip, MoreVertical, Pencil, ArrowUp, ArrowDown, ChevronsUp, ExternalLink } from "lucide-react";
 
 import { useDnd } from "../hooks";
-import { buildCitationFilename } from "../filename";
+import { buildCitationFilename, buildUnpaywallUrl } from "../filename";
 
 const BIB_ITEM = "BIB_ITEM";
 
@@ -61,6 +61,7 @@ const BibliographyItem = memo((props) => {
     copySingleState.copied && copySingleState.citationKey === rawItem.key;
   const [isCopiedFilename, setIsCopiedFilename] = useState(false);
   const copyFilenameResetTimeout = useRef(null);
+  const unpaywallUrl = buildUnpaywallUrl(rawItem);
 
   const onComplete = useCallback(
     (targetNode, above, current) => {
@@ -208,6 +209,19 @@ const BibliographyItem = memo((props) => {
       }
     },
     [onDeleteCitation, rawItem.key],
+  );
+
+  const handleOpenUnpaywall = useCallback(
+    (ev) => {
+      ev.stopPropagation();
+      ev.preventDefault();
+      onDelayedCloseDropdown();
+      if (!unpaywallUrl) return;
+      try {
+        window.open(unpaywallUrl, "_blank", "noopener,noreferrer");
+      } catch (_) {}
+    },
+    [onDelayedCloseDropdown, unpaywallUrl],
   );
 
   const handleKeyDown = useCallback(
@@ -424,6 +438,17 @@ const BibliographyItem = memo((props) => {
                         />
                       </span>
                     </span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={handleOpenUnpaywall}
+                    className="btn"
+                    disabled={!unpaywallUrl}
+                  >
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    <FormattedMessage
+                      id="zbib.general.unpaywallPdf"
+                      defaultMessage="Unpaywall PDF"
+                    />
                   </DropdownMenuItem>
                 </Fragment>
               )}
