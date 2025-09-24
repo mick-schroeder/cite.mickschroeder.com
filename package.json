@@ -18,7 +18,7 @@
     "clean:all": "run-p  \"clean\" \"clean:data\" \"clean:citeproc\"",
     "build": "run-p \"build:messages\" \"build:fetch-citeproc\" \"build:collect-locale\" \"build:styles-json\" && NODE_ENV=production run-p 'build:js -s' 'build:scss -s' 'build:tailwind -s' 'build:html -s' 'build:static -s' && npm run build:postprocess && npm run build:root-assets",
     "build:js": "mkdir -p build/static && NODE_ENV=production rollup -c",
-    "build:scss": "for f in src/scss/*.scss; do sass --no-source-map $f build/static/`basename $f .scss`.css; done;",
+    "build:scss": "sass --no-source-map src/scss:build/static",
     "build:html": "node scripts/build-html.cjs",
     "build:collect-locale": "node scripts/collect-locale.mjs",
     "build:styles-json": "node scripts/build-styles-json.mjs",
