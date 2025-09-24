@@ -1097,6 +1097,22 @@ const BibWebContainer = (props) => {
       offset: calcOffset(),
     });
   }, []);
+    const handleBibliographyClick = useCallback((ev) => {
+    const target = document.querySelector("#section-bibliography");
+    new SmoothScroll().animateScroll(target, ev.currentTarget, {
+      speed: 1000,
+      speedAsDuration: true,
+      offset: calcOffset(),
+    });
+  }, []);
+    const handleAddCitationClick = useCallback((ev) => {
+    const target = document.querySelector("#section-cite");
+    new SmoothScroll().animateScroll(target, ev.currentTarget, {
+      speed: 1000,
+      speedAsDuration: true,
+      offset: calcOffset(),
+    });
+  }, []);
 
   const handleItemCreated = useCallback(
     (item) => {
@@ -1994,6 +2010,8 @@ const BibWebContainer = (props) => {
       onHelpClick={handleHelpClick}
       onAboutClick={handleAboutClick}
       onExamplesClick={handleExamplesClick}
+      onAddCitationClick={handleAddCitationClick}
+      onBibliographyClick={handleBibliographyClick}
       onCancelPrintMode={handleCancelPrintMode}
       onReadMore={handleReadMoreClick}
       onStyleSwitchCancel={handleStyleSwitchCancel}

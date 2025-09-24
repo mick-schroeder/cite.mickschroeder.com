@@ -4,7 +4,6 @@ import cx from "classnames";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Button as ShadcnButton } from "./ui/button";
 import { Badge } from "./ui/badge";
-
 import { X } from "lucide-react";
 import { pick } from "web-common/utils";
 import { useFocusManager } from "web-common/hooks";
@@ -75,22 +74,21 @@ const ZBib = (props) => {
   };
 
   return (
-    <div
-      className={cx(
-        
-        className,
-      )}
-    >
+    <div className={cx(className, "w-full min-h-screen bg-background overflow-x-hidden")}> 
       <div className="zotero-bib-inner">
 
-        <header className="w-full">
+        <header className="w-full border-b ">
           <Navigation
             onAboutClick={props.onAboutClick}
             onHelpClick={props.onHelpClick}
             onExamplesClick={props.onExamplesClick}
+            onBibliographyClick={props.onBibliographyClick}
+            onAddCitationClick={props.onAddCitationClick}
           />
+        </header>
 
-
+        <div className="container mx-auto lg:max-w-screen-lg lg:px-8 space-y-12 pt-6">
+        
             {props.messages.map((message) => (
               <Message
                 {...message}
@@ -103,26 +101,20 @@ const ZBib = (props) => {
                 key={message.id}
               />
             ))}
-        
-        </header>
-
-        
-
-        <div className="space-y-8 container mx-auto px-4 sm:px-6 lg:px-8 md:max-w-screen-md lg:max-w-screen-lg">
           
-          <section className="py-10 text-center">
-          <Badge variant="secondary" className="rounded-full py-2 px-6 border-border mb-3" asChild>
+          <section className="mx-auto max-w-3xl text-center space-y-4">
+          <Badge variant="secondary" className="rounded-full py-1.5 px-4 border mb-2" asChild>
           <a
             href="/"
             className="flex items-center gap-2"
           >
             <img
               src="/static/images/icon-cite-round.svg"
-              className="h-7 w-7 shrink-0"
+              className="h-6 w-6 shrink-0"
               alt=""
               aria-hidden="true"
             />
-        <span className="text-xl font-black tracking-tighter self-center whitespace-nowrap text-muted-foreground">
+        <span className="text-sm font-medium self-center whitespace-nowrap text-muted-foreground">
               <FormattedMessage
                 id="zbib.brand"
                 defaultMessage="Mick Schroeder's Citation Generator"
@@ -131,13 +123,13 @@ const ZBib = (props) => {
           </a>
            </Badge>
 
-        <h2 className="my-2 text-3xl sm:text-4xl md:text-5xl tracking-tight font-extrabold leading-[1.15] md:leading-[1.05] text-foreground">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl tracking-tight font-extrabold leading-tight text-foreground">
             <FormattedMessage
               id="zbib.brand.title"
               defaultMessage="What do you want to cite?"
             />
           </h2>
-          <p className="text-muted-foreground text-xl">
+          <p className="text-muted-foreground text-base sm:text-lg">
             <FormattedMessage
               id="zbib.brand.description"
               defaultMessage="Pick from 10,000+ citation styles, then enter a URL, identifier, or title to begin your bibliography."
@@ -421,6 +413,8 @@ ZBib.propTypes = {
   onHelpClick: PropTypes.func.isRequired,
   onAboutClick: PropTypes.func.isRequired,
   onExamplesClick: PropTypes.func.isRequired,
+  onBibliographyClick: PropTypes.func.isRequired,
+  onAddCitationClick: PropTypes.func.isRequired,
   onReadMore: PropTypes.func.isRequired,
   onSaveToZoteroHide: PropTypes.func.isRequired,
   onStyleSwitchCancel: PropTypes.func.isRequired,

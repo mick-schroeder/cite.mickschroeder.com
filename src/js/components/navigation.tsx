@@ -14,12 +14,16 @@ type NavigationProps = {
   onAboutClick: () => void;
   onHelpClick: () => void;
   onExamplesClick: () => void;
+  onAddCitationClick: () => void;
+  onBibliographyClick: () => void;
 };
 
 const Navigation = ({
   onAboutClick,
   onHelpClick,
   onExamplesClick,
+  onAddCitationClick,
+  onBibliographyClick,
 }: NavigationProps) => {
   const intl = useIntl();
   const navLabel = intl.formatMessage({
@@ -44,7 +48,7 @@ const Navigation = ({
 
   return (
     <nav
-      className="w-full px-4 md:px-6 py-2 mb-4 md:mb-6 border-b border-border bg-background/80 "
+      className="w-full px-4 md:px-6 py-2"
       aria-label={navLabel}
       tabIndex={0}
       ref={navRef as unknown as React.RefObject<HTMLDivElement>}
@@ -52,15 +56,15 @@ const Navigation = ({
       onBlur={receiveBlur}
       onKeyDown={handleKeyDown}
     >
-      <div className="lg:max-w-screen-lg  md:max-w-screen-md mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center gap-3">
-        <div className="flex items-center gap-2 md:col-span-2 lg:col-span-1 justify-center md:justify-start min-w-0 text-center md:text-left">
+      <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 items-center gap-3">
+        <div className="flex justify-center lg:justify-start text-center md:text-left">
           <a
             href="/"
-            className="flex items-center gap-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className=""
           >
             <img
               src="/static/images/icon-cite-round.svg"
-              className="h-7 w-7 shrink-0"
+              className="h-7 w-7 shrink-0 mr-2 inline"
               alt=""
               aria-hidden="true"
             />
@@ -77,15 +81,51 @@ const Navigation = ({
           </a>
         </div>
 
-        <div className="flex justify-center">
-          <NavigationMenu viewport={false}>
-            <NavigationMenuList className="gap-1 flex-wrap justify-center">
+        <div className="flex justify-center min-w-0 w-full">
+          <NavigationMenu viewport={false} className="w-full">
+            <NavigationMenuList className="flex flex-wrap justify-center gap-2 lg:flex-nowrap">
+               <NavigationMenuItem>
+                <NavigationMenuLink asChild tabIndex={-2}>
+                  <button
+                    type="button"
+                    onClick={onAddCitationClick}
+                    className="px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
+                  >
+                    <FormattedMessage id="zbib.addCitation" defaultMessage="Add Citation" />
+                  </button>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+               <NavigationMenuItem>
+                <NavigationMenuLink asChild tabIndex={-2}>
+                  <button
+                    type="button"
+                    onClick={onExamplesClick}
+                    className="px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
+                  >
+                    <FormattedMessage
+                      id="zbib.examples"
+                      defaultMessage="Examples"
+                    />
+                  </button>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+               <NavigationMenuItem>
+                <NavigationMenuLink asChild tabIndex={-2}>
+                  <button
+                    type="button"
+                    onClick={onBibliographyClick}
+                    className="px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
+                  >
+                    <FormattedMessage id="zbib.bibliography" defaultMessage="Bibliography" />
+                  </button>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink asChild tabIndex={-2}>
                   <button
                     type="button"
                     onClick={onAboutClick}
-                    className="px-3 py-1.5 rounded-md text-sm "
+                    className="px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
                   >
                     <FormattedMessage id="zbib.about" defaultMessage="About" />
                   </button>
@@ -96,31 +136,18 @@ const Navigation = ({
                   <button
                     type="button"
                     onClick={onHelpClick}
-                    className="px-3 py-1.5 rounded-md text-sm "
+                    className="px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
                   >
                     <FormattedMessage id="zbib.help" defaultMessage="Help" />
                   </button>
                 </NavigationMenuLink>
               </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild tabIndex={-2}>
-                  <button
-                    type="button"
-                    onClick={onExamplesClick}
-                    className="px-3 py-1.5 rounded-md text-sm "
-                  >
-                    <FormattedMessage
-                      id="zbib.examples"
-                      defaultMessage="Examples"
-                    />
-                  </button>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
+             
               <NavigationMenuItem>
                 <NavigationMenuLink asChild tabIndex={-2}>
                   <a
                     href="/faq"
-                    className="px-3 py-1.5 rounded-md text-sm "
+                    className="px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
                   >
                     FAQ
                   </a>
@@ -130,7 +157,8 @@ const Navigation = ({
           </NavigationMenu>
         </div>
 
-        <div className="flex items-center justify-center md:justify-end gap-2 flex-wrap">
+        <div className="flex items-center justify-center lg:justify-end gap-2 flex-wrap">
+          
           <ShadcnButton
             asChild
             variant="secondary"
@@ -149,6 +177,7 @@ const Navigation = ({
               <span className="px-2">mickschroeder.com</span>
             </a>
           </ShadcnButton>
+
           <ShadcnButton
             asChild
             variant="secondary"

@@ -120,8 +120,11 @@ const CiteTools = ({
   );
 
   return (
-    <section className="section section-cite">
-      <Card>
+<section
+  id="section-cite"
+  className="section section-cite"
+>      
+  <Card>
         <CardHeader>
           <CardTitle>
             <BookOpen
@@ -129,8 +132,8 @@ const CiteTools = ({
               aria-hidden="true"
             />
             <FormattedMessage
-              id="zbib.enterQuery"
-              defaultMessage="Enter Query"
+              id="zbib.addCitation"
+              defaultMessage="Add Citation"
             />
           </CardTitle>
           <CardAction>

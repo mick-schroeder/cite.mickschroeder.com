@@ -98,6 +98,7 @@ const BibliographySection = (props) => {
 
   return (
     <section
+    id="section-bibliography"
       aria-label="Bibliography"
       className={cx("section", "section-bibliography", {
         loading: !isReady && !isHydrated,

@@ -49,7 +49,7 @@ const StyleSelector = ({
         <SelectTrigger aria-label={ariaLabel} className="w-full">
           <SelectValue placeholder={selected ? selected.title : ariaLabel} />
         </SelectTrigger>
-        <SelectContent className="max-h-72">
+        <SelectContent className="max-h-80">
           {citationStyles.map((cs) => (
             <SelectItem key={cs.name} value={cs.name}>
               {cs.title}
