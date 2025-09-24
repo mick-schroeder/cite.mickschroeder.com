@@ -27,7 +27,7 @@ import Editable from "./ui/editable";
 import PlaceholderBibliography from "./placeholder-bibliography";
 import ExportTools from "./export-tools";
 import { Button as ShadcnButton } from "./ui/button";
-import { Pencil, LoaderCircle, Download } from "lucide-react";
+import { BookOpenText, Pencil, LoaderCircle, Download } from "lucide-react";
 
 const BibliographySection = (props) => {
   const {
@@ -159,8 +159,11 @@ const BibliographySection = (props) => {
                     </h1>
                   )
                 ) : (
-                  <h2 className="bibliography-title h2 pb-2 text-3xl font-semibold tracking-tight flex justify-center">
-                    <div className="flex items-center gap-2 bg-background/80 px-4 py-2 shadow-sm rounded-md max-w-3xl w-full focus-within:border-ring focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background">
+                  <h2 className="bibliography-title h2 pb-2 text-3xl font-semibold tracking-tight flex justify-center text-center">
+                    <div className="flex items-center gap-2 bg-background/80 px-4 py-2 rounded-md max-w-lg w-full
+                ring-1 ring-border focus-within:ring-2 focus-within:ring-primary/60 transition-shadow">
+                      <BookOpenText className="inline h-5 w-5 text-primary" aria-hidden="true" />
+
                       <Editable
                         aria-label="Bibliography Title"
                         placeholder="Bibliography"
@@ -172,11 +175,15 @@ const BibliographySection = (props) => {
                         onFocus={handleTitleEdit}
                         tabIndex={isEditingTitle ? null : 0}
                         className="flex-1 min-w-0"
-                        contentClassName="text-3xl font-semibold tracking-tight text-foreground"
-                        controlClassName="h-10 border-none bg-transparent px-0 text-3xl font-semibold tracking-tight outline-none focus:outline-none focus:ring-0"
+                        controlClassName="w-full bg-transparent text-foreground text-3xl font-semibold tracking-tight
+                      px-2 py-1 rounded-md border border-transparent
+                      focus-visible:outline-none focus:border-transparent
+                      ring-0 focus:ring-2 focus:ring-primary/60
+                      placeholder:text-muted-foreground/70"
                         autoFocus
                         selectOnFocus
                       />
+
                       <ShadcnButton
                         type="button"
                         variant="ghost"

@@ -77,7 +77,7 @@ const ZBib = (props) => {
     <div className={cx(className, "w-full min-h-screen bg-background overflow-x-hidden")}> 
       <div className="zotero-bib-inner">
 
-        <header className="w-full border-b ">
+        <header className="w-full border-b mb-6">
           <Navigation
             onAboutClick={props.onAboutClick}
             onHelpClick={props.onHelpClick}
