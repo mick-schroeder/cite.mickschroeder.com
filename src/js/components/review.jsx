@@ -14,8 +14,8 @@ import { formatBib, formatFallback } from "web-common/cite";
 import { FormattedMessage } from "react-intl";
 import { useFocusManager } from "web-common/hooks";
 import copy from "copy-to-clipboard";
-import { CircleX, Trash, SquarePen, Copy, Check } from "lucide-react";
-import { buildCitationFilename } from "../utils";
+import { Quote, FileText, CircleX, Trash, SquarePen, Copy, Check } from "lucide-react";
+import { buildCitationFilename } from "../filename";
 import {
   Card,
   CardAction,

@@ -1,6 +1,7 @@
 import cx from "classnames";
 import PropTypes from "prop-types";
 import { Fragment, useCallback, useRef, useState, memo } from "react";
+import copy from "copy-to-clipboard";
 import { useIntl, FormattedMessage } from "react-intl";
 // Removed web-common Dropdown imports
 import {
@@ -21,9 +22,10 @@ import {
 import { isTriggerEvent, pick } from "web-common/utils";
 import { useFocusManager } from "web-common/hooks";
 import { Button as ShadcnButton } from "./ui/button";
-import { Quote, Copy, Check, Trash2, Grip, MoreVertical } from "lucide-react";
+import { FileText, Quote, Copy, Check, Trash2, Grip, MoreVertical, Pencil, ArrowUp, ArrowDown, ChevronsUp } from "lucide-react";
 
 import { useDnd } from "../hooks";
+import { buildCitationFilename } from "../filename";
 
 const BIB_ITEM = "BIB_ITEM";
 
@@ -57,6 +59,8 @@ const BibliographyItem = memo((props) => {
   const intl = useIntl();
   const isCopied =
     copySingleState.copied && copySingleState.citationKey === rawItem.key;
+  const [isCopiedFilename, setIsCopiedFilename] = useState(false);
+  const copyFilenameResetTimeout = useRef(null);
 
   const onComplete = useCallback(
     (targetNode, above, current) => {
@@ -105,38 +109,105 @@ const BibliographyItem = memo((props) => {
       ev.stopPropagation();
       ev.preventDefault();
       onDelayedCloseDropdown();
-      onCopySingle(ev.currentTarget.closest("[data-key]")?.dataset.key);
+      const key =
+        ev.currentTarget.closest?.("[data-key]")?.dataset?.key || rawItem.key;
+      onCopySingle(key);
     },
-    [onCopySingle, onDelayedCloseDropdown],
+    [onCopySingle, onDelayedCloseDropdown, rawItem.key],
+  );
+
+  const handleCopyFilenameSingleClick = useCallback(
+    async (ev) => {
+      listItemRef.current?.focus();
+      ev.stopPropagation();
+      ev.preventDefault();
+      onDelayedCloseDropdown();
+
+      // Build fallback plain text from rendered HTML
+      const container = document.createElement("div");
+      container.innerHTML = formattedItem || "";
+      const plain = container.textContent || container.innerText || "";
+
+      const filename = buildCitationFilename(rawItem, plain);
+      let copied = false;
+
+      if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(filename);
+          copied = true;
+        } catch (_) {
+          copied = false;
+        }
+      }
+
+      if (!copied) {
+        copied = copy(filename);
+      }
+
+      if (copied) {
+        setIsCopiedFilename(true);
+        if (copyFilenameResetTimeout.current) {
+          clearTimeout(copyFilenameResetTimeout.current);
+        }
+        copyFilenameResetTimeout.current = setTimeout(() => {
+          setIsCopiedFilename(false);
+          copyFilenameResetTimeout.current = null;
+        }, 1000);
+      }
+    },
+    [formattedItem, onDelayedCloseDropdown, rawItem],
   );
 
   const handleCopyCitationClick = useCallback(
     (ev) => {
-      ev.currentTarget.closest("[data-key]")?.focus();
-      onCopyCitationDialogOpen(ev);
+      listItemRef.current?.focus();
+      ev.stopPropagation();
+      ev.preventDefault();
+      onDelayedCloseDropdown();
+      const key =
+        ev.currentTarget.closest?.("[data-key]")?.dataset?.key || rawItem.key;
+      onCopyCitationDialogOpen({
+        currentTarget: { closest: () => ({ dataset: { key } }) },
+        stopPropagation: () => {},
+      });
     },
-    [onCopyCitationDialogOpen],
+    [onCopyCitationDialogOpen, onDelayedCloseDropdown, rawItem.key],
   );
 
   const handleEditCitationClick = useCallback(
     (ev) => {
-      ev.currentTarget.closest("[data-key]")?.focus();
-      onEditCitationClick(ev);
+      listItemRef.current?.focus();
+      ev.stopPropagation();
+      ev.preventDefault();
+      const key =
+        ev.currentTarget.closest?.("[data-key]")?.dataset?.key || rawItem.key;
+      onEditCitationClick({
+        currentTarget: { closest: () => ({ dataset: { key } }) },
+        stopPropagation: () => {},
+        preventDefault: () => {},
+      });
     },
-    [onEditCitationClick],
+    [onEditCitationClick, rawItem.key],
   );
 
   const handleDeleteCitationClick = useCallback(
     (ev) => {
-      const bibItemEl = ev.currentTarget.closest("[data-key]");
-      const otherBibItemEl =
-        bibItemEl.previousElementSibling || bibItemEl.nextElementSibling;
-      onDeleteCitation(ev);
-      if (otherBibItemEl) {
+      const key =
+        ev.currentTarget.closest?.("[data-key]")?.dataset?.key || rawItem.key;
+      const bibItemEl = listItemRef.current;
+      const otherBibItemEl = bibItemEl
+        ? bibItemEl.previousElementSibling || bibItemEl.nextElementSibling
+        : null;
+      onDeleteCitation({
+        currentTarget: { closest: () => ({ dataset: { key } }) },
+        stopPropagation: () => {},
+        preventDefault: () => {},
+      });
+      if (otherBibItemEl instanceof HTMLElement) {
         otherBibItemEl.focus();
       }
     },
-    [onDeleteCitation],
+    [onDeleteCitation, rawItem.key],
   );
 
   const handleKeyDown = useCallback(
@@ -214,7 +285,7 @@ const BibliographyItem = memo((props) => {
           className="csl-entry-container flex-1 min-w-0 pr-2"
           dangerouslySetInnerHTML={{ __html: formattedItem }}
         />
-        <div className="hidden md:grid md:grid-cols-1">
+        <div className="hidden md:grid md:grid-cols-2 md:gap-1">
           {!isNumericStyle && (
             <>
               <ShadcnButton
@@ -227,7 +298,23 @@ const BibliographyItem = memo((props) => {
               >
                 <Quote className="h-4 w-4 text-muted-foreground" />
               </ShadcnButton>
-              <ShadcnButton
+              
+            </>
+          )}
+          <ShadcnButton
+            variant="destructive"
+            size="sm"
+            title={intl.formatMessage({
+              id: "zbib.citation.deleteEntry",
+              defaultMessage: "Delete Entry",
+            })}
+            onClick={onDeleteCitation}
+            tabIndex={-3}
+          >
+            <Trash2 className="h-4 w-4" />
+          </ShadcnButton>
+
+          <ShadcnButton
                 variant="outline"
                 size="sm"
                 title={intl.formatMessage({
@@ -245,20 +332,24 @@ const BibliographyItem = memo((props) => {
                   <Copy className="h-4 w-4 text-muted-foreground" />
                 )}
               </ShadcnButton>
-            </>
-          )}
-          <ShadcnButton
-            variant="outline"
-            size="sm"
-            title={intl.formatMessage({
-              id: "zbib.citation.deleteEntry",
-              defaultMessage: "Delete Entry",
-            })}
-            onClick={onDeleteCitation}
-            tabIndex={-3}
-          >
-            <Trash2 className="h-4 w-4 text-muted-foreground" />
-          </ShadcnButton>
+              <ShadcnButton
+                variant="outline"
+                size="sm"
+                title={intl.formatMessage({
+                  id: "zbib.citation.copyBibliographyEntryFilename",
+                  defaultMessage: "Copy Bibliography Entry Filename",
+                })}
+                className={cx("btn-copy", { success: isCopiedFilename })}
+                onClick={handleCopyFilenameSingleClick}
+                tabIndex={-3}
+              >
+                {isCopiedFilename ? (
+                  <Check className="h-4 w-4 text-muted-foreground" />
+                ) : (
+                  <FileText className="h-4 w-4 text-muted-foreground" />
+                )}
+              </ShadcnButton>
+          
         </div>
         <div className=" ml-auto">
           <DropdownMenu
@@ -290,6 +381,7 @@ const BibliographyItem = memo((props) => {
                     onClick={handleCopyCitationClick}
                     className="btn"
                   >
+                    <Quote className="mr-2 h-4 w-4" />
                     {copyText}
                   </DropdownMenuItem>
                   <DropdownMenuItem
@@ -298,6 +390,7 @@ const BibliographyItem = memo((props) => {
                       success: isCopied,
                     })}
                   >
+                    <Copy className="mr-2 h-4 w-4" />
                     <span
                       className={cx("inline-feedback", { active: isCopied })}
                     >
@@ -309,21 +402,40 @@ const BibliographyItem = memo((props) => {
                       </span>
                     </span>
                   </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={handleCopyFilenameSingleClick}
+                    className={cx("btn clipboard-trigger", {
+                      success: isCopiedFilename,
+                    })}
+                  >
+                    <FileText className="mr-2 h-4 w-4" />
+                    <span
+                      className={cx("inline-feedback", {
+                        active: isCopiedFilename,
+                      })}
+                    >
+                      <span
+                        className="default-text"
+                        aria-hidden={isCopiedFilename}
+                      >
+                        <FormattedMessage
+                          id="zbib.citation.copyBibliographyEntryFilename"
+                          defaultMessage="Copy Bibliography Entry Filename"
+                        />
+                      </span>
+                    </span>
+                  </DropdownMenuItem>
                 </Fragment>
               )}
-              <DropdownMenuItem
-                onClick={handleEditCitationClick}
-                className="btn"
-              >
-                <FormattedMessage
-                  id="zbib.general.edit"
-                  defaultMessage="Edit"
-                />
+              <DropdownMenuItem onClick={handleEditCitationClick} className="btn">
+                <Pencil className="mr-2 h-4 w-4" />
+                <FormattedMessage id="zbib.general.edit" defaultMessage="Edit" />
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={handleDeleteCitationClick}
                 className="btn"
               >
+                <Trash2 className="mr-2 h-4 w-4" />
                 <FormattedMessage
                   id="zbib.general.delete"
                   defaultMessage="Delete"
@@ -334,6 +446,7 @@ const BibliographyItem = memo((props) => {
                   <DropdownMenuSeparator />
                   {!isFirst && (
                     <DropdownMenuItem onClick={handleMoveTop} className="btn">
+                      <ChevronsUp className="mr-2 h-4 w-4" />
                       <FormattedMessage
                         id="zbib.citation.moveToTop"
                         defaultMessage="Move to Top"
@@ -342,6 +455,7 @@ const BibliographyItem = memo((props) => {
                   )}
                   {!isFirst && (
                     <DropdownMenuItem onClick={handleMoveUp} className="btn">
+                      <ArrowUp className="mr-2 h-4 w-4" />
                       <FormattedMessage
                         id="zbib.citation.moveUp"
                         defaultMessage="Move Up"
@@ -350,6 +464,7 @@ const BibliographyItem = memo((props) => {
                   )}
                   {!isLast && (
                     <DropdownMenuItem onClick={handleMovedown} className="btn">
+                      <ArrowDown className="mr-2 h-4 w-4" />
                       <FormattedMessage
                         id="zbib.citation.moveDown"
                         defaultMessage="Move Down"

@@ -24,7 +24,6 @@ import {
 import { configureZoteroShim } from "web-common/zotero";
 
 import {
-  buildCitationFilename,
   calcOffset,
   dedupMultipleChoiceItems,
   ensureNoBlankItems,
