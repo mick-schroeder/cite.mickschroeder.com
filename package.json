@@ -80,7 +80,6 @@
     "deep-equal": "^2.2.3",
     "es6-promise": "^4.2.8",
     "file-saver": "^2.0.5",
-    "filenamify": "^5.1.1",
     "load-script": "^2.0.0",
     "lucide-react": "^0.474.0",
     "react": "^19.1.1",

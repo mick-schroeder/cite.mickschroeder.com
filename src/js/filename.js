@@ -1,6 +1,51 @@
-import filenamify from "filenamify";
+// Lightweight, browser-safe filename sanitizer to avoid bundling Node-only deps
+// Removes invalid characters, trims spaces/dots, collapses whitespace, and limits length
+const RESERVED_NAMES = new Set([
+  "con",
+  "prn",
+  "aux",
+  "nul",
+  "com1",
+  "com2",
+  "com3",
+  "com4",
+  "com5",
+  "com6",
+  "com7",
+  "com8",
+  "com9",
+  "lpt1",
+  "lpt2",
+  "lpt3",
+  "lpt4",
+  "lpt5",
+  "lpt6",
+  "lpt7",
+  "lpt8",
+  "lpt9",
+]);
 
-const filenamifySegment = (value) => filenamify((value ?? "").toString()).trim();
+const filenamifySegment = (val, maxLen = 240) => {
+  let value = (val ?? "").toString();
+  // Replace path separators with dashes
+  value = value.replace(/[\\/]+/g, "-");
+  // Remove invalid characters for Windows/macOS
+  value = value.replace(/[<>:"/\\|?*\u0000-\u001F]/g, "");
+  // Normalize whitespace
+  value = value.replace(/\s+/g, " ").trim();
+  // Remove trailing dots/spaces (Windows)
+  value = value.replace(/[ .]+$/g, "");
+  // Avoid reserved device names (Windows)
+  const lower = value.toLowerCase();
+  if (RESERVED_NAMES.has(lower)) {
+    value = `${value}-file`;
+  }
+  // Enforce a safe max length (leave headroom for extension)
+  if (value.length > maxLen) {
+    value = `${value.slice(0, maxLen - 1)}…`;
+  }
+  return value;
+};
 
 const extractYearFromItem = (item) => {
   if (!item || typeof item !== "object") {

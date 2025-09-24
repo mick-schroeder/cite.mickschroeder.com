@@ -207,16 +207,14 @@
 }
 
 @layer components {
-
-   
-  section h3 {
-  .link {
+  /* Link styling within section h3 without CSS nesting (keeps Tailwind/PostCSS happy) */
+  section h3 .link {
     color: var(--primary);
   }
-  .link:hover {
+  section h3 .link:hover {
     color: color-mix(in oklch, var(--primary) 80%, black);
   }
-  .dark .link:hover {
+  .dark section h3 .link:hover {
     color: color-mix(in oklch, var(--primary) 85%, white);
   }
 
@@ -226,6 +224,7 @@
     color: var(--muted-foreground);
     border-color: var(--border);
   }
+
   .surface-card {
     @apply rounded-lg border bg-card text-card-foreground shadow;
   }
