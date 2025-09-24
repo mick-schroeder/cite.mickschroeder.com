@@ -22,7 +22,7 @@ Getting The Library
 
 1. `npm run develop`
 
-This will serve demo on http://127.0.0.1:8001.
+This will serve demo on http://127.0.0.1:8000.
 
 You might need to provide configuration options (see below) in order to get storage and translation to work.
 
@@ -71,7 +71,7 @@ Running `npm start` checks for the following environment variables:
 Where to proxy translation requests, defaults to http://localhost:1969. By default Mick Schroeder's Citation Generator will send translation requests to `window.location.origin` and dev server should be configured to proxy these requests to a translation server.
 
 **PORT**
-On which port should the dev server listen, defaults to 8001.
+On which port should the dev server listen, defaults to 8000.
 
 **NO_HYDRATE**
 When accessing a remote bibliography, Mick Schroeder's Citation Generator can hydrate from pre-rendered HTML to avoid a spinner while loading. For development purposes, a hard-coded bibliography is stored in `hydrate.hbs` and is used to serve any request that includes a remote bibliography ID. To disable this behavior, set `NO_HYDRATE` to `1`, which will serve `index.hbs` instead, meaning the bibliography is always rendered client-side with a spinner.

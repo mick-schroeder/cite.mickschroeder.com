@@ -105,7 +105,7 @@ const BibliographySection = (props) => {
       })}
     >
       {" "}
-      <div className="" suppressHydrationWarning={true}>
+      <div className=" border-b border-border" suppressHydrationWarning={true}>
         <Card>
           <CardContent>
             {!isReadOnly && localCitationsCount === 0 ? (
@@ -269,7 +269,7 @@ const BibliographySection = (props) => {
           </CardContent>
         </Card>
         <div className="m-6">
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight py-2 flex items-center gap-2">
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight py-2 flex items-center gap-2 justify-center">
             <Download className="h-6 w-6 text-primary" aria-hidden="true" />
             <FormattedMessage
               id="zbib.bibliography.export"

@@ -28,7 +28,7 @@ import {
 import { citationStylesCount } from "../../../data/citation-styles-data.json";
 
 const About2 = ({ onGetStartedClick }) => (
-  <section className="section pt-12">
+  <section className="section">
     <div className="">
       <h1 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl text-center">
         <FormattedMessage

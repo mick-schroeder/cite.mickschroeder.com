@@ -4,7 +4,7 @@ const http = require("http");
 const serveStatic = require("serve-static");
 const httpProxy = require("http-proxy");
 const translateURL = process.env.TRANSLATE_URL ?? "http://localhost:1969";
-const port = process.env.PORT ?? 8001;
+const port = process.env.PORT ?? 8000;
 
 const serve = serveStatic(path.join(__dirname, "..", "build"), {
   index: false,

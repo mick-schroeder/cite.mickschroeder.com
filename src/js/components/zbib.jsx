@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 import cx from "classnames";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Button as ShadcnButton } from "./ui/button";
+import { Badge } from "./ui/badge";
+
 import { X } from "lucide-react";
 import { pick } from "web-common/utils";
 import { useFocusManager } from "web-common/hooks";
 import About2 from "./about2";
 import Examples from "./examples";
-//import Brand from './brand';
 import BibliographySection from "./bibliographySection";
 import CiteTools from "./cite-tools";
 import ConfirmAddDialog from "./confirm-add-dialog";
@@ -75,128 +76,148 @@ const ZBib = (props) => {
 
   return (
     <div
-     className={cx(
-  "container mx-auto px-4 md:px-6",
-  "overflow-x-clip",
-  className,
-)}
+      className={cx(
+        
+        className,
+      )}
     >
-  <div className="zotero-bib-inner">
-          <header className="bg-background top-0 z-50 w-full">
-            <Navigation />
+      <div className="zotero-bib-inner">
 
-            <div className="messages break-words">
-              {props.messages.map((message) => (
-                <Message
-                  {...message}
-                  {...pick(props, [
-                    "onDismiss",
-                    "onUndoDelete",
-                    "onReadMore",
-                    "onShowDuplicate",
-                  ])}
-                  key={message.id}
-                />
-              ))}
-            </div>
-          </header>
-          <div className="flex justify-center py-2"></div>
-          <div className="mb-6 text-center">
-            <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-              <FormattedMessage
-                id="zbib.brand.description"
-                defaultMessage="What do you want to cite?"
+        <header className="w-full">
+          <Navigation
+            onAboutClick={props.onAboutClick}
+            onHelpClick={props.onHelpClick}
+            onExamplesClick={props.onExamplesClick}
+          />
+
+
+            {props.messages.map((message) => (
+              <Message
+                {...message}
+                {...pick(props, [
+                  "onDismiss",
+                  "onUndoDelete",
+                  "onReadMore",
+                  "onShowDuplicate",
+                ])}
+                key={message.id}
               />
-            </h2>
-            <p className="text-muted-foreground text-xl">
+            ))}
+        
+        </header>
+
+        
+
+        <div className="space-y-8 container mx-auto px-4 sm:px-6 lg:px-8 md:max-w-screen-md lg:max-w-screen-lg">
+          
+          <section className="py-10 text-center">
+          <Badge variant="secondary" className="rounded-full py-2 px-6 border-border mb-3" asChild>
+          <a
+            href="/"
+            className="flex items-center gap-2"
+          >
+            <img
+              src="/static/images/icon-cite-round.svg"
+              className="h-7 w-7 shrink-0"
+              alt=""
+              aria-hidden="true"
+            />
+        <span className="text-xl font-black tracking-tighter self-center whitespace-nowrap text-muted-foreground">
               <FormattedMessage
-                id="zbib.brand.description"
-                defaultMessage="Pick from 10,000+ citation styles, then enter a URL, identifier, or title to begin your bibliography."
+                id="zbib.brand"
+                defaultMessage="Mick Schroeder's Citation Generator"
               />
-            </p>
-          </div>
+            </span>
+          </a>
+           </Badge>
 
-          <div className="py-4">
-            <div className="grid gap-6 xl:grid-cols-5 xl:items-start">
-              <div className="flex flex-col gap-6 xl:col-span-2 min-w-0">
-                {!props.isReadOnly && (
-                  <section className="section section-cite">
-                    <div className="">
-                      <CiteTools
-                        {...pick(props, [
-                          "isTranslating",
-                          "onEditorOpen",
-                          "onTranslationCancel",
-                          "onTranslationRequest",
-                          "identifier",
-                          "citationStyle",
-                          "citationStyles",
-                          "onCitationStyleChanged",
-                        ])}
-                      />
-                    </div>
-                  </section>
-                )}
-                <Examples />
-              </div>
-              <div className="xl:col-span-3 min-w-0">
-                {!props.isReadOnly &&
-                  (props.isTranslating || props.itemUnderReview) && (
-                    <Review
-                      {...pick(props, [
-                        "isTranslating",
-                        "itemUnderReview",
-                        "onReviewEdit",
-                        "onReviewDelete",
-                        "onReviewDismiss",
-                        "styleHasBibliography",
-                      ])}
-                    />
-                  )}
+        <h2 className="my-2 text-3xl sm:text-4xl md:text-5xl tracking-tight font-extrabold leading-[1.15] md:leading-[1.05] text-foreground">
+            <FormattedMessage
+              id="zbib.brand.title"
+              defaultMessage="What do you want to cite?"
+            />
+          </h2>
+          <p className="text-muted-foreground text-xl">
+            <FormattedMessage
+              id="zbib.brand.description"
+              defaultMessage="Pick from 10,000+ citation styles, then enter a URL, identifier, or title to begin your bibliography."
+            />
+          </p>
+        </section>
 
-                <BibliographySection
-                  {...pick(props, [
-                    "bibliography",
-                    "bibliographyRendered",
-                    "bibliographyRenderedNodes",
-                    "citationStyle",
-                    "citationStyles",
-                    "copySingleState",
-                    "getCopyData",
-                    "hydrateItemsCount",
-                    "isHydrated",
-                    "isNoteStyle",
-                    "isNumericStyle",
-                    "isPrintMode",
-                    "isReadOnly",
-                    "isReady",
-                    "isSortedStyle",
-                    "localCitationsCount",
-                    "onCancelPrintMode",
-                    "onCitationCopyDialogOpen",
-                    "onCitationStyleChanged",
-                    "onCopySingle",
-                    "onDeleteCitations",
-                    "onDeleteEntry",
-                    "onDownloadFile",
-                    "onEditorOpen",
-                    "onOverride",
-                    "onReorderCitations",
-                    "onSaveToZoteroShow",
-                    "onTitleChanged",
-                    "styleHasBibliography",
-                    "title",
-                  ])}
-                />
-              </div>
-            </div>
-          </div>
+          {!props.isReadOnly && (
+            <CiteTools
+              {...pick(props, [
+                "isTranslating",
+                "onEditorOpen",
+                "onTranslationCancel",
+                "onTranslationRequest",
+                "identifier",
+                "citationStyle",
+                "citationStyles",
+                "onCitationStyleChanged",
+              ])}
+            />
+          )}
+
+          {!props.isReadOnly &&
+            (props.isTranslating || props.itemUnderReview) && (
+              <Review
+                {...pick(props, [
+                  "isTranslating",
+                  "itemUnderReview",
+                  "onReviewEdit",
+                  "onReviewDelete",
+                  "onReviewDismiss",
+                  "styleHasBibliography",
+                ])}
+              />
+            )}
+
+          <Examples />
+
+          <BibliographySection
+            {...pick(props, [
+              "bibliography",
+              "bibliographyRendered",
+              "bibliographyRenderedNodes",
+              "citationStyle",
+              "citationStyles",
+              "copySingleState",
+              "getCopyData",
+              "hydrateItemsCount",
+              "isHydrated",
+              "isNoteStyle",
+              "isNumericStyle",
+              "isPrintMode",
+              "isReadOnly",
+              "isReady",
+              "isSortedStyle",
+              "localCitationsCount",
+              "onCancelPrintMode",
+              "onCitationCopyDialogOpen",
+              "onCitationStyleChanged",
+              "onCopySingle",
+              "onDeleteCitations",
+              "onDeleteEntry",
+              "onDownloadFile",
+              "onEditorOpen",
+              "onOverride",
+              "onReorderCitations",
+              "onSaveToZoteroShow",
+              "onTitleChanged",
+              "styleHasBibliography",
+              "title",
+            ])}
+          />
+
           {!props.isReadOnly && (
             <About2 onGetStartedClick={props.onGetStartedClick} />
           )}
-          <Footer {...pick(props, ["isReadOnly"])} />
         </div>
-        {/*
+        <Footer {...pick(props, ["isReadOnly"])} />
+      </div>
+      {/*
 					!props.isReadOnly && (
 						<section
 							aria-labelledby="link-to-this-version"
@@ -213,7 +234,7 @@ const ZBib = (props) => {
 						</section>
 					)
 				*/}
-        {/*
+      {/*
 					props.isReadOnly && (
 						<section className="section section-brand">
 							<div className="">
@@ -223,156 +244,156 @@ const ZBib = (props) => {
 					)
 				*/}
 
-        {(!props.isHydrated || (props.isHydrated && props.isReady)) && (
-          <Fragment>
-            <Confirmation
-              isOpen={props.activeDialog === "CONFIRM_SENTENCE_CASE_STYLE"}
-              onConfirm={props.onStyleSwitchConfirm}
-              onCancel={props.onStyleSwitchCancel}
-              title={intl.formatMessage({
-                id: "zbib.confirmCase.title",
-                defaultMessage: "Convert titles to sentence case",
-              })}
-              confirmLabel={intl.formatMessage({
-                id: "zbib.confirmCase.confirm",
-                defaultMessage: "OK, I’ll review titles",
-              })}
-            >
-              <p>
-                <FormattedMessage
-                  id="zbib.confirmCase.explanation"
-                  defaultMessage="The selected style uses sentence case for titles. We can convert titles automatically, but you may still need to fix proper nouns manually."
-                />
-              </p>
-
-              <p>
-                <FormattedMessage
-                  id="zbib.confirmCase.titleCaseExample"
-                  defaultMessage="<b>Title case (as entered):</b> <i>{ titleCaseExample }</i>"
-                  values={{ ...commonFormats, titleCaseExample }}
-                />
-              </p>
-              <p>
-                <FormattedMessage
-                  id="zbib.confirmCase.conversionExample"
-                  defaultMessage="<b>Automatic conversion:</b> <i>{ conversionExample }</i>"
-                  values={{ ...commonFormats, conversionExample }}
-                />
-              </p>
-              <p>
-                <FormattedMessage
-                  id="zbib.confirmCase.sentenceCaseExample"
-                  defaultMessage="<b>Sentence case (corrected):</b> <i>{ sentenceCaseExample }</i>"
-                  values={{ ...commonFormats, sentenceCaseExample }} //eslint-disable-line react/display-name
-                />
-              </p>
-            </Confirmation>
-            <Modal
-              isOpen={props.activeDialog === "SAVE_TO_ZOTERO"}
-              contentlabel={saveToZotero}
-              onRequestClose={props.onSaveToZoteroHide}
-              className={cx("modal modal-centered")}
-            >
-              <div className="modal-content" tabIndex={-1}>
-                <div className="modal-header">
-                  <ShadcnButton
-                    variant="ghost"
-                    size="icon"
-                    onClick={props.onSaveToZoteroHide}
-                  >
-                    <X className="h-6 w-6 text-primary" aria-hidden="true" />
-                  </ShadcnButton>
-                </div>
-                <div className="modal-body">
-                  <p>
-                    <FormattedMessage
-                      id="zbib.saveToZotero.message"
-                      defaultMessage="After you’ve <a>installed Zotero and the Zotero Connector</a>, use the “Save to Zotero” button in your browser’s toolbar to export your bibliography."
-                      values={{
-                        a: (chunk) => (
-                          <a
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href="https://www.zotero.org/download/"
-                          >
-                            {chunk}
-                          </a>
-                        ), //eslint-disable-line react/display-name
-                      }}
-                    />
-                  </p>
-                </div>
-              </div>
-            </Modal>
-            <CopyCitationDialog
-              {...pick(props, [
-                "activeDialog",
-                "copyCitationState",
-                "isNoteStyle",
-                "isNumericStyle",
-                "onCitationCopy",
-                "onCitationCopyDialogClose",
-                "onCitationModifierChange",
-              ])}
-            />
-            {props.isReady && (
-              <Editor
-                {...pick(props, [
-                  "activeDialog",
-                  "editorItem",
-                  "meta",
-                  "onEditorClose",
-                  "onError",
-                  "onItemCreated",
-                  "onItemUpdate",
-                ])}
+      {(!props.isHydrated || (props.isHydrated && props.isReady)) && (
+        <Fragment>
+          <Confirmation
+            isOpen={props.activeDialog === "CONFIRM_SENTENCE_CASE_STYLE"}
+            onConfirm={props.onStyleSwitchConfirm}
+            onCancel={props.onStyleSwitchCancel}
+            title={intl.formatMessage({
+              id: "zbib.confirmCase.title",
+              defaultMessage: "Convert titles to sentence case",
+            })}
+            confirmLabel={intl.formatMessage({
+              id: "zbib.confirmCase.confirm",
+              defaultMessage: "OK, I’ll review titles",
+            })}
+          >
+            <p>
+              <FormattedMessage
+                id="zbib.confirmCase.explanation"
+                defaultMessage="The selected style uses sentence case for titles. We can convert titles automatically, but you may still need to fix proper nouns manually."
               />
-            )}
-            <MultipleChoiceDialog
+            </p>
+
+            <p>
+              <FormattedMessage
+                id="zbib.confirmCase.titleCaseExample"
+                defaultMessage="<b>Title case (as entered):</b> <i>{ titleCaseExample }</i>"
+                values={{ ...commonFormats, titleCaseExample }}
+              />
+            </p>
+            <p>
+              <FormattedMessage
+                id="zbib.confirmCase.conversionExample"
+                defaultMessage="<b>Automatic conversion:</b> <i>{ conversionExample }</i>"
+                values={{ ...commonFormats, conversionExample }}
+              />
+            </p>
+            <p>
+              <FormattedMessage
+                id="zbib.confirmCase.sentenceCaseExample"
+                defaultMessage="<b>Sentence case (corrected):</b> <i>{ sentenceCaseExample }</i>"
+                values={{ ...commonFormats, sentenceCaseExample }} //eslint-disable-line react/display-name
+              />
+            </p>
+          </Confirmation>
+          <Modal
+            isOpen={props.activeDialog === "SAVE_TO_ZOTERO"}
+            contentlabel={saveToZotero}
+            onRequestClose={props.onSaveToZoteroHide}
+            className={cx("modal modal-centered")}
+          >
+            <div className="modal-content" tabIndex={-1}>
+              <div className="modal-header">
+                <ShadcnButton
+                  variant="ghost"
+                  size="icon"
+                  onClick={props.onSaveToZoteroHide}
+                >
+                  <X className="h-6 w-6 text-primary" aria-hidden="true" />
+                </ShadcnButton>
+              </div>
+              <div className="modal-body">
+                <p>
+                  <FormattedMessage
+                    id="zbib.saveToZotero.message"
+                    defaultMessage="After you’ve <a>installed Zotero and the Zotero Connector</a>, use the “Save to Zotero” button in your browser’s toolbar to export your bibliography."
+                    values={{
+                      a: (chunk) => (
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href="https://www.zotero.org/download/"
+                        >
+                          {chunk}
+                        </a>
+                      ), //eslint-disable-line react/display-name
+                    }}
+                  />
+                </p>
+              </div>
+            </div>
+          </Modal>
+          <CopyCitationDialog
+            {...pick(props, [
+              "activeDialog",
+              "copyCitationState",
+              "isNoteStyle",
+              "isNumericStyle",
+              "onCitationCopy",
+              "onCitationCopyDialogClose",
+              "onCitationModifierChange",
+            ])}
+          />
+          {props.isReady && (
+            <Editor
               {...pick(props, [
                 "activeDialog",
-                "isTranslatingMore",
-                "moreItemsLink",
-                "multipleChoiceItems",
-                "onMultipleChoiceCancel",
-                "onMultipleChoiceMore",
-                "onMultipleChoiceSelect",
+                "editorItem",
+                "meta",
+                "onEditorClose",
+                "onError",
+                "onItemCreated",
+                "onItemUpdate",
               ])}
             />
-            <StyleInstaller
-              {...pick(props, [
-                "activeDialog",
-                "citationStyle",
-                "citationStyles",
-                "isStylesDataLoading",
-                "onStyleInstallerCancel",
-                "onStyleInstallerDelete",
-                "onStyleInstallerSelect",
-                "stylesData",
-              ])}
-            />
-            <ConfirmAddDialog
-              {...pick(props, [
-                "activeDialog",
-                "onConfirmAddCancel",
-                "onConfirmAddConfirm",
-                "incomingStyle",
-                "itemToConfirm",
-                "selectedStyle",
-              ])}
-            />
-            <MultipleItemDialog
-              {...pick(props, [
-                "activeDialog",
-                "multipleItems",
-                "multipleChoiceItems",
-                "onMultipleItemsCancel",
-                "onMultipleItemsSelect",
-              ])}
-            />
-          </Fragment>
-        )}
-      </div>
+          )}
+          <MultipleChoiceDialog
+            {...pick(props, [
+              "activeDialog",
+              "isTranslatingMore",
+              "moreItemsLink",
+              "multipleChoiceItems",
+              "onMultipleChoiceCancel",
+              "onMultipleChoiceMore",
+              "onMultipleChoiceSelect",
+            ])}
+          />
+          <StyleInstaller
+            {...pick(props, [
+              "activeDialog",
+              "citationStyle",
+              "citationStyles",
+              "isStylesDataLoading",
+              "onStyleInstallerCancel",
+              "onStyleInstallerDelete",
+              "onStyleInstallerSelect",
+              "stylesData",
+            ])}
+          />
+          <ConfirmAddDialog
+            {...pick(props, [
+              "activeDialog",
+              "onConfirmAddCancel",
+              "onConfirmAddConfirm",
+              "incomingStyle",
+              "itemToConfirm",
+              "selectedStyle",
+            ])}
+          />
+          <MultipleItemDialog
+            {...pick(props, [
+              "activeDialog",
+              "multipleItems",
+              "multipleChoiceItems",
+              "onMultipleItemsCancel",
+              "onMultipleItemsSelect",
+            ])}
+          />
+        </Fragment>
+      )}
+    </div>
   );
 };
 

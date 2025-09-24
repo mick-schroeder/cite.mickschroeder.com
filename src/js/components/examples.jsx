@@ -12,23 +12,38 @@ import {
   Database,
   Newspaper,
 } from "lucide-react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "./ui/card";
 
 const Examples = () => (
-  <div id="examples" className="mt-4">
-    <div className="rounded-lg border bg-card p-5 md:p-6 shadow-sm">
-      <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">
-        <ListChecks
-          className="inline h-5 w-5 text-primary -mt-1 mr-2"
-          aria-hidden="true"
-        />
-        <FormattedMessage
-          id="zbib.about.section.examples"
-          description="examples-section-title"
-          defaultMessage="Examples"
-        />
-      </h3>
+  <section className="section" id="examples">
+    <Card>
+      <CardHeader>
+        <CardTitle>
+          <ListChecks
+            className="inline h-5 w-5 text-primary mr-2"
+            aria-hidden="true"
+          />
+          <FormattedMessage
+            id="zbib.about.section.examples"
+            description="examples-section-title"
+            defaultMessage="Query Examples"
+          />
+        </CardTitle>
+        <CardDescription>
+          <FormattedMessage
+            id="examples.description"
+            defaultMessage="Backed by the open-source community, it understands hundreds of formats, from academic journals and library catalogs to news sites, PubMed, DOIs, ISBNs, and more."
+          />
+        </CardDescription>{" "}
+      </CardHeader>
 
-      <div className="mt-6 grid gap-6 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-1 lg:gap-8">
+      <CardContent className="grid gap-6 sm:grid-cols-2">
         {/* Website URLs */}
         <div className="flex items-start gap-3">
           <span className="rounded-md bg-background p-1.5">
@@ -227,9 +242,9 @@ const Examples = () => (
             </ul>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+      </CardContent>
+    </Card>
+  </section>
 );
 
 export default memo(Examples);

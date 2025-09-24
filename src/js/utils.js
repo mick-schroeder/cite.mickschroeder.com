@@ -1,6 +1,6 @@
 import balanced from "balanced-match";
+import filenamify from "filenamify";
 import { CiteprocWrapper } from "web-common/cite";
-
 import ZoteroBib from "./zotero-translation-client";
 import supportedLocales from "../../data/supported-locales.json";
 
@@ -371,6 +371,114 @@ const calcOffset = () => {
   return md.matches ? 48 : 24;
 };
 
+const filenamifySegment = (value) =>
+  filenamify((value ?? "").toString()).trim();
+
+const extractYearFromItem = (item) => {
+  if (!item || typeof item !== "object") {
+    return "";
+  }
+
+  const fromDateLike = (value) => {
+    const parsedYear = new Date(value).getFullYear();
+    if (!Number.isNaN(parsedYear)) {
+      return filenamifySegment(parsedYear.toString());
+    }
+    const match = `${value}`.match(/\d{4}/);
+    if (match) {
+      return filenamifySegment(match[0]);
+    }
+    return filenamifySegment(value);
+  };
+
+  if (item.date) {
+    return fromDateLike(item.date);
+  }
+
+  const issued = item.issued;
+  if (issued) {
+    const normalizeParts = (parts) => {
+      if (!Array.isArray(parts)) {
+        return "";
+      }
+      const normalized = Array.isArray(parts[0]) ? parts[0] : parts;
+      const year = normalized?.[0];
+      if (year === undefined || year === null) {
+        return "";
+      }
+      return filenamifySegment(year);
+    };
+
+    const partsValue =
+      issued["date-parts"] || issued.dateParts || issued.dateparts;
+    const fromParts = normalizeParts(partsValue);
+    if (fromParts) {
+      return fromParts;
+    }
+
+    if (Array.isArray(issued)) {
+      const fromArray = normalizeParts(issued);
+      if (fromArray) {
+        return fromArray;
+      }
+    }
+
+    const issuedRaw = issued.raw || issued.literal;
+    if (issuedRaw) {
+      return fromDateLike(issuedRaw);
+    }
+
+    if (typeof issued === "string") {
+      return fromDateLike(issued);
+    }
+  }
+
+  return "";
+};
+
+const buildCitationFilename = (item, fallbackPlainCitation = "") => {
+  if (!item) {
+    return "citation.pdf";
+  }
+
+  const sanitizedCitation = filenamifySegment(
+    (fallbackPlainCitation || "").replace(/^\d+\.\s*/, "").trim(),
+  );
+
+  const creator = Array.isArray(item.creators) ? item.creators[0] : null;
+  const lastName = filenamifySegment(
+    creator?.lastName || creator?.family || creator?.name,
+  );
+  const firstName = filenamifySegment(creator?.firstName || creator?.given);
+
+  const journalLike = filenamifySegment(
+    item.journalAbbreviation ||
+      item.publicationTitle ||
+      item.containerTitle ||
+      item.conferenceName,
+  );
+  const title = filenamifySegment(item.title);
+  const yearString = extractYearFromItem(item);
+
+  let filename = "";
+  if (lastName && firstName && journalLike && yearString && title) {
+    filename = filenamifySegment(
+      `${lastName}, ${firstName} - ${journalLike} (${yearString}) ${title}`,
+    );
+  }
+
+  if (!filename) {
+    filename = sanitizedCitation || "citation";
+  }
+
+  filename = filename.trim() || "citation";
+  if (!filename.toLowerCase().endsWith(".pdf")) {
+    filename = `${filename}.pdf`;
+  }
+
+  return filename;
+};
+
 //TODO: a nicer API for Zotero -> CSL conversion
 const getItemsCSL = (items) => {
   const bib = new ZoteroBib({
@@ -463,6 +571,7 @@ const getMetaFromSchema = (schema, locale) => {
 
 export {
   calcOffset,
+  buildCitationFilename,
   dedupMultipleChoiceItems,
   ensureNoBlankItems,
   enumerateObjects,

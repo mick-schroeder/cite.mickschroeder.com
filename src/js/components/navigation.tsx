@@ -44,7 +44,7 @@ const Navigation = ({
 
   return (
     <nav
-      className="w-full px-4 md:px-6 py-2 mb-4 md:mb-6"
+      className="w-full px-4 md:px-6 py-2 mb-4 md:mb-6 border-b border-border bg-background/80 "
       aria-label={navLabel}
       tabIndex={0}
       ref={navRef as unknown as React.RefObject<HTMLDivElement>}
@@ -52,7 +52,7 @@ const Navigation = ({
       onBlur={receiveBlur}
       onKeyDown={handleKeyDown}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center gap-3">
+      <div className="lg:max-w-screen-lg  md:max-w-screen-md mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center gap-3">
         <div className="flex items-center gap-2 md:col-span-2 lg:col-span-1 justify-center md:justify-start min-w-0 text-center md:text-left">
           <a
             href="/"
@@ -67,7 +67,11 @@ const Navigation = ({
             <span className="text-lg md:text-xl font-black tracking-tight text-foreground">
               <FormattedMessage
                 id="zbib.brand"
-                defaultMessage="Mick Schroeder's Citation Generator"
+                defaultMessage="{owner} {product}"
+                values={{
+                  owner: <span className="whitespace-nowrap">Mick Schroeder's</span>,
+                  product: <span className="whitespace-nowrap">Citation Generator</span>,
+                }}
               />
             </span>
           </a>
@@ -81,7 +85,7 @@ const Navigation = ({
                   <button
                     type="button"
                     onClick={onAboutClick}
-                    className="px-3 py-1.5 rounded-md text-sm hover:underline"
+                    className="px-3 py-1.5 rounded-md text-sm "
                   >
                     <FormattedMessage id="zbib.about" defaultMessage="About" />
                   </button>
@@ -92,7 +96,7 @@ const Navigation = ({
                   <button
                     type="button"
                     onClick={onHelpClick}
-                    className="px-3 py-1.5 rounded-md text-sm hover:underline"
+                    className="px-3 py-1.5 rounded-md text-sm "
                   >
                     <FormattedMessage id="zbib.help" defaultMessage="Help" />
                   </button>
@@ -103,7 +107,7 @@ const Navigation = ({
                   <button
                     type="button"
                     onClick={onExamplesClick}
-                    className="px-3 py-1.5 rounded-md text-sm hover:underline"
+                    className="px-3 py-1.5 rounded-md text-sm "
                   >
                     <FormattedMessage
                       id="zbib.examples"
@@ -116,7 +120,7 @@ const Navigation = ({
                 <NavigationMenuLink asChild tabIndex={-2}>
                   <a
                     href="/faq"
-                    className="px-3 py-1.5 rounded-md text-sm hover:underline"
+                    className="px-3 py-1.5 rounded-md text-sm "
                   >
                     FAQ
                   </a>

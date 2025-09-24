@@ -24,6 +24,7 @@ import {
 import { configureZoteroShim } from "web-common/zotero";
 
 import {
+  buildCitationFilename,
   calcOffset,
   dedupMultipleChoiceItems,
   ensureNoBlankItems,
@@ -393,7 +394,6 @@ const BibWebContainer = (props) => {
     citationKey: null,
     copied: false,
   });
-
   const [title, setTitle] = useState(
     props.title ||
       (remoteId ? "" : localStorage.getItem("schroeder-cite-title") || ""),
@@ -926,6 +926,7 @@ const BibWebContainer = (props) => {
     },
     [getCopyData, state.bibliography.lookup],
   );
+
 
   const handleCopyToClipboard = useCallback((ev) => {
     if (copyDataInclude.current) {

@@ -4,6 +4,7 @@ import {
   useCallback,
   useEffect,
   useId,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -14,6 +15,7 @@ import { FormattedMessage } from "react-intl";
 import { useFocusManager } from "web-common/hooks";
 import copy from "copy-to-clipboard";
 import { CircleX, Trash, SquarePen, Copy, Check } from "lucide-react";
+import { buildCitationFilename } from "../utils";
 import {
   Card,
   CardAction,
@@ -41,6 +43,8 @@ const Review = ({
   const toolbarRef = useRef(null);
   const copyResetTimeout = useRef(null);
   const [isCopied, setIsCopied] = useState(false);
+  const [isCopiedFilename, setIsCopiedFilename] = useState(false);
+
   const { focusNext, focusPrev, receiveFocus, receiveBlur } =
     useFocusManager(toolbarRef);
 
@@ -89,12 +93,24 @@ const Review = ({
     return container.textContent || container.innerText || "";
   }, []);
 
+  const plainCitation = useMemo(
+    () => (html ? stripHtml(html) : ""),
+    [html, stripHtml],
+  );
+
+  const filename = useMemo(() => {
+    if (!itemUnderReview?.item) {
+      return "";
+    }
+    return buildCitationFilename(itemUnderReview.item, plainCitation);
+  }, [itemUnderReview, plainCitation]);
+
   const handleReviewCopyCitation = useCallback(async () => {
     if (!html) {
       return;
     }
 
-    const plain = stripHtml(html);
+    const plain = plainCitation;
     let copied = false;
 
     if (
@@ -127,14 +143,53 @@ const Review = ({
       }
       copyResetTimeout.current = setTimeout(() => {
         setIsCopied(false);
+        setIsCopiedFilename(false);
         copyResetTimeout.current = null;
       }, 1500);
       resetFocus();
     }
-  }, [html, stripHtml, resetFocus]);
+  }, [html, plainCitation, resetFocus]);
+
+  const handleReviewCopyFilenameCitation = useCallback(async () => {
+    if (!filename) {
+      return;
+    }
+
+    let copied = false;
+
+    if (
+      typeof navigator !== "undefined" &&
+      navigator.clipboard?.writeText
+    ) {
+      try {
+        await navigator.clipboard.writeText(filename);
+        copied = true;
+      } catch (_) {
+        copied = false;
+      }
+    }
+
+    if (!copied) {
+      copied = copy(filename);
+    }
+
+    if (copied) {
+      setIsCopiedFilename(true);
+      if (copyResetTimeout.current) {
+        clearTimeout(copyResetTimeout.current);
+      }
+      copyResetTimeout.current = setTimeout(() => {
+        setIsCopied(false);
+        setIsCopiedFilename(false);
+        copyResetTimeout.current = null;
+      }, 1500);
+      resetFocus();
+    }
+  }, [filename, resetFocus]);
 
   useEffect(() => {
     setIsCopied(false);
+    setIsCopiedFilename(false);
     if (copyResetTimeout.current) {
       clearTimeout(copyResetTimeout.current);
       copyResetTimeout.current = null;
@@ -146,6 +201,8 @@ const Review = ({
       if (copyResetTimeout.current) {
         clearTimeout(copyResetTimeout.current);
       }
+      setIsCopied(false);
+      setIsCopiedFilename(false);
     },
     [],
   );
@@ -210,10 +267,9 @@ const Review = ({
                   defaultMessage="Filename"
                 />
               </h3>
-              <div
-                className="bg-background p-6 rounded-lg border shadow-md text-sm"
-                dangerouslySetInnerHTML={{ __html: html }}
-              />
+              <div className="bg-background p-6 rounded-lg border shadow-md text-sm break-words">
+                {filename}
+              </div>
             </CardContent>
             <CardFooter>
               <div className="">
@@ -228,14 +284,29 @@ const Review = ({
                 >
                   <ShadcnButton
                     tabIndex={-2}
-                    onClick={handleReviewEdit}
+                    type="button"
                     variant="outline"
+                    onClick={handleReviewCopyFilenameCitation}
+                    aria-live="polite"
+                    className="flex items-center gap-2"
                   >
-                    <Copy className="size-4" aria-hidden="true" />
-                    <FormattedMessage
-                      id="zbib.review.copyFilename"
-                      defaultMessage="Copy Filename"
-                    />
+                    {isCopiedFilename ? (
+                      <>
+                        <Check className="size-4" aria-hidden="true" />
+                        <FormattedMessage
+                          id="zbib.review.copiedFilename"
+                          defaultMessage="Filename Copied"
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="size-4" aria-hidden="true" />
+                        <FormattedMessage
+                          id="zbib.review.copyFilename"
+                          defaultMessage="Copy Filename"
+                        />
+                      </>
+                    )}
                   </ShadcnButton>
                   <ShadcnButton
                     tabIndex={-2}

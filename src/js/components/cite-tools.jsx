@@ -120,24 +120,20 @@ const CiteTools = ({
   );
 
   return (
-    <div className="cite-tools">
+    <section className="section section-cite">
       <Card>
-        <CardHeader className="grid gap-4 md:grid-cols-[1fr_auto] md:items-start">
-          <div className="text-left">
-            <CardTitle className="inline-flex items-center gap-2 primary">
-              <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">
-                <BookOpen
-                  className="inline h-5 w-5 text-primary -mt-1 mr-2"
-                  aria-hidden="true"
-                />
-                <FormattedMessage
-                  id="zbib.enterQuery"
-                  defaultMessage="Enter Query"
-                />
-              </h3>
-            </CardTitle>
-          </div>
-          <CardAction className="">
+        <CardHeader>
+          <CardTitle>
+            <BookOpen
+              className="inline h-5 w-5 text-primary mr-2"
+              aria-hidden="true"
+            />
+            <FormattedMessage
+              id="zbib.enterQuery"
+              defaultMessage="Enter Query"
+            />
+          </CardTitle>
+          <CardAction>
             <ShadcnButton
               variant="outline"
               size="sm"
@@ -235,7 +231,7 @@ const CiteTools = ({
           </ShadcnButton>
         </CardFooter>
       </Card>
-    </div>
+    </section>
   );
 };
 

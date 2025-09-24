@@ -52,7 +52,7 @@
     "bootstrap": "git submodule sync --recursive && git submodule update --init --recursive --depth 1",
     "devel:tailwind": "tailwindcss -c tailwind.config.cjs -i src/styles/tailwind.css -o build/static/tailwind.css --watch",
     "prettier": "prettier --check .",
-    "prettier:fix": "prettier --write .",
+    "prettier:write": "prettier --write .",
     "preinstall": "npm run bootstrap"
   },
   "dependencies": {
@@ -80,6 +80,7 @@
     "deep-equal": "^2.2.3",
     "es6-promise": "^4.2.8",
     "file-saver": "^2.0.5",
+    "filenamify": "^5.1.1",
     "load-script": "^2.0.0",
     "lucide-react": "^0.474.0",
     "react": "^19.1.1",
