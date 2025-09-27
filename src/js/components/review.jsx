@@ -14,7 +14,7 @@ import { formatBib, formatFallback } from "web-common/cite";
 import { FormattedMessage } from "react-intl";
 import { useFocusManager } from "web-common/hooks";
 import copy from "copy-to-clipboard";
-import { Quote, FileText, CircleX, Trash, SquarePen, Copy, Check, ExternalLink } from "lucide-react";
+import { Quote, FileText, CircleX, Trash, SquarePen, Copy, Check, ExternalLink, BookOpenCheck } from "lucide-react";
 import { buildCitationFilename, buildUnpaywallUrl } from "../filename";
 import {
   Card,
@@ -232,7 +232,9 @@ const Review = ({
         <Fragment>
           <Card>
             <CardHeader>
-              <CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <BookOpenCheck               className="inline h-5 w-5 text-primary mr-2"
+ aria-hidden="true" />
                 <FormattedMessage
                   id="zbib.review.title"
                   defaultMessage="Review Citation"
@@ -263,7 +265,8 @@ const Review = ({
               </CardAction>
             </CardHeader>
             <CardContent>
-              <h3 className="my-2 text-muted-foreground font-bold">
+              <h3 className="my-2 text-muted-foreground font-bold flex items-center gap-2">
+                <Quote className="size-4" aria-hidden="true" />
                 <FormattedMessage
                   id="zbib.review.citation"
                   defaultMessage="Citation"
@@ -273,7 +276,8 @@ const Review = ({
                 className="bg-background p-6 rounded-lg border shadow-md text-sm"
                 dangerouslySetInnerHTML={{ __html: html }}
               />
-              <h3 className="my-2 text-muted-foreground font-bold">
+              <h3 className="my-2 text-muted-foreground font-bold flex items-center gap-2">
+                <FileText className="size-4" aria-hidden="true" />
                 <FormattedMessage
                   id="zbib.review.filename"
                   defaultMessage="Filename"

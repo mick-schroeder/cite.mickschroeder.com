@@ -205,16 +205,20 @@ const CopyCitationDialog = (props) => {
   const handleConfirm = useCallback(() => {
     if (onCitationCopy()) {
       setIsCopied(true);
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+      }
       timeout.current = setTimeout(() => {
         onCitationCopyDialogClose();
         setIsCopied(false);
+        timeout.current = null;
       }, 1000);
     }
   }, [onCitationCopy, onCitationCopyDialogClose]);
 
   const handleInputCommit = useCallback(
     (_val, _hasChanged, ev) => {
-      if (ev.type === "keydown") {
+      if (ev.type === "keydown" && (ev.key === "Enter" || ev.key === "NumpadEnter")) {
         handleConfirm();
         ev.preventDefault();
       }

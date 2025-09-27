@@ -1,6 +1,7 @@
 import { Fragment, memo, useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { FormattedMessage, useIntl } from "react-intl";
+import { Trash2 } from "lucide-react";
 import { Button as ShadcnButton } from "./ui/button";
 
 import Confirmation from "./confirmation";
@@ -29,9 +30,10 @@ const DeleteAllButton = (props) => {
         key="delete-all-button"
         variant="destructive"
         size="lg"
-        className="delete-all"
+        className="delete-all flex items-center gap-2"
         onClick={handleDeleteAll}
       >
+        <Trash2 className="size-4" aria-hidden="true" />
         <FormattedMessage
           id="zbib.bibliography.deleteAll"
           defaultMessage="Delete Bibliography"
