@@ -123,18 +123,21 @@ const ZBib = (props) => {
           </a>
            </Badge>
 
-        <h2 className="text-3xl sm:text-4xl md:text-5xl tracking-tight font-extrabold leading-tight text-foreground">
-            <FormattedMessage
-              id="zbib.brand.title"
-              defaultMessage="What do you want to cite?"
-            />
-          </h2>
-          <p className="text-muted-foreground text-base sm:text-lg">
-            <FormattedMessage
-              id="zbib.brand.description"
-              defaultMessage="Pick from 10,000+ citation styles, then enter a URL, identifier, or title to begin your bibliography."
-            />
-          </p>
+       <h1
+  className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight sm:leading-tight md:leading-tight [text-wrap:balance]"
+>
+  <FormattedMessage
+    id="zbib.brand.title"
+    defaultMessage="Generate free citations and tidy PDF filenames."
+  />
+</h1>
+
+<p className="text-muted-foreground text-base sm:text-lg max-w-prose mx-auto">
+  <FormattedMessage
+    id="zbib.brand.description"
+    defaultMessage="Paste a URL, DOI, PMID, or ISBN. Choose from 10,000+ styles (AMA, APA, MLA, Chicago). Copy a citation or build a full bibliography. We also check Unpaywall for legal open-access PDFs and create a nice PDF filename."
+  />
+</p>
         </section>
 
           {!props.isReadOnly && (

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useIntl, FormattedMessage } from "react-intl";
 import { Button as ShadcnButton } from "./ui/button";
 import { cn } from "../lib/utils";
-import { Loader2, X, BookOpen, Search, BookType } from "lucide-react";
+import { Loader2, X, PlusCircle, Search, BookType } from "lucide-react";
 import Input from "./form/input";
 import { usePrevious } from "web-common/hooks";
 import {
@@ -39,7 +39,7 @@ const CiteTools = ({
   const prompt = intl.formatMessage({
     id: "zbib.citePrompt",
     defaultMessage:
-      'Enter a URL, PubMed ID (PMID), ISBN, DOI, arXiv ID, or title..."',
+      'Enter a URL, PubMed ID (PMID), ISBN, DOI, arXiv ID..."',
   });
 
   const styleOptions = Array.isArray(citationStyles) ? citationStyles : [];
@@ -127,7 +127,7 @@ const CiteTools = ({
   <Card>
         <CardHeader>
           <CardTitle>
-            <BookOpen
+            <PlusCircle
               className="inline h-5 w-5 text-primary mr-2"
               aria-hidden="true"
             />

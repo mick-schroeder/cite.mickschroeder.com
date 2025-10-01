@@ -30,13 +30,13 @@ import { citationStylesCount } from "../../../data/citation-styles-data.json";
 const About2 = ({ onGetStartedClick }) => (
   <section className="section">
     <div className="">
-      <h1 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl text-center">
+      <h2 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl text-center">
         <FormattedMessage
           id="zbib.about.title"
           description="about-title"
           defaultMessage="Suggest citations from PubMed, journals, websites and books."
         />
-      </h1>
+      </h2>
       <p className="lead mx-auto mt-3 max-w-3xl text-lg text-muted-foreground text-center">
         <FormattedMessage
           id="zbib.about.summary"
@@ -47,7 +47,7 @@ const About2 = ({ onGetStartedClick }) => (
           }} //eslint-disable-line react/display-name
         />
       </p>
-      <h2
+      <h3
         id="about"
         className="scroll-m-20 border-b pb-2 pt-6 text-3xl font-semibold tracking-tight first:mt-0"
       >
@@ -60,19 +60,19 @@ const About2 = ({ onGetStartedClick }) => (
           description="about-section-title"
           defaultMessage="About"
         />
-      </h2>
+      </h3>
       <section className="features mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
           <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Quote className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
-          <h2 className="text-lg font-semibold tracking-tight">
+          <h3 className="text-lg font-semibold tracking-tight">
             <FormattedMessage
               id="zbib.about.suggest.header"
               description="suggesting-citation-header"
               defaultMessage="Suggesting a citation"
             />
-          </h2>
+          </h3>
           <p className="mt-2 text-sm text-muted-foreground">
             <FormattedMessage
               id="zbib.about.suggest.description"
@@ -97,13 +97,13 @@ const About2 = ({ onGetStartedClick }) => (
           <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Palette className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
-          <h2 className="text-lg font-semibold tracking-tight">
+          <h3 className="text-lg font-semibold tracking-tight">
             <FormattedMessage
               id="zbib.about.styles.header"
               description="citation-styles-header"
               defaultMessage="10,000+ citation styles"
             />
-          </h2>
+          </h3>
           <p className="mt-2 text-sm text-muted-foreground">
             <FormattedMessage
               id="zbib.about.styles.description"
@@ -152,13 +152,13 @@ const About2 = ({ onGetStartedClick }) => (
           <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Save className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
-          <h2 className="text-lg font-semibold tracking-tight">
+          <h3 className="text-lg font-semibold tracking-tight">
             <FormattedMessage
               id="zbib.about.autosave.header"
               description="autosave-header"
               defaultMessage="Autosave"
             />
-          </h2>
+          </h3>
           <p className="mt-2 text-sm text-muted-foreground">
             <FormattedMessage
               id="zbib.about.autosave.description"
@@ -173,7 +173,7 @@ const About2 = ({ onGetStartedClick }) => (
           <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Code2 className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
-          <h2 className="text-lg font-semibold tracking-tight">Open Source</h2>
+          <h3 className="text-lg font-semibold tracking-tight">Open Source</h3>
           <p className="mt-2 text-sm text-muted-foreground">
             Based on{" "}
             <a
@@ -241,9 +241,9 @@ const About2 = ({ onGetStartedClick }) => (
           <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Puzzle className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
-          <h2 className="text-lg font-semibold tracking-tight">
+          <h3 className="text-lg font-semibold tracking-tight">
             Browser Extensions
-          </h2>
+          </h3>
           <p className="mt-2 text-sm text-muted-foreground">
             Automatically load the current page in your browser.
           </p>
@@ -268,7 +268,7 @@ const About2 = ({ onGetStartedClick }) => (
           </div>
         </div>
       </section>
-      <h2
+      <h3
         id="help"
         className="scroll-m-20 border-b pb-2 pt-6 text-3xl font-semibold tracking-tight first:mt-0"
       >
@@ -281,19 +281,19 @@ const About2 = ({ onGetStartedClick }) => (
           description="help-section-title"
           defaultMessage="Help"
         />
-      </h2>
+      </h3>
       <section className="features mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <div className="rounded-lg border bg-card p-6 shadow-sm hover:shadow transition motion-reduce:transition-none">
           <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Type className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
-          <h2 className="text-lg font-semibold tracking-tight">
+          <h3 className="text-lg font-semibold tracking-tight">
             <FormattedMessage
               id="zbib.about.manualEntry.header"
               description="manual-entry-header"
               defaultMessage="Manual entry"
             />
-          </h2>
+          </h3>
           <p className="mt-2 text-sm text-muted-foreground">
             <FormattedMessage
               id="zbib.about.manualEntry.description"
@@ -307,13 +307,13 @@ const About2 = ({ onGetStartedClick }) => (
           <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Pencil className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
-          <h2 className="text-lg font-semibold tracking-tight">
+          <h3 className="text-lg font-semibold tracking-tight">
             <FormattedMessage
               id="zbib.about.editingItem.header"
               description="editing-item-header"
               defaultMessage="Editing an item"
             />
-          </h2>
+          </h3>
           <p className="mt-2 text-sm text-muted-foreground">
             <FormattedMessage
               id="zbib.about.editingItem.description"
@@ -327,13 +327,13 @@ const About2 = ({ onGetStartedClick }) => (
           <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Trash2 className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
-          <h2 className="text-lg font-semibold tracking-tight">
+          <h3 className="text-lg font-semibold tracking-tight">
             <FormattedMessage
               id="zbib.about.deletingItems.header"
               description="deleting-items-header"
               defaultMessage="Deleting items"
             />
-          </h2>
+          </h3>
           <p className="mt-2 text-sm text-muted-foreground">
             <FormattedMessage
               id="zbib.about.deletingItems.description"
@@ -359,13 +359,13 @@ const About2 = ({ onGetStartedClick }) => (
               aria-hidden="true"
             />
           </div>
-          <h2 className="text-lg font-semibold tracking-tight">
+          <h3 className="text-lg font-semibold tracking-tight">
             <FormattedMessage
               id="zbib.about.copyCitation.header"
               description="copy-citation-header"
               defaultMessage="Copy Citation / Note"
             />
-          </h2>
+          </h3>
           <p className="mt-2 text-sm text-muted-foreground">
             <FormattedMessage
               id="zbib.about.copyCitation.description"
@@ -379,9 +379,9 @@ const About2 = ({ onGetStartedClick }) => (
           <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <Quote className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
-          <h2 className="text-lg font-semibold tracking-tight">
+          <h3 className="text-lg font-semibold tracking-tight">
             Copy In-Text Citation and Notes
-          </h2>
+          </h3>
           <p className="mt-2 text-sm text-muted-foreground">
             Click the “Copy Note” icon for in-text citations and
             endnotes/footnotes.
@@ -392,9 +392,9 @@ const About2 = ({ onGetStartedClick }) => (
           <div className="mb-4 inline-flex items-center justify-center rounded-md bg-background p-2">
             <FileDown className="h-8 w-8 text-primary" aria-hidden="true" />
           </div>
-          <h2 className="text-lg font-semibold tracking-tight">
+          <h3 className="text-lg font-semibold tracking-tight">
             Export Bibliography
-          </h2>
+          </h3>
           <p className="mt-2 text-sm text-muted-foreground">
             Export your bibliography into many formats. Copy a formatted
             bibliography to your clipboard, export HTML (for websites) or

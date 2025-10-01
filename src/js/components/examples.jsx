@@ -5,12 +5,11 @@ import {
   Microscope,
   Hash,
   Book,
-  ListChecks,
-  Atom,
-  FileSearch,
+  Lightbulb,
   Library,
   Database,
   Newspaper,
+  Layers,
 } from "lucide-react";
 import {
   Card,
@@ -25,7 +24,7 @@ const Examples = () => (
     <Card>
       <CardHeader>
         <CardTitle>
-          <ListChecks
+          <Lightbulb
             className="inline h-5 w-5 text-primary mr-2"
             aria-hidden="true"
           />
@@ -159,7 +158,7 @@ const Examples = () => (
               <li>
                 <a
                   className="underline underline-offset-4 hover:text-foreground break-all"
-                  href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fwww.amazon.com%2Fs%3Fk%3D0702052302"
+                  href="https://cite.mickschroeder.com/?q=https%3A%2F%2Fwww.amazon.com%2FAnatomy-Leatherbound-Classics-Classic-Collection%2Fdp%2F1435114930%2Fref%3Dsr_1_1%3Fcrid%3D34JFSFOLR9PUG%26dib%3DeyJ2IjoiMSJ9.dxuOCvahydDAJlY4R-RX8n86RckzvaH-4xHzEV-12MZzfdYF9CH0TFyTla3ihKXxPAwY_G_9xMvTDk5ndDTuji4RkZ9gwz6ZDTA9kFSbWr_XmR3wXuMKBfi68eviMqFNq6c7f5ycXq02txuBiAvTAYEqCzvNhJqM9_F8IM4FoFvRc2SRiCvSI-bOZ-MWUJcC4uXS_aF3SAWW9GSnb5aNkoIFSZoFswOCaYRsi4FzCPU.0HbUnyE0qkeNN2NU5yWEYlTQ18sR0kyUvIERSHTU5Zs%26dib_tag%3Dse%26keywords%3Dgreys%2Banatomy%26qid%3D1759084560%26s%3Dbooks%26sprefix%3Dgreys%2Banatomy%252Cstripbooks%252C57%26sr%3D1-1"
                 >
                   https://amazon.com/…
                 </a>
@@ -236,7 +235,32 @@ const Examples = () => (
                   className="underline underline-offset-4 hover:text-foreground break-all"
                   href="https://cite.mickschroeder.com/?q=https%3A%2F%2Flink.springer.com%2Farticle%2F10.1007%2Fs00134-020-06106-6"
                 >
-                  https://link.springer.com/article/10.1007/s00134-020-06106-6
+                  https://link.springer.com/article/...
+                </a>
+              </li>
+            </ul>
+          </div>
+          </div>
+            {/* And More... */}
+        <div className="flex items-start gap-3">
+          <span className="rounded-md bg-background p-1.5">
+            <Layers className="h-5 w-5 text-primary" aria-hidden="true" />
+          </span>
+          <div>
+            <h4 className="text-base font-semibold leading-6">
+              And Hundreds More...
+            </h4>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Uses community‑maintained translators to detect and import from a wide range of sources. More than 600 different translators are available and constantly updated.
+            </p>
+            <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
+              <li>
+                <a
+                  className="underline underline-offset-4 hover:text-foreground break-all"
+                  target="_blank"
+                  href="https://github.com/zotero/translators"
+                >
+                  See them all on Github
                 </a>
               </li>
             </ul>

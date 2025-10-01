@@ -45,11 +45,11 @@ const StyleSelector = ({
 
   return (
     <div className={cx("style-selector", className)}>
-      <Select value={citationStyle} onValueChange={handleChange}>
-        <SelectTrigger aria-label={ariaLabel} className="w-full">
+      <Select value={citationStyle} onValueChange={handleChange} className="">
+        <SelectTrigger aria-label={ariaLabel} className="w-full bg-background">
           <SelectValue placeholder={selected ? selected.title : ariaLabel} />
         </SelectTrigger>
-        <SelectContent className="max-h-80">
+        <SelectContent>
           {citationStyles.map((cs) => (
             <SelectItem key={cs.name} value={cs.name}>
               {cs.title}

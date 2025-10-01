@@ -8,7 +8,15 @@ import {
 } from "./ui/navigation-menu";
 import { useFocusManager } from "web-common/hooks";
 import { Button as ShadcnButton } from "./ui/button";
-import { Smile } from "lucide-react";
+import {
+  BookOpenText,
+  HelpCircle,
+  Info,
+  Lightbulb,
+  MessageSquare,
+  PlusCircle,
+  Smile,
+} from "lucide-react";
 
 type NavigationProps = {
   onAboutClick: () => void;
@@ -84,24 +92,29 @@ const Navigation = ({
         <div className="flex justify-center min-w-0 w-full">
           <NavigationMenu viewport={false} className="w-full">
             <NavigationMenuList className="flex flex-wrap justify-center gap-2 lg:flex-nowrap">
-               <NavigationMenuItem>
+              <NavigationMenuItem>
                 <NavigationMenuLink asChild tabIndex={-2}>
                   <button
                     type="button"
                     onClick={onAddCitationClick}
-                    className="px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
                   >
-                    <FormattedMessage id="zbib.addCitation" defaultMessage="Add Citation" />
+                    <PlusCircle className="h-4 w-4" />
+                    <FormattedMessage
+                      id="zbib.addCitation"
+                      defaultMessage="Add Citation"
+                    />
                   </button>
                 </NavigationMenuLink>
               </NavigationMenuItem>
-               <NavigationMenuItem>
+              <NavigationMenuItem>
                 <NavigationMenuLink asChild tabIndex={-2}>
                   <button
                     type="button"
                     onClick={onExamplesClick}
-                    className="px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
                   >
+                    <Lightbulb className="h-4 w-4" />
                     <FormattedMessage
                       id="zbib.examples"
                       defaultMessage="Examples"
@@ -109,14 +122,18 @@ const Navigation = ({
                   </button>
                 </NavigationMenuLink>
               </NavigationMenuItem>
-               <NavigationMenuItem>
+              <NavigationMenuItem>
                 <NavigationMenuLink asChild tabIndex={-2}>
                   <button
                     type="button"
                     onClick={onBibliographyClick}
-                    className="px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
                   >
-                    <FormattedMessage id="zbib.bibliography" defaultMessage="Bibliography" />
+                    <BookOpenText className="h-4 w-4" />
+                    <FormattedMessage
+                      id="zbib.bibliography"
+                      defaultMessage="Bibliography"
+                    />
                   </button>
                 </NavigationMenuLink>
               </NavigationMenuItem>
@@ -125,8 +142,9 @@ const Navigation = ({
                   <button
                     type="button"
                     onClick={onAboutClick}
-                    className="px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
                   >
+                    <Info className="h-4 w-4" />
                     <FormattedMessage id="zbib.about" defaultMessage="About" />
                   </button>
                 </NavigationMenuLink>
@@ -136,19 +154,21 @@ const Navigation = ({
                   <button
                     type="button"
                     onClick={onHelpClick}
-                    className="px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
                   >
+                    <HelpCircle className="h-4 w-4" />
                     <FormattedMessage id="zbib.help" defaultMessage="Help" />
                   </button>
                 </NavigationMenuLink>
               </NavigationMenuItem>
-             
+
               <NavigationMenuItem>
                 <NavigationMenuLink asChild tabIndex={-2}>
                   <a
                     href="/faq"
-                    className="px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-bold whitespace-nowrap"
                   >
+                    <MessageSquare className="h-4 w-4" />
                     FAQ
                   </a>
                 </NavigationMenuLink>
