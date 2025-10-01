@@ -82,7 +82,8 @@ const extractYearFromItem = (item) => {
       return filenamifySegment(year);
     };
 
-    const partsValue = issued["date-parts"] || issued.dateParts || issued.dateparts;
+    const partsValue =
+      issued["date-parts"] || issued.dateParts || issued.dateparts;
     const fromParts = normalizeParts(partsValue);
     if (fromParts) {
       return fromParts;
@@ -108,20 +109,32 @@ const extractYearFromItem = (item) => {
   return "";
 };
 
-const getField = (item, key) => (item && item[key] ? `${item[key]}` : "").trim();
+const getField = (item, key) =>
+  (item && item[key] ? `${item[key]}` : "").trim();
 
 const selectVenue = (item) => {
   const t = (item?.itemType || "").toString();
-  const pick = (...keys) => keys.map((k) => getField(item, k)).find(Boolean) || "";
+  const pick = (...keys) =>
+    keys.map((k) => getField(item, k)).find(Boolean) || "";
 
   switch (t) {
     case "journalArticle":
     case "preprint":
       return pick("journalAbbreviation", "publicationTitle", "containerTitle");
     case "conferencePaper":
-      return pick("proceedingsTitle", "conferenceName", "publicationTitle", "containerTitle");
+      return pick(
+        "proceedingsTitle",
+        "conferenceName",
+        "publicationTitle",
+        "containerTitle",
+      );
     case "bookSection":
-      return pick("bookTitle", "seriesTitle", "publicationTitle", "containerTitle");
+      return pick(
+        "bookTitle",
+        "seriesTitle",
+        "publicationTitle",
+        "containerTitle",
+      );
     case "book":
       return pick("seriesTitle", "publisher");
     case "thesis":
@@ -168,7 +181,9 @@ const buildCitationFilename = (item, fallbackPlainCitation = "") => {
   );
 
   const creator = Array.isArray(item.creators) ? item.creators[0] : null;
-  const lastName = filenamifySegment(creator?.lastName || creator?.family || creator?.name);
+  const lastName = filenamifySegment(
+    creator?.lastName || creator?.family || creator?.name,
+  );
   const firstName = filenamifySegment(creator?.firstName || creator?.given);
 
   const journalLike = filenamifySegment(selectVenue(item));
@@ -210,7 +225,10 @@ const normalizeDoi = (val) => {
   if (!val) return "";
   const raw = `${val}`.trim();
   const lowered = raw.toLowerCase();
-  if (lowered.startsWith("http://doi.org/") || lowered.startsWith("https://doi.org/")) {
+  if (
+    lowered.startsWith("http://doi.org/") ||
+    lowered.startsWith("https://doi.org/")
+  ) {
     return raw.replace(/^[a-z]+:\/\/doi\.org\//i, "");
   }
   if (lowered.startsWith("doi:")) {

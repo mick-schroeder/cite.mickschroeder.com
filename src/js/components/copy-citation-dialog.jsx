@@ -218,7 +218,10 @@ const CopyCitationDialog = (props) => {
 
   const handleInputCommit = useCallback(
     (_val, _hasChanged, ev) => {
-      if (ev.type === "keydown" && (ev.key === "Enter" || ev.key === "NumpadEnter")) {
+      if (
+        ev.type === "keydown" &&
+        (ev.key === "Enter" || ev.key === "NumpadEnter")
+      ) {
         handleConfirm();
         ev.preventDefault();
       }

@@ -74,9 +74,13 @@ const ZBib = (props) => {
   };
 
   return (
-    <div className={cx(className, "w-full min-h-screen bg-background overflow-x-hidden")}> 
+    <div
+      className={cx(
+        className,
+        "w-full min-h-screen bg-background overflow-x-hidden",
+      )}
+    >
       <div className="zotero-bib-inner">
-
         <header className="w-full border-b mb-6">
           <Navigation
             onAboutClick={props.onAboutClick}
@@ -88,57 +92,55 @@ const ZBib = (props) => {
         </header>
 
         <div className="container mx-auto lg:max-w-screen-lg lg:px-8 space-y-12 pt-6">
-        
-            {props.messages.map((message) => (
-              <Message
-                {...message}
-                {...pick(props, [
-                  "onDismiss",
-                  "onUndoDelete",
-                  "onReadMore",
-                  "onShowDuplicate",
-                ])}
-                key={message.id}
-              />
-            ))}
-          
-          <section className="mx-auto max-w-3xl text-center space-y-4">
-          <Badge variant="secondary" className="rounded-full py-1.5 px-4 border mb-2" asChild>
-          <a
-            href="/"
-            className="flex items-center gap-2"
-          >
-            <img
-              src="/static/images/icon-cite-round.svg"
-              className="h-6 w-6 shrink-0"
-              alt=""
-              aria-hidden="true"
+          {props.messages.map((message) => (
+            <Message
+              {...message}
+              {...pick(props, [
+                "onDismiss",
+                "onUndoDelete",
+                "onReadMore",
+                "onShowDuplicate",
+              ])}
+              key={message.id}
             />
-        <span className="text-sm font-medium self-center whitespace-nowrap text-muted-foreground">
+          ))}
+
+          <section className="mx-auto max-w-3xl text-center space-y-4">
+            <Badge
+              variant="secondary"
+              className="rounded-full py-1.5 px-4 border mb-2"
+              asChild
+            >
+              <a href="/" className="flex items-center gap-2">
+                <img
+                  src="/static/images/icon-cite-round.svg"
+                  className="h-6 w-6 shrink-0"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <span className="text-sm font-medium self-center whitespace-nowrap text-muted-foreground">
+                  <FormattedMessage
+                    id="zbib.brand"
+                    defaultMessage="Mick Schroeder's Citation Generator"
+                  />
+                </span>
+              </a>
+            </Badge>
+
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight sm:leading-tight md:leading-tight [text-wrap:balance]">
               <FormattedMessage
-                id="zbib.brand"
-                defaultMessage="Mick Schroeder's Citation Generator"
+                id="zbib.brand.title"
+                defaultMessage="Generate free citations and tidy PDF filenames."
               />
-            </span>
-          </a>
-           </Badge>
+            </h1>
 
-       <h1
-  className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight sm:leading-tight md:leading-tight [text-wrap:balance]"
->
-  <FormattedMessage
-    id="zbib.brand.title"
-    defaultMessage="Generate free citations and tidy PDF filenames."
-  />
-</h1>
-
-<p className="text-muted-foreground text-base sm:text-lg max-w-prose mx-auto">
-  <FormattedMessage
-    id="zbib.brand.description"
-    defaultMessage="Paste a URL, DOI, PMID, or ISBN. Choose from 10,000+ styles (AMA, APA, MLA, Chicago). Copy a citation or build a full bibliography. We also check Unpaywall for legal open-access PDFs and create a nice PDF filename."
-  />
-</p>
-        </section>
+            <p className="text-muted-foreground text-base sm:text-lg max-w-prose mx-auto">
+              <FormattedMessage
+                id="zbib.brand.description"
+                defaultMessage="Paste a URL, DOI, PMID, or ISBN. Choose from 10,000+ styles (AMA, APA, MLA, Chicago). Copy a citation or build a full bibliography. We also check Unpaywall for legal open-access PDFs and create a nice PDF filename."
+              />
+            </p>
+          </section>
 
           {!props.isReadOnly && (
             <CiteTools

@@ -66,10 +66,7 @@ const Navigation = ({
     >
       <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 items-center gap-3">
         <div className="flex justify-center lg:justify-start text-center md:text-left">
-          <a
-            href="/"
-            className=""
-          >
+          <a href="/" className="">
             <img
               src="/static/images/icon-cite-round.svg"
               className="h-7 w-7 shrink-0 mr-2 inline"
@@ -81,8 +78,14 @@ const Navigation = ({
                 id="zbib.brand"
                 defaultMessage="{owner} {product}"
                 values={{
-                  owner: <span className="whitespace-nowrap">Mick Schroeder's</span>,
-                  product: <span className="whitespace-nowrap">Citation Generator</span>,
+                  owner: (
+                    <span className="whitespace-nowrap">Mick Schroeder's</span>
+                  ),
+                  product: (
+                    <span className="whitespace-nowrap">
+                      Citation Generator
+                    </span>
+                  ),
                 }}
               />
             </span>
@@ -178,7 +181,6 @@ const Navigation = ({
         </div>
 
         <div className="flex items-center justify-center lg:justify-end gap-2 flex-wrap">
-          
           <ShadcnButton
             asChild
             variant="secondary"

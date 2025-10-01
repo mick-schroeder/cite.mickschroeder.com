@@ -1,7 +1,10 @@
 import fs from "fs-extra";
 import path from "path";
 
-const projectRoot = path.join(path.dirname(new URL(import.meta.url).pathname), "..");
+const projectRoot = path.join(
+  path.dirname(new URL(import.meta.url).pathname),
+  "..",
+);
 const srcStaticDir = path.join(projectRoot, "src", "static");
 const buildDir = path.join(projectRoot, "build");
 
@@ -34,4 +37,3 @@ copyRootAssets().catch((err) => {
   // Do not fail the build due to optional copies
   process.exit(0);
 });
-

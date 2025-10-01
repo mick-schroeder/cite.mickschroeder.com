@@ -98,7 +98,7 @@ const BibliographySection = (props) => {
 
   return (
     <section
-    id="section-bibliography"
+      id="section-bibliography"
       aria-label="Bibliography"
       className={cx("section", "section-bibliography", {
         loading: !isReady && !isHydrated,
@@ -160,9 +160,14 @@ const BibliographySection = (props) => {
                   )
                 ) : (
                   <h2 className="bibliography-title h2 pb-2 text-3xl font-semibold tracking-tight flex justify-center text-center">
-                    <div className="flex items-center gap-2 bg-background/80 px-4 py-2 rounded-md max-w-lg w-full
-                ring-1 ring-border focus-within:ring-2 focus-within:ring-primary/60 transition-shadow">
-                      <BookOpenText className="inline h-5 w-5 text-primary" aria-hidden="true" />
+                    <div
+                      className="flex items-center gap-2 bg-background/80 px-4 py-2 rounded-md max-w-lg w-full
+                ring-1 ring-border focus-within:ring-2 focus-within:ring-primary/60 transition-shadow"
+                    >
+                      <BookOpenText
+                        className="inline h-5 w-5 text-primary"
+                        aria-hidden="true"
+                      />
 
                       <Editable
                         aria-label="Bibliography Title"

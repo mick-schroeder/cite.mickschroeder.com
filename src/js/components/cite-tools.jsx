@@ -38,8 +38,7 @@ const CiteTools = ({
   const intl = useIntl();
   const prompt = intl.formatMessage({
     id: "zbib.citePrompt",
-    defaultMessage:
-      'Enter a URL, PubMed ID (PMID), ISBN, DOI, arXiv ID..."',
+    defaultMessage: 'Enter a URL, PubMed ID (PMID), ISBN, DOI, arXiv ID..."',
   });
 
   const styleOptions = Array.isArray(citationStyles) ? citationStyles : [];
@@ -120,11 +119,8 @@ const CiteTools = ({
   );
 
   return (
-<section
-  id="section-cite"
-  className="section section-cite"
->      
-  <Card>
+    <section id="section-cite" className="section section-cite">
+      <Card>
         <CardHeader>
           <CardTitle>
             <PlusCircle

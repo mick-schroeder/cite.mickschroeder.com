@@ -22,7 +22,20 @@ import {
 import { isTriggerEvent, pick } from "web-common/utils";
 import { useFocusManager } from "web-common/hooks";
 import { Button as ShadcnButton } from "./ui/button";
-import { FileText, Quote, Copy, Check, Trash2, Grip, MoreVertical, Pencil, ArrowUp, ArrowDown, ChevronsUp, ExternalLink } from "lucide-react";
+import {
+  FileText,
+  Quote,
+  Copy,
+  Check,
+  Trash2,
+  Grip,
+  MoreVertical,
+  Pencil,
+  ArrowUp,
+  ArrowDown,
+  ChevronsUp,
+  ExternalLink,
+} from "lucide-react";
 
 import { useDnd } from "../hooks";
 import { buildCitationFilename, buildUnpaywallUrl } from "../filename";
@@ -312,7 +325,6 @@ const BibliographyItem = memo((props) => {
               >
                 <Quote className="h-4 w-4 text-muted-foreground" />
               </ShadcnButton>
-              
             </>
           )}
           <ShadcnButton
@@ -329,41 +341,40 @@ const BibliographyItem = memo((props) => {
           </ShadcnButton>
 
           <ShadcnButton
-                variant="outline"
-                size="sm"
-                title={intl.formatMessage({
-                  id: "zbib.citation.copyBibliographyEntry",
-                  defaultMessage: "Copy Bibliography Entry",
-                })}
-                disabled={copySingleState.citationKey === rawItem.key}
-                className={cx("btn-copy", { success: isCopied })}
-                onClick={handleCopySingleClick}
-                tabIndex={-3}
-              >
-                {isCopied ? (
-                  <Check className="h-4 w-4 text-muted-foreground" />
-                ) : (
-                  <Copy className="h-4 w-4 text-muted-foreground" />
-                )}
-              </ShadcnButton>
-              <ShadcnButton
-                variant="outline"
-                size="sm"
-                title={intl.formatMessage({
-                  id: "zbib.citation.copyBibliographyEntryFilename",
-                  defaultMessage: "Copy Bibliography Entry Filename",
-                })}
-                className={cx("btn-copy", { success: isCopiedFilename })}
-                onClick={handleCopyFilenameSingleClick}
-                tabIndex={-3}
-              >
-                {isCopiedFilename ? (
-                  <Check className="h-4 w-4 text-muted-foreground" />
-                ) : (
-                  <FileText className="h-4 w-4 text-muted-foreground" />
-                )}
-              </ShadcnButton>
-          
+            variant="outline"
+            size="sm"
+            title={intl.formatMessage({
+              id: "zbib.citation.copyBibliographyEntry",
+              defaultMessage: "Copy Bibliography Entry",
+            })}
+            disabled={copySingleState.citationKey === rawItem.key}
+            className={cx("btn-copy", { success: isCopied })}
+            onClick={handleCopySingleClick}
+            tabIndex={-3}
+          >
+            {isCopied ? (
+              <Check className="h-4 w-4 text-muted-foreground" />
+            ) : (
+              <Copy className="h-4 w-4 text-muted-foreground" />
+            )}
+          </ShadcnButton>
+          <ShadcnButton
+            variant="outline"
+            size="sm"
+            title={intl.formatMessage({
+              id: "zbib.citation.copyBibliographyEntryFilename",
+              defaultMessage: "Copy Bibliography Entry Filename",
+            })}
+            className={cx("btn-copy", { success: isCopiedFilename })}
+            onClick={handleCopyFilenameSingleClick}
+            tabIndex={-3}
+          >
+            {isCopiedFilename ? (
+              <Check className="h-4 w-4 text-muted-foreground" />
+            ) : (
+              <FileText className="h-4 w-4 text-muted-foreground" />
+            )}
+          </ShadcnButton>
         </div>
         <div className=" ml-auto">
           <DropdownMenu
@@ -452,9 +463,15 @@ const BibliographyItem = memo((props) => {
                   </DropdownMenuItem>
                 </Fragment>
               )}
-              <DropdownMenuItem onClick={handleEditCitationClick} className="btn">
+              <DropdownMenuItem
+                onClick={handleEditCitationClick}
+                className="btn"
+              >
                 <Pencil className="mr-2 h-4 w-4" />
-                <FormattedMessage id="zbib.general.edit" defaultMessage="Edit" />
+                <FormattedMessage
+                  id="zbib.general.edit"
+                  defaultMessage="Edit"
+                />
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={handleDeleteCitationClick}

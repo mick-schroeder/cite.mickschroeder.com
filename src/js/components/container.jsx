@@ -675,7 +675,7 @@ const BibWebContainer = (props) => {
 
   const displayWelcomeMessage = useCallback(() => {
     const message = {
-      action: "Accept",
+      //action: "Accept",
       id: getNextMessageId(),
       kind: "WELCOME_MESSAGE",
       message:
@@ -926,7 +926,6 @@ const BibWebContainer = (props) => {
     [getCopyData, state.bibliography.lookup],
   );
 
-
   const handleCopyToClipboard = useCallback((ev) => {
     if (copyDataInclude.current) {
       copyDataInclude.current.forEach((copyDataFormat) => {
@@ -1097,7 +1096,7 @@ const BibWebContainer = (props) => {
       offset: calcOffset(),
     });
   }, []);
-    const handleBibliographyClick = useCallback((ev) => {
+  const handleBibliographyClick = useCallback((ev) => {
     const target = document.querySelector("#section-bibliography");
     new SmoothScroll().animateScroll(target, ev.currentTarget, {
       speed: 1000,
@@ -1105,7 +1104,7 @@ const BibWebContainer = (props) => {
       offset: calcOffset(),
     });
   }, []);
-    const handleAddCitationClick = useCallback((ev) => {
+  const handleAddCitationClick = useCallback((ev) => {
     const target = document.querySelector("#section-cite");
     new SmoothScroll().animateScroll(target, ev.currentTarget, {
       speed: 1000,

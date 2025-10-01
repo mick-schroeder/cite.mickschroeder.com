@@ -370,7 +370,6 @@ const calcOffset = () => {
   return md.matches ? 48 : 24;
 };
 
-
 //TODO: a nicer API for Zotero -> CSL conversion
 const getItemsCSL = (items) => {
   const bib = new ZoteroBib({

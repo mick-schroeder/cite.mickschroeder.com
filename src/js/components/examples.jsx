@@ -240,8 +240,8 @@ const Examples = () => (
               </li>
             </ul>
           </div>
-          </div>
-            {/* And More... */}
+        </div>
+        {/* And More... */}
         <div className="flex items-start gap-3">
           <span className="rounded-md bg-background p-1.5">
             <Layers className="h-5 w-5 text-primary" aria-hidden="true" />
@@ -251,7 +251,9 @@ const Examples = () => (
               And Hundreds More...
             </h4>
             <p className="mt-2 text-sm text-muted-foreground">
-              Uses community‑maintained translators to detect and import from a wide range of sources. More than 600 different translators are available and constantly updated.
+              Uses community‑maintained translators to detect and import from a
+              wide range of sources. More than 600 different translators are
+              available and constantly updated.
             </p>
             <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
               <li>
