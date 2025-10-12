@@ -79,10 +79,10 @@ const Navigation = ({
                 defaultMessage="{owner} {product}"
                 values={{
                   owner: (
-                    <span className="whitespace-nowrap">Mick Schroeder's</span>
+                    <span className="">Mick Schroeder's</span>
                   ),
                   product: (
-                    <span className="whitespace-nowrap">
+                    <span className="">
                       Citation Generator
                     </span>
                   ),
