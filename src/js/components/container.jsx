@@ -51,6 +51,7 @@ import ZBib from "./zbib";
 import { useUserTypeDetector } from "../hooks";
 import supportedLocales from "../../../data/supported-locales.json";
 import renamedStyles from "../../../data/renamed-styles.json";
+import { createDocxFromHtml } from "../lib/docx";
 
 const defaultItem = {
   version: 0,
@@ -777,58 +778,64 @@ const BibWebContainer = (props) => {
 
   const handleDownloadFile = useCallback(
     async (format) => {
-      var fileContents,
-        separator,
-        bibStyle,
-        preamble = "";
-
-      if (format === "ris") {
-        try {
-          fileContents = await bib.current.exportItems("ris");
-        } catch (e) {
-          handleError(e.message);
-          return;
-        }
-      } else if (format === "bibtex") {
-        try {
-          fileContents = await bib.current.exportItems("bibtex");
-        } catch (e) {
-          handleError(e.message);
-          return;
-        }
-      } else {
-        const { bibliographyItems, bibliographyMeta } =
-          await getOneTimeBibliographyOrFallback(
-            bib.current.itemsCSL,
-            state.xml,
-            state.styleHasBibliography,
-            useLegacy.current,
-            { format, skipErrors: true },
-          );
-
-        if (format === "rtf") {
-          bibStyle = getBibliographyFormatParameters(bibliographyMeta);
-          separator = "\\\r\n";
-          preamble = `${bibStyle.tabStops.length ? "\\tx" + bibStyle.tabStops.join(" \\tx") + " " : ""}\\li${bibStyle.indent} \\fi${bibStyle.firstLineIndent} \\sl${bibStyle.lineSpacing} \\slmult1 \\sa${bibStyle.entrySpacing} `;
-        }
-        fileContents = `{\\rtf ${bibliographyMeta?.formatMeta?.markupPre || ""}${preamble}${bibliographyItems.map((i) => i.value).join(separator)}${bibliographyMeta?.formatMeta?.markupPost || ""}}`;
+      const config = exportFormats[format];
+      if (!config?.isDownloadable) {
+        return;
       }
 
-      const fileName = `citations.${exportFormats[format].extension}`;
       try {
-        const file = new File([fileContents], fileName, {
-          type: exportFormats[format].mime,
-        });
-        saveAs(file);
-      } catch (_) {
-        // Old Edge & Safari, see #237
-        const blob = new Blob([fileContents], {
-          type: exportFormats[format].mime,
-        });
-        saveAs(blob, fileName);
+        let blob = null;
+        const fileName = `citations.${config.extension}`;
+
+        if (format === "ris" || format === "bibtex") {
+          const data = await bib.current.exportItems(format);
+          blob = new Blob([data], { type: config.mime });
+        } else {
+          const citeprocFormat = format === "rtf" ? "rtf" : "html";
+          const { bibliographyItems, bibliographyMeta } =
+            await getOneTimeBibliographyOrFallback(
+              bib.current.itemsCSL,
+              state.xml,
+              state.styleHasBibliography,
+              useLegacy.current,
+              { format: citeprocFormat, skipErrors: true },
+            );
+
+          if (!bibliographyItems) {
+            return;
+          }
+
+          if (format === "rtf") {
+            const bibStyle = getBibliographyFormatParameters(bibliographyMeta);
+            const separator = "\\\r\n";
+            const preamble = `${
+              bibStyle.tabStops.length
+                ? "\\tx" + bibStyle.tabStops.join(" \\tx") + " "
+                : ""
+            }\\li${bibStyle.indent} \\fi${bibStyle.firstLineIndent} \\sl${
+              bibStyle.lineSpacing
+            } \\slmult1 \\sa${bibStyle.entrySpacing} `;
+            const fileContents = `{\\rtf ${bibliographyMeta?.formatMeta?.markupPre || ""}${preamble}${bibliographyItems
+              .map((item) => item.value)
+              .join(separator)}${bibliographyMeta?.formatMeta?.markupPost || ""}}`;
+            blob = new Blob([fileContents], { type: config.mime });
+          } else if (format === "docx") {
+            const htmlContent = state.styleHasBibliography
+              ? formatBib(bibliographyItems, bibliographyMeta)
+              : formatFallback(bibliographyItems);
+            const docxHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"/></head><body>${htmlContent}</body></html>`;
+            blob = await createDocxFromHtml(docxHtml);
+          }
+        }
+
+        if (blob) {
+          saveAs(blob, fileName);
+        }
+      } catch (error) {
+        handleError("Unable to export bibliography", error);
       }
     },
-    [handleError, state.xml, state.styleHasBibliography],
+    [handleError, state.styleHasBibliography, state.xml],
   );
 
   const handleError = useCallback((errorMessage, errorData) => {

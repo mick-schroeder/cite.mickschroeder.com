@@ -5,6 +5,7 @@ import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { findByRole, getAllByRole, getByRole, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import JSZip from 'jszip';
 
 import { applyAdditionalJestTweaks, getFileAsText } from './utils/common';
 import { installMockedXHR, uninstallMockedXHR, installUnhandledRequestHandler } from './utils/xhr-mock';
@@ -22,6 +23,24 @@ jest.mock('copy-to-clipboard');
 jest.mock('file-saver');
 
 applyAdditionalJestTweaks();
+
+const decodeQuotedPrintable = (input) => {
+	const cleaned = input.replace(/=\r?\n/g, "");
+	const bytes = [];
+
+	for (let i = 0; i < cleaned.length; ) {
+		const char = cleaned[i];
+		if (char === "=" && i + 2 < cleaned.length) {
+			bytes.push(parseInt(cleaned.slice(i + 1, i + 3), 16));
+			i += 3;
+		} else {
+			bytes.push(char.charCodeAt(0));
+			i += 1;
+		}
+	}
+
+	return Buffer.from(bytes).toString('utf-8');
+};
 
 
 describe('Citations', () => {
@@ -94,7 +113,7 @@ describe('Citations', () => {
 		const user = userEvent.setup();
 		const button = await screen.findByRole('button', { name: 'Export Options' });
 		await user.click(button);
-		const menuoption = await screen.findByRole('menuitem', { name: 'Download RTF (all word processors)' });
+		const menuoption = await screen.findByRole('menuitem', { name: 'Download RTF' });
 		await user.click(menuoption);
 		await waitFor(
 			() => expect(fileSaver.saveAs.mock.calls.length).toBe(1)
@@ -102,6 +121,28 @@ describe('Citations', () => {
 		const text = await getFileAsText(fileSaver.saveAs.mock.calls[0][0]);
 		expect(text.slice(0, 5)).toEqual('{\\rtf');
 		expect(text).toEqual(expect.stringContaining('\\uc0\\u8220{}Delineation of the Intimate Details of the Backbone Conformation of Pyridine Nucleotide Coenzymes in Aqueous Solution.\\uc0\\u8221{}'));
+		await waitFor(
+			() => expect(screen.queryByRole('menu', { name: 'Export Options' })).not.toBeInTheDocument()
+		);
+	});
+
+	test('Supports downloading bibliography as .docx', async () => {
+		renderWithProviders(<Container />);
+		const user = userEvent.setup();
+		const button = await screen.findByRole('button', { name: 'Export Options' });
+		await user.click(button);
+		const menuoption = await screen.findByRole('menuitem', { name: 'Download DOCX' });
+		await user.click(menuoption);
+		await waitFor(
+			() => expect(fileSaver.saveAs.mock.calls.length).toBe(1)
+		);
+		const savedBlob = fileSaver.saveAs.mock.calls[0][0];
+		const arrayBuffer = await savedBlob.arrayBuffer();
+		const zip = await JSZip.loadAsync(arrayBuffer);
+		const mhtml = await zip.file('word/afchunk.mht').async('string');
+		const decoded = decodeQuotedPrintable(mhtml);
+		expect(decoded).toEqual(expect.stringContaining('<div class="csl-entry"'));
+		expect(decoded).toEqual(expect.stringContaining('Delineation of the Intimate Details of the Backbone Conformation of Pyridine Nucleotide Coenzymes in Aqueous Solution.'));
 		await waitFor(
 			() => expect(screen.queryByRole('menu', { name: 'Export Options' })).not.toBeInTheDocument()
 		);

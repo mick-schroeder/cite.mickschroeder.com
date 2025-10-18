@@ -21,6 +21,13 @@ export default {
     isDownloadable: true,
     isCopyable: false,
   },
+  docx: {
+    extension: "docx",
+    mime: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    label: "Download DOCX",
+    isDownloadable: true,
+    isCopyable: false,
+  },
   ris: {
     extension: "ris",
     mime: "application/x-research-info-systems",
