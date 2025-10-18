@@ -91,7 +91,7 @@ const ZBib = (props) => {
           />
         </header>
 
-        <div className="container mx-auto space-y-12 lg:border-x">
+        <div className="container mx-auto space-y-12 md:border-x">
           <section className="mx-auto max-w-3xl text-center space-y-4 pt-8">
             <Badge
               variant="secondary"
@@ -128,10 +128,10 @@ const ZBib = (props) => {
               />
             </p>
           </section>
-          <div className="grid grid-cols-1 xl:grid-cols-2 items-start w-full lg:border-t lg:border-b">
+          <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)] items-start xl:items-stretch w-full gap-y-6 lg:border-t lg:border-b">
             {/* column 1 */}
 
-            <div className="flex flex-1 flex-col gap-4 p-4">
+            <div className="flex flex-1 flex-col gap-4 p-4 xl:pr-6">
               {props.messages.map((message) => (
                 <Message
                   {...message}
@@ -175,8 +175,9 @@ const ZBib = (props) => {
 
               <Examples />
             </div>
+            <div className="hidden xl:block self-stretch w-px bg-border" />
             {/* column 2 */}
-            <div className="flex flex-1 flex-col gap-4  xl:border-l xl:border-border">
+            <div className="flex flex-1 flex-col gap-4">
               <BibliographySection
                 {...pick(props, [
                   "bibliography",

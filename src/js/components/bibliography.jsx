@@ -295,7 +295,7 @@ const BibliographyItem = memo((props) => {
       onBlur={receiveBlur}
     >
       <div
-        className="citation border-t py-3 pl-2 flex items-start md:items-center gap-3"
+        className="citation border-t py-3 pl-6 pr-3 md:pr-1 flex items-start md:items-center gap-3"
         ref={containerRef}
       >
         {allowReorder && (
