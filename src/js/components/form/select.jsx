@@ -34,6 +34,7 @@ const SelectInput = forwardRef((props, ref) => {
     inputGroupClassName,
     isBusy,
     value: initialValue,
+    menuClassName,
     options,
     onBlur,
     onCancel,
@@ -169,7 +170,7 @@ const SelectInput = forwardRef((props, ref) => {
           >
             <SelectValue placeholder={placeholder} />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className={cx("max-h-60", menuClassName)}>
             {clearable ? (
               <SelectItem key="__clear__" value="">
                 {placeholder || "—"}
@@ -198,6 +199,7 @@ SelectInput.propTypes = {
   clearable: PropTypes.bool,
   id: PropTypes.string,
   inputGroupClassName: PropTypes.string,
+  menuClassName: PropTypes.string,
   isBusy: PropTypes.bool,
   isDisabled: PropTypes.bool,
   isReadOnly: PropTypes.bool,

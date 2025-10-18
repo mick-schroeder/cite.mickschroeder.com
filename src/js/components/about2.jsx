@@ -49,7 +49,7 @@ const About2 = ({ onGetStartedClick }) => (
       </p>
       <h3
         id="about"
-        className="scroll-m-20 border-b pb-2 pt-6 text-3xl font-semibold tracking-tight first:mt-0"
+        className="scroll-m-20 pt-6 text-3xl font-semibold tracking-tight first:mt-0"
       >
         <Info
           className="inline h-6 w-6 text-primary -mt-1 mr-2"
@@ -270,7 +270,7 @@ const About2 = ({ onGetStartedClick }) => (
       </section>
       <h3
         id="help"
-        className="scroll-m-20 border-b pb-2 pt-6 text-3xl font-semibold tracking-tight first:mt-0"
+        className="scroll-m-20 pt-6 text-3xl font-semibold tracking-tight first:mt-0"
       >
         <HelpCircle
           className="inline h-6 w-6 text-primary -mt-1 mr-2"
@@ -402,7 +402,7 @@ const About2 = ({ onGetStartedClick }) => (
           </p>
         </div>
       </section>
-      <div className="my-10 flex justify-center">
+      <div className="py-10 flex justify-center">
         <ShadcnButton
           onClick={onGetStartedClick}
           size="lg"

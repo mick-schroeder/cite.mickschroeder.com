@@ -35,6 +35,8 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import { Spinner } from "./ui/spinner";
+
 const Review = ({
   isTranslating,
   itemUnderReview,
@@ -229,12 +231,19 @@ const Review = ({
   return (
     <section aria-labelledby={id} className="pb-10">
       {isTranslating ? (
-        <h2 id={id}>
-          <FormattedMessage
-            id="zbib.review.newItem"
-            defaultMessage="New item…"
-          />
-        </h2>
+        <Card>
+          <CardHeader className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2">
+              <FormattedMessage
+                id="zbib.review.newItem"
+                defaultMessage="New item…"
+              />
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="flex justify-center items-center gap-2">
+            <Spinner />
+          </CardContent>
+        </Card>
       ) : (
         <Fragment>
           <Card>
@@ -274,7 +283,7 @@ const Review = ({
               </CardAction>
             </CardHeader>
             <CardContent>
-              <h3 className="my-2 text-muted-foreground font-bold flex items-center gap-2">
+              <h3 className="my-2 text-muted-foreground font-bold flex items-center gap-4">
                 <Quote className="size-4" aria-hidden="true" />
                 <FormattedMessage
                   id="zbib.review.citation"
@@ -282,17 +291,17 @@ const Review = ({
                 />
               </h3>
               <div
-                className="bg-background p-6 rounded-lg border shadow-md text-sm"
+                className="bg-background p-6 rounded-lg border shadow-sm text-sm"
                 dangerouslySetInnerHTML={{ __html: html }}
               />
-              <h3 className="my-2 text-muted-foreground font-bold flex items-center gap-2">
+              <h3 className="my-2 text-muted-foreground font-bold flex items-center gap-4">
                 <FileText className="size-4" aria-hidden="true" />
                 <FormattedMessage
                   id="zbib.review.filename"
                   defaultMessage="Filename"
                 />
               </h3>
-              <div className="bg-background p-6 rounded-lg border shadow-md text-sm break-words">
+              <div className="bg-background p-6 rounded-lg border shadow-sm text-sm break-words">
                 {filename}
               </div>
             </CardContent>
@@ -309,33 +318,6 @@ const Review = ({
                 <div className="flex w-full flex-col items-center gap-4">
                   {/* Row 1: Copy actions */}
                   <div className="flex w-full flex-wrap justify-center gap-2">
-                    <ShadcnButton
-                      tabIndex={-2}
-                      type="button"
-                      variant="outline"
-                      onClick={handleReviewCopyFilenameCitation}
-                      aria-live="polite"
-                      className="flex items-center gap-2 w-full sm:w-auto"
-                    >
-                      {isCopiedFilename ? (
-                        <>
-                          <Check className="size-4" aria-hidden="true" />
-                          <FormattedMessage
-                            id="zbib.review.copiedFilename"
-                            defaultMessage="Filename Copied"
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="size-4" aria-hidden="true" />
-                          <FormattedMessage
-                            id="zbib.review.copyFilename"
-                            defaultMessage="Copy Filename"
-                          />
-                        </>
-                      )}
-                    </ShadcnButton>
-
                     <ShadcnButton
                       tabIndex={-2}
                       type="button"
@@ -358,6 +340,33 @@ const Review = ({
                           <FormattedMessage
                             id="zbib.review.copyCitation"
                             defaultMessage="Copy Citation"
+                          />
+                        </>
+                      )}
+                    </ShadcnButton>
+
+                    <ShadcnButton
+                      tabIndex={-2}
+                      type="button"
+                      variant="outline"
+                      onClick={handleReviewCopyFilenameCitation}
+                      aria-live="polite"
+                      className="flex items-center gap-2 w-full sm:w-auto"
+                    >
+                      {isCopiedFilename ? (
+                        <>
+                          <Check className="size-4" aria-hidden="true" />
+                          <FormattedMessage
+                            id="zbib.review.copiedFilename"
+                            defaultMessage="Filename Copied"
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="size-4" aria-hidden="true" />
+                          <FormattedMessage
+                            id="zbib.review.copyFilename"
+                            defaultMessage="Copy Filename"
                           />
                         </>
                       )}

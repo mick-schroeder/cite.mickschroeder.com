@@ -295,21 +295,21 @@ const BibliographyItem = memo((props) => {
       onBlur={receiveBlur}
     >
       <div
-        className="citation border-t px-3 py-3 flex items-start md:items-center gap-3"
+        className="citation border-t py-3 pl-2 flex items-start md:items-center gap-3"
         ref={containerRef}
       >
         {allowReorder && (
           <div
-            className="w-6 shrink-0"
+            className="w-4 shrink-0"
             onMouseDown={onDrag}
             onTouchStart={onDrag}
           >
-            <Grip className="h-6 w-6 text-primary" />
+            <Grip className="h-4 w-4 text-primary" />
           </div>
         )}
         <div
           data-container-key={rawItem.key}
-          className="csl-entry-container flex-1 min-w-0 pr-2"
+          className="csl-entry-container flex-1 min-w-0"
           dangerouslySetInnerHTML={{ __html: formattedItem }}
         />
         <div className="hidden md:grid md:grid-cols-2 md:gap-1">
@@ -317,7 +317,7 @@ const BibliographyItem = memo((props) => {
             <>
               <ShadcnButton
                 variant="outline"
-                size="sm"
+                size="icon"
                 title={copyText}
                 className="btn-copy"
                 onClick={handleCopyCitationClick}
@@ -329,7 +329,7 @@ const BibliographyItem = memo((props) => {
           )}
           <ShadcnButton
             variant="destructive"
-            size="sm"
+            size="icon"
             title={intl.formatMessage({
               id: "zbib.citation.deleteEntry",
               defaultMessage: "Delete Entry",
@@ -342,7 +342,7 @@ const BibliographyItem = memo((props) => {
 
           <ShadcnButton
             variant="outline"
-            size="sm"
+            size="icon"
             title={intl.formatMessage({
               id: "zbib.citation.copyBibliographyEntry",
               defaultMessage: "Copy Bibliography Entry",
@@ -360,7 +360,7 @@ const BibliographyItem = memo((props) => {
           </ShadcnButton>
           <ShadcnButton
             variant="outline"
-            size="sm"
+            size="icon"
             title={intl.formatMessage({
               id: "zbib.citation.copyBibliographyEntryFilename",
               defaultMessage: "Copy Bibliography Entry Filename",
@@ -396,7 +396,7 @@ const BibliographyItem = memo((props) => {
                 title="Options"
                 tabIndex={-3}
               >
-                <MoreVertical className="h-7 w-7 text-primary" />
+                <MoreVertical className="h-4 w-4 text-primary" />
               </ShadcnButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" aria-label="Options">

@@ -119,7 +119,7 @@ const CiteTools = ({
   );
 
   return (
-    <section id="section-cite" className="section section-cite">
+    <section id="section-cite" className="section section-cite ">
       <Card>
         <CardHeader>
           <CardTitle>
@@ -196,7 +196,7 @@ const CiteTools = ({
             variant={actionVariant}
             size="lg"
             className={cn("w-full gap-2 sm:w-auto")}
-            disabled={isActionDisabled}
+            //disabled={isActionDisabled}
             onClick={handleCiteOrCancel}
             aria-busy={isTranslating && !canCancel}
           >

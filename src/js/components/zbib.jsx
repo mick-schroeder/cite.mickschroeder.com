@@ -81,7 +81,7 @@ const ZBib = (props) => {
       )}
     >
       <div className="zotero-bib-inner">
-        <header className="w-full border-b mb-6">
+        <header className="w-full border-b">
           <Navigation
             onAboutClick={props.onAboutClick}
             onHelpClick={props.onHelpClick}
@@ -91,21 +91,9 @@ const ZBib = (props) => {
           />
         </header>
 
-        <div className="container mx-auto lg:max-w-screen-lg lg:px-8 space-y-12 pt-6">
-          {props.messages.map((message) => (
-            <Message
-              {...message}
-              {...pick(props, [
-                "onDismiss",
-                "onUndoDelete",
-                "onReadMore",
-                "onShowDuplicate",
-              ])}
-              key={message.id}
-            />
-          ))}
-
-          <section className="mx-auto max-w-3xl text-center space-y-4">
+        <div className="container mx-auto space-y-12 lg:border-x">
+   
+          <section className="mx-auto max-w-3xl text-center space-y-4 pt-8">
             <Badge
               variant="secondary"
               className="rounded-full py-1.5 px-4 border mb-2"
@@ -141,76 +129,97 @@ const ZBib = (props) => {
               />
             </p>
           </section>
-
-          {!props.isReadOnly && (
-            <CiteTools
+          <div className="grid grid-cols-1 xl:grid-cols-2 items-start w-full lg:border-t lg:border-b">
+            {/* column 1 */}
+                   
+            <div className="flex flex-1 flex-col gap-4 p-4">
+              {props.messages.map((message) => (
+            <Message
+              {...message}
               {...pick(props, [
-                "isTranslating",
-                "onEditorOpen",
-                "onTranslationCancel",
-                "onTranslationRequest",
-                "identifier",
-                "citationStyle",
-                "citationStyles",
-                "onCitationStyleChanged",
+                "onDismiss",
+                "onUndoDelete",
+                "onReadMore",
+                "onShowDuplicate",
               ])}
+              key={message.id}
             />
-          )}
+          ))}
+              {!props.isReadOnly && (
+                <CiteTools
+                  {...pick(props, [
+                    "isTranslating",
+                    "onEditorOpen",
+                    "onTranslationCancel",
+                    "onTranslationRequest",
+                    "identifier",
+                    "citationStyle",
+                    "citationStyles",
+                    "onCitationStyleChanged",
+                  ])}
+                />
+              )}
 
-          {!props.isReadOnly &&
-            (props.isTranslating || props.itemUnderReview) && (
-              <Review
+              {!props.isReadOnly &&
+                (props.isTranslating || props.itemUnderReview) && (
+                  <Review
+                    {...pick(props, [
+                      "isTranslating",
+                      "itemUnderReview",
+                      "onReviewEdit",
+                      "onReviewDelete",
+                      "onReviewDismiss",
+                      "styleHasBibliography",
+                    ])}
+                  />
+                )}
+
+              <Examples />
+            </div>
+            {/* column 2 */}
+            <div className="flex flex-1 flex-col gap-4 p-4">
+              <BibliographySection
                 {...pick(props, [
-                  "isTranslating",
-                  "itemUnderReview",
-                  "onReviewEdit",
-                  "onReviewDelete",
-                  "onReviewDismiss",
+                  "bibliography",
+                  "bibliographyRendered",
+                  "bibliographyRenderedNodes",
+                  "citationStyle",
+                  "citationStyles",
+                  "copySingleState",
+                  "getCopyData",
+                  "hydrateItemsCount",
+                  "isHydrated",
+                  "isNoteStyle",
+                  "isNumericStyle",
+                  "isPrintMode",
+                  "isReadOnly",
+                  "isReady",
+                  "isSortedStyle",
+                  "localCitationsCount",
+                  "onCancelPrintMode",
+                  "onCitationCopyDialogOpen",
+                  "onCitationStyleChanged",
+                  "onCopySingle",
+                  "onDeleteCitations",
+                  "onDeleteEntry",
+                  "onDownloadFile",
+                  "onEditorOpen",
+                  "onOverride",
+                  "onReorderCitations",
+                  "onSaveToZoteroShow",
+                  "onTitleChanged",
                   "styleHasBibliography",
+                  "title",
                 ])}
               />
-            )}
-
-          <Examples />
-
-          <BibliographySection
-            {...pick(props, [
-              "bibliography",
-              "bibliographyRendered",
-              "bibliographyRenderedNodes",
-              "citationStyle",
-              "citationStyles",
-              "copySingleState",
-              "getCopyData",
-              "hydrateItemsCount",
-              "isHydrated",
-              "isNoteStyle",
-              "isNumericStyle",
-              "isPrintMode",
-              "isReadOnly",
-              "isReady",
-              "isSortedStyle",
-              "localCitationsCount",
-              "onCancelPrintMode",
-              "onCitationCopyDialogOpen",
-              "onCitationStyleChanged",
-              "onCopySingle",
-              "onDeleteCitations",
-              "onDeleteEntry",
-              "onDownloadFile",
-              "onEditorOpen",
-              "onOverride",
-              "onReorderCitations",
-              "onSaveToZoteroShow",
-              "onTitleChanged",
-              "styleHasBibliography",
-              "title",
-            ])}
-          />
-
-          {!props.isReadOnly && (
+            </div>
+          </div>
+          <div className="container mx-auto max-w-5xl space-y-4 px-4 sm:px-6 md:px-8 ">
+                {!props.isReadOnly && (
             <About2 onGetStartedClick={props.onGetStartedClick} />
           )}
+            </div>      
+      
         </div>
         <Footer {...pick(props, ["isReadOnly"])} />
       </div>

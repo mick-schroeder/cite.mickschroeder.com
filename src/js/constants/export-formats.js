@@ -17,7 +17,7 @@ export default {
   rtf: {
     extension: "rtf",
     mime: "text/rtf",
-    label: "Download RTF (all word processors)",
+    label: "Download RTF",
     isDownloadable: true,
     isCopyable: false,
   },

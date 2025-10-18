@@ -78,11 +78,9 @@ const Navigation = ({
                 id="zbib.brand"
                 defaultMessage="{owner} {product}"
                 values={{
-                  owner: (
-                    <span className="">Mick Schroeder's</span>
-                  ),
+                  owner: <span className="">Mick Schroeder's</span>,
                   product: (
-                    <span className="">
+                    <span className="whitespace-nowrap">
                       Citation Generator
                     </span>
                   ),

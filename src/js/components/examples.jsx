@@ -21,7 +21,7 @@ import {
 
 const Examples = () => (
   <section className="section" id="examples">
-    <Card>
+    <Card className="bg-background border-0 shadow-none">
       <CardHeader>
         <CardTitle>
           <Lightbulb
