@@ -128,7 +128,7 @@
       --primary-foreground: theme(colors.emerald.950);
       --secondary: theme(colors.neutral.700);
       --secondary-foreground: theme(colors.neutral.100)
-      --muted: theme(colors.neutral.800);
+        --muted: theme(colors.neutral.800);
       --muted-foreground: theme(colors.neutral.300);
       --accent: theme(colors.neutral.700);
       --accent-foreground: theme(colors.neutral.100);
@@ -193,7 +193,6 @@
     }
   }
 
-  
   :is(button, a, [role="button"], input, select, textarea):focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;

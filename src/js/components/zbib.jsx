@@ -92,7 +92,6 @@ const ZBib = (props) => {
         </header>
 
         <div className="container mx-auto space-y-12 lg:border-x">
-   
           <section className="mx-auto max-w-3xl text-center space-y-4 pt-8">
             <Badge
               variant="secondary"
@@ -131,20 +130,20 @@ const ZBib = (props) => {
           </section>
           <div className="grid grid-cols-1 xl:grid-cols-2 items-start w-full lg:border-t lg:border-b">
             {/* column 1 */}
-                   
+
             <div className="flex flex-1 flex-col gap-4 p-4">
               {props.messages.map((message) => (
-            <Message
-              {...message}
-              {...pick(props, [
-                "onDismiss",
-                "onUndoDelete",
-                "onReadMore",
-                "onShowDuplicate",
-              ])}
-              key={message.id}
-            />
-          ))}
+                <Message
+                  {...message}
+                  {...pick(props, [
+                    "onDismiss",
+                    "onUndoDelete",
+                    "onReadMore",
+                    "onShowDuplicate",
+                  ])}
+                  key={message.id}
+                />
+              ))}
               {!props.isReadOnly && (
                 <CiteTools
                   {...pick(props, [
@@ -215,11 +214,10 @@ const ZBib = (props) => {
             </div>
           </div>
           <div className="container mx-auto max-w-5xl space-y-4 px-4 sm:px-6 md:px-8 ">
-                {!props.isReadOnly && (
-            <About2 onGetStartedClick={props.onGetStartedClick} />
-          )}
-            </div>      
-      
+            {!props.isReadOnly && (
+              <About2 onGetStartedClick={props.onGetStartedClick} />
+            )}
+          </div>
         </div>
         <Footer {...pick(props, ["isReadOnly"])} />
       </div>

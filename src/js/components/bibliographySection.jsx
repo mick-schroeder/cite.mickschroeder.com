@@ -160,9 +160,7 @@ const BibliographySection = (props) => {
                   )
                 ) : (
                   <h2 className="bibliography-title h2 pb-2 text-3xl font-semibold tracking-tight flex justify-center text-center">
-                    <div
-                      className="flex items-center gap-2 px-4 py-2 max-w-lg w-full focus-within:ring-1 focus-within:ring-primary/60 transition-shadow"
-                    >
+                    <div className="flex items-center gap-2 px-4 py-2 max-w-lg w-full focus-within:ring-1 focus-within:ring-primary/60 transition-shadow">
                       <BookOpenText
                         className="inline h-5 w-5 text-primary"
                         aria-hidden="true"
