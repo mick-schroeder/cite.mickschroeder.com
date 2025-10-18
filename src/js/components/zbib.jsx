@@ -81,6 +81,7 @@ const ZBib = (props) => {
       )}
     >
       <div className="zotero-bib-inner">
+
         <header className="w-full border-b">
           <Navigation
             onAboutClick={props.onAboutClick}
@@ -175,7 +176,10 @@ const ZBib = (props) => {
 
               <Examples />
             </div>
+
+            {/* column */}
             <div className="hidden xl:block self-stretch w-px bg-border" />
+
             {/* column 2 */}
             <div className="flex flex-1 flex-col gap-4">
               <BibliographySection

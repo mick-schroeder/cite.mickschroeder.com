@@ -158,7 +158,7 @@ const BibliographySection = (props) => {
                     </h1>
                   )
                 ) : (
-                  <h2 className="border-t xl:border-t-0 bg-card bibliography-title h2 pt-4 pb-2 text-3xl font-semibold tracking-tight flex justify-center text-center">
+                  <h2 className="border-t xl:border-t-0 bg-secondary bibliography-title h2 pt-4 pb-2 text-3xl font-semibold tracking-tight flex justify-center text-center">
                     <div className="flex items-center gap-2 px-4 py-2 max-w-lg w-full focus-within:ring-1 focus-within:ring-primary/60 transition-shadow">
                       <BookOpenText
                         className="inline h-5 w-5 text-primary"
@@ -237,7 +237,7 @@ const BibliographySection = (props) => {
                 )}
 
                 {!isReadOnly && (isReady || isHydrated) && (
-                  <div className="flex justify-center border-t pt-4">
+                  <div className="flex justify-center border-t py-4">
                     <DeleteAllButton
                       bibliographyCount={props.bibliography.items.length}
                       {...pick(props, ["onDeleteCitations"])}
@@ -276,8 +276,8 @@ const BibliographySection = (props) => {
               </ShadcnButton>
             )}
          
-        <div className="m-6">
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight py-2 flex items-center gap-2 justify-center">
+        <div className="p-6 border-t">
+          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight flex items-center gap-2 justify-center ">
             <Download className="h-6 w-6 text-primary" aria-hidden="true" />
             <FormattedMessage
               id="zbib.bibliography.export"

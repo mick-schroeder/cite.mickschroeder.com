@@ -42,46 +42,46 @@
   }
   :root {
     color-scheme: light;
-    --background: theme(colors.neutral.50);
-    --foreground: theme(colors.neutral.950);
-    --card: theme(colors.neutral.100);
-    --card-foreground: theme(colors.neutral.950);
-    --popover: theme(colors.neutral.200);
-    --popover-foreground: theme(colors.neutral.950);
+    --background: theme(colors.stone.50);
+    --foreground: theme(colors.stone.950);
+    --card: theme(colors.white);
+    --card-foreground: theme(colors.stone.950);
+    --popover: theme(colors.white);
+    --popover-foreground: theme(colors.stone.950);
     --primary: theme(colors.emerald.600);
-    --primary-foreground: theme(colors.neutral.50);
-    --secondary: theme(colors.neutral.300);
-    --secondary-foreground: theme(colors.neutral.900);
-    --muted: theme(colors.neutral.200);
-    --muted-foreground: theme(colors.neutral.600);
-    --accent: theme(colors.neutral.200);
-    --accent-foreground: theme(colors.neutral.950);
-    --destructive: theme(colors.red.400);
-    --destructive-foreground: theme(colors.neutral.50);
-    --border: theme(colors.neutral.300);
-    --input: theme(colors.neutral.300);
-    --ring: theme(colors.emerald.300);
+    --primary-foreground: theme(colors.white);
+    --secondary: theme(colors.stone.100);
+    --secondary-foreground: theme(colors.stone.900);
+    --muted: theme(colors.stone.200);
+    --muted-foreground: theme(colors.stone.600);
+    --accent: theme(colors.stone.200);
+    --accent-foreground: theme(colors.stone.900);
+    --destructive: theme(colors.red.500);
+    --destructive-foreground: theme(colors.white);
+    --border: theme(colors.stone.200);
+    --input: theme(colors.stone.200);
+    --ring: theme(colors.emerald.600);
     --chart-1: theme(colors.emerald.600);
-    --chart-2: theme(colors.emerald.700);
-    --chart-3: theme(colors.emerald.500);
+    --chart-2: theme(colors.emerald.500);
+    --chart-3: theme(colors.emerald.700);
     --chart-4: theme(colors.teal.500);
     --chart-5: theme(colors.lime.500);
-    --sidebar: theme(colors.neutral.50);
-    --sidebar-foreground: theme(colors.neutral.900);
+    --sidebar: theme(colors.white);
+    --sidebar-foreground: theme(colors.stone.900);
     --sidebar-primary: theme(colors.emerald.600);
-    --sidebar-primary-foreground: theme(colors.neutral.50);
-    --sidebar-accent: theme(colors.neutral.200);
-    --sidebar-accent-foreground: theme(colors.neutral.800);
-    --sidebar-border: theme(colors.neutral.300);
-    --sidebar-ring: theme(colors.emerald.300);
-    --navbar: theme(colors.neutral.300);
-    --navbar-foreground: theme(colors.neutral.900);
+    --sidebar-primary-foreground: theme(colors.white);
+    --sidebar-accent: theme(colors.stone.100);
+    --sidebar-accent-foreground: theme(colors.stone.900);
+    --sidebar-border: theme(colors.stone.200);
+    --sidebar-ring: theme(colors.emerald.500);
+    --navbar: theme(colors.white);
+    --navbar-foreground: theme(colors.stone.900);
     --navbar-primary: theme(colors.emerald.600);
-    --navbar-primary-foreground: theme(colors.neutral.50);
-    --navbar-accent: theme(colors.neutral.200);
-    --navbar-accent-foreground: theme(colors.neutral.800);
-    --navbar-border: theme(colors.neutral.300);
-    --navbar-ring: theme(colors.emerald.300);
+    --navbar-primary-foreground: theme(colors.white);
+    --navbar-accent: theme(colors.stone.100);
+    --navbar-accent-foreground: theme(colors.stone.900);
+    --navbar-border: theme(colors.stone.200);
+    --navbar-ring: theme(colors.emerald.500);
     --font-sans:
       ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
       Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
@@ -118,46 +118,46 @@
   @media (prefers-color-scheme: dark) {
     :root {
       color-scheme: dark;
-      --background: theme(colors.neutral.950);
-      --foreground: theme(colors.neutral.100);
-      --card: theme(colors.neutral.900);
-      --card-foreground: theme(colors.neutral.100);
-      --popover: theme(colors.neutral.900);
-      --popover-foreground: theme(colors.neutral.100);
-      --primary: theme(colors.emerald.500);
-      --primary-foreground: theme(colors.emerald.950);
-      --secondary: theme(colors.neutral.700);
-      --secondary-foreground: theme(colors.neutral.100)
-        --muted: theme(colors.neutral.800);
-      --muted-foreground: theme(colors.neutral.300);
-      --accent: theme(colors.neutral.700);
-      --accent-foreground: theme(colors.neutral.100);
+      --background: theme(colors.stone.950);
+      --foreground: theme(colors.stone.100);
+      --card: theme(colors.stone.900);
+      --card-foreground: theme(colors.stone.100);
+      --popover: theme(colors.stone.900);
+      --popover-foreground: theme(colors.stone.100);
+      --primary: theme(colors.emerald.400);
+      --primary-foreground: theme(colors.stone.950);
+      --secondary: theme(colors.stone.900);
+      --secondary-foreground: theme(colors.stone.200);
+      --muted: theme(colors.stone.800);
+      --muted-foreground: theme(colors.stone.400);
+      --accent: theme(colors.stone.800);
+      --accent-foreground: theme(colors.stone.100);
       --destructive: theme(colors.red.400);
-      --destructive-foreground: theme(colors.neutral.100);
-      --border: theme(colors.neutral.700);
-      --input: theme(colors.neutral.700);
-      --ring: theme(colors.emerald.500);
+      --destructive-foreground: theme(colors.white);
+      --border: theme(colors.stone.800);
+      --input: theme(colors.stone.800);
+      --ring: theme(colors.emerald.400);
       --chart-1: theme(colors.emerald.400);
       --chart-2: theme(colors.emerald.500);
-      --chart-3: theme(colors.emerald.600);
-      --chart-4: theme(colors.teal.400);
-      --chart-5: theme(colors.lime.400);
-      --sidebar: theme(colors.neutral.950);
-      --sidebar-foreground: theme(colors.neutral.100);
-      --sidebar-primary: theme(colors.emerald.500);
-      --sidebar-primary-foreground: theme(colors.neutral.950);
-      --sidebar-accent: theme(colors.neutral.800);
-      --sidebar-accent-foreground: theme(colors.neutral.200);
-      --sidebar-border: theme(colors.neutral.800);
-      --sidebar-ring: theme(colors.emerald.500);
-      --navbar: theme(colors.neutral.700);
-      --navbar-foreground: theme(colors.neutral.200);
-      --navbar-primary: theme(colors.emerald.500);
-      --navbar-primary-foreground: theme(colors.neutral.950);
-      --navbar-accent: theme(colors.neutral.600);
-      --navbar-accent-foreground: theme(colors.neutral.100);
-      --navbar-border: theme(colors.neutral.700);
-      --navbar-ring: theme(colors.emerald.500);
+      --chart-3: theme(colors.emerald.300);
+      --chart-4: theme(colors.teal.300);
+      --chart-5: theme(colors.lime.300);
+      --sidebar: theme(colors.stone.950);
+      --sidebar-foreground: theme(colors.stone.100);
+      --sidebar-primary: theme(colors.emerald.400);
+      --sidebar-primary-foreground: theme(colors.stone.950);
+      --sidebar-accent: theme(colors.stone.800);
+      --sidebar-accent-foreground: theme(colors.stone.200);
+      --sidebar-border: theme(colors.stone.800);
+      --sidebar-ring: theme(colors.emerald.400);
+      --navbar: theme(colors.stone.900);
+      --navbar-foreground: theme(colors.stone.100);
+      --navbar-primary: theme(colors.emerald.400);
+      --navbar-primary-foreground: theme(colors.stone.950);
+      --navbar-accent: theme(colors.stone.800);
+      --navbar-accent-foreground: theme(colors.stone.200);
+      --navbar-border: theme(colors.stone.800);
+      --navbar-ring: theme(colors.emerald.400);
       --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
       --font-mono:
         ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
@@ -183,14 +183,14 @@
         0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
       --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
     }
+  }
 
-    * {
-      @apply border-border;
-    }
+  * {
+    @apply border-border;
+  }
 
-    body {
-      @apply bg-background text-foreground font-sans;
-    }
+  body {
+    @apply bg-background text-foreground font-sans;
   }
 
   :is(button, a, [role="button"], input, select, textarea):focus-visible {
