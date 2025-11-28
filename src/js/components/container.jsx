@@ -22,6 +22,7 @@ import {
   getBibliographyFormatParameters,
 } from "web-common/cite";
 import { configureZoteroShim } from "web-common/zotero";
+import { minimizeCitationMarkup } from "../utils/minimizeCitationMarkup";
 
 import {
   calcOffset,
@@ -915,12 +916,18 @@ const BibWebContainer = (props) => {
           "plain",
           getItemsCSL([state.bibliography.lookup[citationKey]]),
         );
-        copyDataInclude.current = [
-          { mime: "text/plain", data: bibliographyPlain },
-          { mime: "text/html", data: bibliographyHtml },
-        ];
+        const minimized = minimizeCitationMarkup(bibliographyHtml);
+        const plainToCopy = minimized.text || bibliographyPlain;
+        const copyPayload = [{ mime: "text/plain", data: plainToCopy }];
+        if (minimized.rtf) {
+          copyPayload.push({ mime: "text/rtf", data: minimized.rtf });
+        }
+        if (minimized.html) {
+          copyPayload.push({ mime: "text/html", data: minimized.html });
+        }
+        copyDataInclude.current = copyPayload;
 
-        if (copy(bibliographyPlain)) {
+        if (copy(plainToCopy)) {
           setCopySingleState({ citationKey, copied: true });
           copySingleTimeout.current = setTimeout(() => {
             setCopySingleState({ citationKey: null, copied: false });
@@ -930,7 +937,7 @@ const BibWebContainer = (props) => {
         setCopySingleState({ citationKey: null, copied: false });
       }
     },
-    [getCopyData, state.bibliography.lookup],
+    [getCopyData, minimizeCitationMarkup, state.bibliography.lookup],
   );
 
   const handleCopyToClipboard = useCallback((ev) => {

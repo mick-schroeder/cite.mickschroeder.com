@@ -14,6 +14,7 @@ import { formatBib, formatFallback } from "web-common/cite";
 import { FormattedMessage } from "react-intl";
 import { useFocusManager } from "web-common/hooks";
 import copy from "copy-to-clipboard";
+import { minimizeCitationMarkup } from "../utils/minimizeCitationMarkup";
 import {
   Quote,
   FileText,
@@ -127,7 +128,17 @@ const Review = ({
       return;
     }
 
-    const plain = plainCitation;
+    const minimized = minimizeCitationMarkup(html);
+    const htmlToCopy = minimized.html || html;
+    const plain = minimized.text || plainCitation;
+    const copyParts = [{ mime: "text/plain", data: plain }];
+    if (minimized.rtf) {
+      copyParts.push({ mime: "text/rtf", data: minimized.rtf });
+    }
+    if (htmlToCopy) {
+      copyParts.push({ mime: "text/html", data: htmlToCopy });
+    }
+
     let copied = false;
 
     if (
@@ -137,12 +148,15 @@ const Review = ({
       window.ClipboardItem
     ) {
       try {
-        await navigator.clipboard.write([
-          new window.ClipboardItem({
-            "text/html": new Blob([html], { type: "text/html" }),
-            "text/plain": new Blob([plain], { type: "text/plain" }),
-          }),
-        ]);
+        const clipboardItem = new window.ClipboardItem(
+          Object.fromEntries(
+            copyParts.map(({ mime, data }) => [
+              mime,
+              new Blob([data], { type: mime }),
+            ]),
+          ),
+        );
+        await navigator.clipboard.write([clipboardItem]);
         copied = true;
       } catch (_) {
         copied = false;
@@ -165,7 +179,7 @@ const Review = ({
       }, 1500);
       resetFocus();
     }
-  }, [html, plainCitation, resetFocus]);
+  }, [html, minimizeCitationMarkup, plainCitation, resetFocus]);
 
   const handleReviewCopyFilenameCitation = useCallback(async () => {
     if (!filename) {
